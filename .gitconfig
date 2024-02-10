@@ -1,0 +1,5 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = website simple-cms.enable-u.laptop
+	email = simple-cms@lamp.enable-u.laptop

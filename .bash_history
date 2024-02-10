@@ -1,0 +1,4 @@
+uptime
+w
+uptime
+exit

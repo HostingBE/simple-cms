@@ -1,0 +1,5 @@
+Listening on 127.0.0.1:39351
+[2024-02-10 09:53:27] info Disposed of connection to running server.
+looking for token 2d3bd932-d44c-4acc-89df-025780c54f25, got Some("2d3bd932-d44c-4acc-89df-025780c54f25")
+[2024-02-10 09:53:27] info Checking /home/simple-cms/.vscode-server/cli/servers/Stable-31c37ee8f63491495ac49e43b8544550fbae4533/log.txt and /home/simple-cms/.vscode-server/cli/servers/Stable-31c37ee8f63491495ac49e43b8544550fbae4533/pid.txt for a running server...
+[2024-02-10 09:53:27] info Found running server (pid=10564)

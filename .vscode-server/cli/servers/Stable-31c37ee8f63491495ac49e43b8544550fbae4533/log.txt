@@ -1,0 +1,24 @@
+*
+* Visual Studio Code Server
+*
+* By using the software, you agree to
+* the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+* the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+*
+Server bound to /tmp/code-0bab12c8-9848-461b-8aaf-31b4be5b7123
+Extension host agent listening on /tmp/code-0bab12c8-9848-461b-8aaf-31b4be5b7123
+
+[09:53:02] 
+
+
+
+
+[09:53:02] Extension host agent started.
+[09:53:02] Started initializing default profile extensions in extensions installation folder. file:///home/simple-cms/.vscode-server/extensions
+[09:53:02] Completed initializing default profile extensions in extensions installation folder. file:///home/simple-cms/.vscode-server/extensions
+[09:53:02] [<unknown>][d463a3d3][ExtensionHostConnection] New connection established.
+[09:53:02] [<unknown>][2db504d5][ManagementConnection] New connection established.
+[09:53:02] [<unknown>][d463a3d3][ExtensionHostConnection] <10633> Launched Extension Host Process.
+[09:53:27] [<unknown>][0db2a972][ManagementConnection] New connection established.
+[09:53:27] [<unknown>][a6b9ad07][ExtensionHostConnection] New connection established.
+[09:53:27] [<unknown>][a6b9ad07][ExtensionHostConnection] <10827> Launched Extension Host Process.
