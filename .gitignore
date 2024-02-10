@@ -1,0 +1,11 @@
+.vscode-server/
+Maildir/
+logs/
+etc/
+cgi-bin/
+homes/
+tmp/
+virtualmin-backup/
+.wget-hsts
+.git/
+.gitconfig
