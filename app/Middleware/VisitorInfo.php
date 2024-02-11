@@ -41,6 +41,12 @@ if (!filter_var($info->ip, FILTER_VALIDATE_IP)) {
 
 $info = json_decode($this->get_ip_info($this->get_client_ip()));
 
+# internal network address continue
+if ($info->bogon == 1) {
+
+return $response;
+}
+
 if (!filter_var($info->ip, FILTER_VALIDATE_IP)) { 
 return $response;
 }
