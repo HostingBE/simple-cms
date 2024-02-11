@@ -1,0 +1,166 @@
+{% include "frontend/header.twig" %}
+
+
+{% include "frontend/svg/angle-right.twig" %}
+{% include "frontend/svg/comments-dotted.twig" %}
+{% include "frontend/svg/fa-eye.twig" %}
+{% include "frontend/svg/vote-yea.twig" %}
+{% include "frontend/svg/thumbs-up.twig" %}
+{% include "frontend/svg/thumbs-down.twig" %}
+{% include "frontend/svg/fa-headset.twig" %}
+
+<div class="container">
+<h1 class="py-4">{{topic.title|capitalize}}</h1>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{url}}">home</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{{url}}/forum">forum</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{{url}}/forum/{{topic.naam|replace({' ':'-'})}}/{{topic.categorie_id}}/">{{topic.naam|lower}}</a></li>
+  </ol>
+</nav>
+
+  {% include "backend/alert.twig" %}
+  
+<div class="row">
+<div class="col-md-9">
+
+	<div class="card mb-3">
+		<div class="card-body">
+        <div class="row text-center small mb-3">
+                  <div class="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-muted" fill="currentColor"><use href="#vote-yea"></svg>    <span class="fw-bolder">{{topic.votes|default('0')}} Votes</span></div>
+                  <div class="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-muted" fill="currentColor"><use href="#comments-dotted"></svg>  <span class="fw-bolder">{{topic.replies}} Replies</span> </div>
+                  <div class="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-muted" fill="currentColor"><use href="#fa-eye"></svg>  <span class="fw-bolder">{{topic.views}} Views</span> </div>
+                  <div class="col text-end"> <button class="btn btn-icon btn-default btn-sm" data-bs-toggle="tooltip" title="click thumbs down to dislike this article!" data-id="{{topic.id}}" data-source="down"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-danger" fill="currentColor"><use href="#thumbs-down"></svg> </button> <span class="fw-bolder">{{topic.down|default('0')}}</span>  </div>
+                  <div class="col text-left"> <button class="btn btn-icon btn-default btn-sm" data-bs-toggle="tooltip" title="click thumbs up to like this article!" data-id="{{topic.id}}" data-source="up"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-success" fill="currentColor"><use href="#thumbs-up"></svg> </button> <span class="fw-bolder">{{topic.up|default('0')}}</span> </div>
+
+
+        </div>
+          
+          <div class="row mb-3">
+    
+    <div class="col-1">
+        <div class="d-flex justify-content-between align-items-center">
+           <div class="d-flex align-items-center pe-2"><img class="img-thumbnail rounded" src="{{url}}/images/{% if topic.icon != '' %}users/{{topic.userid}}/{{topic.icon}}{%else%}default-icon.jpg{%endif%}" width="50" height="50" alt="{{topic.first_name}} {{topic.last_name}}">
+           </div>
+         </div>
+       </div>
+                <div class="col-2 px-2">
+
+                      <h2 class="fs-base mb-0">{{topic.name}}</h2><span class="text-muted small">{{topic.date}}</span>
+                    </div>
+
+          <div class="col-9">{{topic.message|raw}}</div>
+        </div>
+
+
+          {% if files|length > 0 %}
+          <h3>Attached files</h3>
+          <div class="row">
+          {% for file in files %}
+          <div class="col-sm-3">
+          <img src="{{url}}/uploads/forum/{{topic.id}}/{{file.name}}" class="img-thumbnail rounded" style="width: auto; height: 195px;">
+          </div>
+
+          {% endfor %}
+           </div>
+          {% endif %}
+  </div>
+</div>
+
+<div class="card mb-3">
+<div class="card-body">
+<h4 class="pt-2 pb-2">{{replies|length}} Replies</h4>
+
+{% if replies|length < 1 %}
+<p>no replies yet on {{topic.title}}</p>
+{% endif %}
+
+{% if replies|length > 0 %}
+{% for reply in replies %}
+
+<div class="row mb-3">
+   <div class="col-1">
+        <div class="d-flex justify-content-between align-items-center">
+           <div class="d-flex align-items-center pe-2"><img class="img-thumbnail rounded" src="{{url}}/images/{% if reply.icon != '' %}users/{{reply.userid}}/{{reply.icon}}{%else%}default-icon.jpg{%endif%}" width="50" height="50" alt="{{reply.first_name}} {{reply.last_name}}">
+           </div>
+         </div>
+       </div>
+                <div class="col-2 px-2">
+
+                      <h4 class="fs-base mb-0">{{reply.name}}</h4><span class="text-muted small">{{reply.date}}</span>
+                    </div>
+                <div class="col-9">
+                  <p>{{reply.message|raw}}</p>
+                </div>
+                 </div>
+     
+
+{% endfor %}
+{% endif %}
+</div>
+
+
+</div>
+
+<button class="btn btn-secondary btn-sm text-end mb-3" data-id="{{topic.id}}" id="reply-btn">reply</button>
+ 
+   {% include "backend/alert.twig" %}
+
+	<div class="card mb-3 {{display}}" id="reply">
+		<div class="card-body">
+	<h5 class="px-2">Reply on {{topic.title}}</h5>
+
+<div class="alert alert-primary">When posting an answer, our terms and conditions apply, we may choose not to post answers if they are against the rules. Stick to the net etiquette. For example, do not write in capital letters. Respect everyone on the forum, we've all been beginners! Thank you for using the SeoSite forum.</div>
+
+
+<form name="topic-reply" id="ajax-form" action="{{url}}/topic-reply" method="POST" data-reload="true">
+{{ csrf() | raw }}
+
+<input type="hidden" name="topic" value="{{topic.id}}">
+
+<textarea name="message" class="form-control mb-3" cols="60" rows="5" placeholder="your reply .."></textarea>
+
+                              <div class="form-group row p-2">
+                                    <div class="col-lg-6 col-6">
+                                        <img src="{{captcha|raw}}" class="rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{trans('account.solve_sum_message')|capitalize}}!" width="168" height="37">
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('account.solve_sum')|capitalize}}..">
+                                    </div>
+                                </div>
+
+<button type="submit" class="btn btn-primary" id="submit-ajax">post reply</button>
+</form>
+
+</div>
+</div>
+
+</div>
+<div class="col-md-3 col-sm-12">
+
+<div class="card border-altdarkorange mb-3">
+<div class="card-body bg-altlightorange"><h3>Start topic</h3>
+<div class="row">
+<div class="col-sm-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="56" height="56" class="bi text-primary" fill="currentColor"><use href="#fa-headset"></svg></div><div class="col-9">Need SEO help about your website? Search for answers to your questions in our forum topics, or ask a new question on the <strong>SEO forum</strong></div></div>
+</div>
+</div>
+
+<h5 class="mb-2">Categories</h5>
+
+<ul class="list-group mb-3">
+{% for category in categories %}
+<li class="list-group-item" aria-current="true"><i class="fas fa-angle-right"></i> <span class="badge rounded-pill bg-secondary">{{category.totals}}</span> <a href="/forum/{{category.naam|replace({' ':'-'})|lower}}/{{category.id}}/" data-bs-toggle="tooltip" title="Forum category {{category.naam}}">{{category.naam|capitalize}}</a></li>
+ {% endfor %}
+</ul>
+
+<h5 class="mb-2">Share</h5>
+
+{{ include("frontend/snippets/social-media-share.twig", { url: url, path: path,keywords: topic.tags}) }}
+
+</div>
+</div>
+</div>
+
+
+{% include "frontend/footer.twig" %}

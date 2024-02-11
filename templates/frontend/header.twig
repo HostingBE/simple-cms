@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="{{locale|default('en')}}">
+<head>
+<style>
+/* oswald-regular - latin */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;  
+  src: local(''),
+       url('{{url}}/fonts/oswald-v49-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('{{url}}/fonts/oswald-v49-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local(''),
+       url('{{url}}/fonts/roboto-condensed-v25-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('{{url}}/fonts/roboto-condensed-v25-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+</style>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{sitename}}: {{meta.title}}</title>
+<meta name="description" content="{{meta.description}}">
+<meta name="keywords" content="{{meta.keywords}}">
+<meta name="author" content="HostingBE">
+<link rel="alternate"  hreflang="en-eu" href="{{url}}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="{{url}}/images/icon-cms-hostingbe.png" type="image/x-icon">
+<link rel="icon" href="{{url}}/images/icon-cms-hostingbe.png" type="image/x-icon">
+
+{% if huidig in ['account-info','manager-pagina-overzicht','media-overzicht','todo-overview','manager-blog-overzicht','manager-support-overzicht','manager-gebruikers-overzicht','manager-category-overview'] %}
+<link rel="stylesheet" href="{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.css">
+{% endif %}
+{% if huidig in ['manager-blog-toevoegen','manager-blog-bewerken','manager-pagina-toevoegen','manager-pagina-bewerken'] %}
+<link href="{{url}}/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+{% endif %}
+
+<link rel="preload" href="{{url}}/fonts/oswald-v49-latin-regular.woff2" as="font" type="font/woff2"  crossorigin />
+<link rel="preload" href="{{url}}/fonts/roboto-condensed-v25-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="{{url}}/fonts/oswald-v49-latin-regular.woff" as="font" type="font/woff"  crossorigin />
+<link rel="preload" href="{{url}}/fonts/roboto-condensed-v25-latin-regular.woff" as="font" type="font/woff" crossorigin />
+<link rel="preload" href="{{url}}/custom/css/bootstrap.css" as="style" />
+
+{%if huidig in ['bekijk-blog'] %}
+<link rel="preload" href="{{url}}/uploads/{{weblog.imagename}}-800.webp" as="image" />
+{%endif%}
+
+<link rel="stylesheet" href="{{url}}/custom/css/bootstrap.css"> 
+</head>
+<body>
+<div>
+	<div class="container">
+<div class="row pt-3 pb-3">
+           <div class="col-sm-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="48" height="48" class="bi text-danger mb-4" fill="currentColor"><path d="M192 32c0 17.7 14.3 32 32 32c123.7 0 224 100.3 224 224c0 17.7 14.3 32 32 32s32-14.3 32-32C512 128.9 383.1 0 224 0c-17.7 0-32 14.3-32 32zm0 96c0 17.7 14.3 32 32 32c70.7 0 128 57.3 128 128c0 17.7 14.3 32 32 32s32-14.3 32-32c0-106-86-192-192-192c-17.7 0-32 14.3-32 32zM96 144c0-26.5-21.5-48-48-48S0 117.5 0 144V368c0 79.5 64.5 144 144 144s144-64.5 144-144s-64.5-144-144-144H128v96h16c26.5 0 48 21.5 48 48s-21.5 48-48 48s-48-21.5-48-48V144z"/></svg>
+              <a href="{{locale_url}}/" class="navbar-brand"><span class="display-5">{{sitename}}</span></a>
+                </div>
+
+                     <div class="col-sm-6 text-end">
+                     {% if user %}
+                                       
+                                      
+                                       <div class="dropdown"><img src="/images/{% if user.icon|length > 2 %}users/{{user.id}}/{{user.icon}}{%else%}default-icon.jpg{% endif %}" alt="{{user.first_name}} {{user.last_name}}" width="48" height="48"> 
+                                       <a href="#" class="dropdown-toggle" id="accountmenu"  data-bs-toggle="dropdown" aria-expanded="false">{{user.first_name}} {{user.last_name}}</a>                           
+                                                   
+
+                                <ul class="dropdown-menu" aria-labelledby="accountmenu">
+                                  <li><a class="dropdown-item" href="{{locale_url}}/my-account">{{trans('header.my_account')|capitalize}}</a></li>
+                                  <li><a class="dropdown-item" href="{{locale_url}}/affiliate-overview">{{trans('header.earn_money')|capitalize}}</a></li>
+                                  <li><a class="dropdown-item" href="{{locale_url}}/change-password">{{trans('header.change_password')|capitalize}}</a></li>
+                                  <li><a class="dropdown-item" href="{{locale_url}}/settings">{{trans('header.settings')|capitalize}}</a></li>
+                                  <li><a class="dropdown-item" href="{{locale_url}}/api-settings">{{trans('header.api_settings')|capitalize}}</a></li>
+                                  <li><hr class="dropdown-divider"></li>
+                                  {% if role == "administrator" %}
+                                  <li><a class="dropdown-item bg-danger text-light fw-bold" href="{{locale_url}}/manager/dashboard">{{trans('header.manager_dashboard')|capitalize}}</a></li>
+                                  <li><hr class="dropdown-divider"></li>                             
+                                  {% endif %} 
+                                  <li><a class="dropdown-item" href="{{locale_url}}/logout">{{trans('header.logout')|capitalize}}</a></li>
+                                </ul>
+                                     </div>
+                                       {% endif %}
+                                     </div>
+
+         </div>
+    </div>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-bg-white bg-primary">
+  <div class="container-xl">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active link-secondary" aria-current="page" href="{{locale_url}}/">{{ trans('header.home')|capitalize}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-secondary" href="{{locale_url}}/blog">{{trans('header.blog')|capitalize}}</a>
+        </li>
+        {% if disableforum == "off" %}
+         <li class="nav-item">
+          <a class="nav-link link-secondary" href="{{locale_url}}/forum">{{trans('header.forum')|capitalize}}</a>
+        </li>
+        {% endif %}
+        {% if disablesupport == "off" %}
+        <li class="nav-item">
+          <a class="nav-link link-secondary" href="{{locale_url}}/seo-support">{{trans('header.support')|capitalize}}</a>
+        </li>       
+        {% endif %}
+        <li class="nav-item" >
+          <a class="nav-link link-secondary" href="{{locale_url}}/contact-form">{{trans('header.contact')|capitalize}}</a>
+        </li>        
+        {% for link in headerlinks.header %}
+        <li class="nav-item" >
+          <a class="nav-link link-secondary" href="{{link.url}}" data-toggle="tooltip" title="{{link.title}}">{{link.name|capitalize}}</a>
+        </li>   
+        {% endfor %}
+
+        {% if user == "" %}
+        <li class="nav-item">
+          <a class="nav-link link-secondary" href="{{locale_url}}/create-account" tabindex="-1" aria-disabled="true">{{trans('header.create_account')|capitalize}}</a>
+        </li>
+                <li class="nav-item">
+          <a class="nav-link link-secondary" href="{{locale_url}}/login" tabindex="-1" aria-disabled="true">{{trans('header.login')|capitalize}}</a>
+        </li>
+        {% endif %}
+      </ul>
+      <form class="d-flex" name="search" action="{{url}}/search" method="POST">
+        {{ csrf() | raw }}
+        <input class="form-control me-2" name="q" type="search" placeholder="{{trans('header.search')|capitalize}} {{sitename}} {{trans('header.website')}}.." aria-label="Search">
+        <button class="btn btn-secondary" type="submit" id="search-button">{{trans('header.search')|capitalize}}</button>
+      </form>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,93 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="pt-4 pb-4">Advertentie toevoegen</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+       {% include "backend/alert.twig" %} 
+
+ </div>
+
+<div class="row">
+<div class="col-md-6">
+
+<div class="card mb-3">
+	<div class="card-body">
+
+<form name="advertentie" action="{{url}}/manager/advertentie-toevoegen" method="POST" id="ajax-form">
+ {{ csrf() | raw  }}
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Naam</label>
+ <div class="col-md-9">
+  <input class="form-control" type="text" name="naam" value="" placeholder="vul een naam in ..">
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Titel</label>
+ <div class="col-md-9">
+  <input class="form-control" type="text" name="titel" value="" placeholder="vul een titel in ..">
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Omschrijving</label>
+ <div class="col-md-9">
+  <textarea class="form-control" name="omschrijving" rows="5" cols="60" placeholder="vul een omschrijving in .."></textarea>
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Link</label>
+ <div class="col-md-9">
+  <input class="form-control" type="text" name="link" value="" placeholder="vul een link in ..">
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Code</label>
+   <div class="col-md-9">
+  <textarea class="form-control" name="code" rows="5" cols="60" placeholder="vul code in .."></textarea>
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Soort</label>
+ <div class="col-md-9">
+  <select name="soort" class="form-control">
+  <option value="banner">Banner</option>
+  <option value="text">Text</option>
+  <option value="script">Javascript code</option>  
+  </select>
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">Aktief</label>
+ <div class="col-md-9">
+<div class="form-check form-switch">
+  <input class="form-check-input" id="activeren" name="activeren" type="checkbox" value="a">
+   </div>
+</div>
+</div>
+  <button class="btn btn-primary" type="submit" id="submit-ajax">Advertentie toevoegen</button>
+</form>
+
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+{% include "frontend/footer.twig" %}

@@ -1,0 +1,74 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+
+<h1 class="pt-4 pb-4">Blog search {{query}} results overview</h1>
+
+
+        <!-- Search bar + filters-->
+        <div class="row gy-3 mb-4 pb-2">
+          <div class="col-md-4 order-md-1 order-2">
+              <form name="search" method="POST" action="/blog-search">
+                {{ csrf() | raw }}
+            <div class="position-relative input-group">
+            <input class="form-control pe-5" type="text" placeholder="search for articles ..." name="q" value="{{query}}"><button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button> 
+                      </div>
+                 </form>
+               </div>
+          <div class="col-lg-6 col-md-8 offset-lg-2 order-md-2 order-1">
+            <div class="row gy-3">
+              <div class="col-6 d-flex flex-sm-row flex-column align-items-sm-center">
+                <label class="d-inline-block me-sm-2 mb-sm-0 mb-2 text-nowrap" for="categories"><i class="fa fa-align-left mt-n1 me-2 align-middle opacity-70"></i>Category:</label>
+                <select class="form-select" name="categorie" id="category">
+                                   {% for categorie in categorieen %}
+                                   <option value="{{categorie.id}}">{{categorie.naam|capitalize}}</option>
+                                   {% endfor %}
+                                 </select>
+              </div>
+              <div class="col-6 d-flex flex-sm-row flex-column align-items-sm-center">
+                <label class="d-inline-block me-sm-2 mb-sm-0 mb-2 text-nowrap" for="sortby"><i class="fa fa-arrows-sort mt-n1 me-2 align-middle opacity-70"></i>Sort on:</label>
+                <select class="form-select" id="sortby">
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="populair">Populair</option>
+                  <option value="sponsored">Sponsored</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<div class="row">
+
+{% if blogs|length < 1 %}
+<p>no results in the SEO articles for <strong>{{query}}</strong></p>
+{% endif %}
+
+
+{% for blog in blogs %}
+<div class="col-md-6 col-sm-12 p-3">
+<div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <h4 class="card-title">{{blog.title|capitalize}}</h4>
+                            <p class="card-text">
+                                {{blog.content|striptags()}}
+                            </p>
+                        </div>
+                        <img class="img-fluid w-100 rounded" src="{% if blog.media %}/uploads/{{blog.media}}{%else%}/images/default-image.jpg{% endif %}" alt="{{blog.alt|capitalize}}">
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <span>comments {{blog.reacties}}, published {{blog.date}}</span>
+                        <a href="/blog-{{blog.id}}-{{blog.title|lower|replace({' ':'-'})| url_encode(true)}}/" class="btn btn-light-primary" data-bs-toggle="tooltip" title="Read more about {{blog.title}}">Read More</a>
+                    </div>
+ </div><!-- /. card -->
+     </div>
+{% endfor %}
+
+
+
+</div>
+    </div>
+</div>
+
+{% include "frontend/footer.twig" %}

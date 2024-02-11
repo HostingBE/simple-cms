@@ -1,0 +1,147 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+
+
+<div class="row pt-4">
+<div class="col-md-9 col-sm-12">
+
+	<div class="card mb-3">
+<div itemscope itemtype="http://schema.org/Article"  class="card-body">
+<h1 itemprop="name">{{weblog.title|capitalize}}</h1>
+
+<div class="text-center">
+<figure class="figure">
+<a href="/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})| url_encode(true)|lower}}/"><img itemprop="image" class="img-figure rounded w-100" src="{% if weblog.media %}/uploads/{{weblog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{weblog.imagename}}-200.webp 200w, {{url}}/uploads/{{weblog.imagename}}-400.webp 400w,{{url}}/uploads/{{weblog.imagename}}-800.webp 800w" sizes="75vw" alt="{{weblog.alt|capitalize}}" width="{{weblog.width}}" height="{{weblog.height}}"></a>
+<figcaption itemprop="headline" class="figure-caption">{{weblog.title}}</figcaption>
+</figure>
+</div>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{locale_url}}/seo-blog">blog</a></li>
+     <li class="breadcrumb-item"><a href="{{locale_url}}/seo-blog/{{weblog.category}}-{{weblog.naam}}/">{{weblog.naam}}</a></li>   
+     <li class="breadcrumb-item active" aria-current="page"><a href="{{locale_url}}/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})|url_encode(true)|lower}}/" itemprop="url">{{weblog.title}}</a></li>
+  </ol>
+</nav>
+
+	{{weblog.content|raw}}	
+
+<span class="text-muted">Published <span itemprop="datePublished" content="{{weblog.date}}">{{weblog.date}}</span> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{weblog.first_name}} {{weblog.last_name}}</span></span></span>
+	</div>
+</div>
+
+<div class="card mb-4">
+<div class="card-body">
+ <h3 class="mb-4 pb-2">Other <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+<span itemprop="name">{{sitename}}</span></span> articles</h3>
+<ul class="list-unstyled">
+{% for randomblog in randomblogs %}
+<li class="text-lg"><a href="/blog-{{randomblog.id}}-{{randomblog.title|replace({' ':'-'})| url_encode(true)|lower}}/" data-bs-toggle="tooltip" title="read blog {{randomblog.title}}">{{randomblog.title|capitalize}}</a></li>
+{% endfor %}
+
+</ul>
+
+
+</div>
+
+</div>
+
+<!-- Comments-->
+   <div class="card mb-4">
+    <div class="card-body">
+            <div class="mb-4 mb-md-5" id="comments">
+              <h3 class="mb-4 pb-2">{{aantal_berichten}} comments</h3>
+              
+              {% if berichten|length < 1 %}
+              
+              <p>no comments on this article, or your comment is not yet approved!</p>
+              {% endif %}
+  
+              {% for bericht in berichten %}
+              <!-- Comment-->
+              <div class="pb-4">
+               <h4 class="mb-4 pb-2">{{bericht.titel|capitalize}}</h4>
+                <p>{{bericht.bericht}}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center pe-2"><img class="rounded-circle me-1" src="{{url}}/images/{% if bericht.icon != '' %}users/{{bericht.userid}}/{{bericht.icon}}{%else%}default-icon.jpg{%endif%}" width="48" alt="{{bericht.naam|capitalize}}">
+                    <div class="ps-2">
+                      <h6 class="fs-base mb-0">{{bericht.naam|capitalize}}</h6><span class="text-muted fs-sm">{{bericht.datum}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+		</div>
+</div>
+<!-- Comment form-->
+        <div class="card mb-4">
+          <div class="card-body">
+               {% include "backend/alert.twig" %}
+            <h3 class="mb-4 pb-sm-2">Comment on article</h3>
+            <form class="row gy-md-4 gy-3" action="/post-comment" method="POST" id="ajax-form">
+              {{ csrf() | raw }}
+            <input type="hidden" name="blog" value="{{weblog.id}}">
+              <div class="col-sm-6">
+                <label class="form-label" for="comment-name">Name</label>
+                <input class="form-control form-control-lg" type="text" name="name" id="comment-name" placeholder="Your name .." required>
+                <div class="invalid-feedback">Please enter your name.</div>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="comment-email">E-mail</label>
+                <input class="form-control form-control-lg" type="email" name="email" id="comment-email" placeholder="Your email adress.." required>
+                <div class="invalid-feedback">Please provide a valid email address.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="comment-titel">Title</label>
+                <input class="form-control form-control-lg" type="text" name="title" id="comment-titel" placeholder="The title of your comment.." required>
+                <div class="invalid-feedback">Vul een titel in voor je reactie</div>
+              </div>              
+              <div class="col-12">
+                <label class="form-label" for="comment-text">Comment</label>
+                <textarea class="form-control form-control-lg" name="message" id="comment-text" rows="4" placeholder="Your comment about this article.." required></textarea>
+                <div class="invalid-feedback">Please type your comment.</div>
+              </div>
+                <div class="col-lg-6 col-6">
+                                        <img src="{{captcha|raw}}" class="rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{trans('account.solve_sum_message')|capitalize}}!" width="168" height="37">
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('account.solve_sum')|capitalize}}..">
+                                    </div>
+              <div class="col-12 py-2">
+                <button class="btn btn-lg btn-primary" type="submit" id="submit-ajax">Post comment</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+</div>
+<div class="col-md-3 col-sm-12">
+<h4>Categories</h4>
+<ul class="list-unstyled">
+	{% for categorie in categorieen %}
+	<li><a href="/seo-blog/{{categorie.id}}-{{categorie.naam|replace({' ':'-'})}}/">{{categorie.naam|capitalize}}</a></li>
+    {% endfor %}
+</ul>
+
+<h4>Tags</h4>
+{% for tag in weblog.tags|split(',') %}
+<span class="badge bg-light-warning"><a href="{{locale_url}}/search/{{tag|replace({' ':'-'})}}/">{{tag}}</a></span>
+{% endfor %}
+
+<H4 class="mt-2">Share</H4>
+
+{{ include("frontend/snippets/social-media-share.twig", { url: url, path: path, keywords: weblog.tags}) }}                        
+    
+
+</div>
+			</div><!-- /. row -->
+</div>
+
+
+
+{% include "frontend/footer.twig" %}
+
+
+

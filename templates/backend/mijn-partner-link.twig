@@ -1,0 +1,72 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+    <h1 class="pt-4 pb-4">{{trans('backend.affiliate.affiliate_overview')|capitalize}}</h1>
+
+     
+{% include "backend/alert.twig" %}
+
+
+            <div class="card mb-3">
+            <div class="card-header"><h6>{{trans('backend.affiliate.affiliate_title')|capitalize}}<?</h6></div>
+            <div class="card-body">
+
+           <p>{{trans('backend.affiliate.affiliate_message')|capitalize}}.</p>
+
+            <div class="input-group mb-4">
+             <input type="text" class="form-control" name="partner-link" value="{{url}}/?utm_source={{code.code}}&utm_medium=partner-link&utm_campaign={{sitename|replace({' ':'_'})}}" readonly>
+            <button class="btn btn-icon"><i class="fas fa-copy fa-lg" data-bs-toggle="tooltip" title="copy this link to your clipboard?"></i></button><button class="btn btn-icon"><a href="https://wa.me?text=Earn%20money%20with%20SEO,%20sign-up%20today%20!%20Let%20us%20know%20what%20you%20think%20of%20our%20partner%20program?{{url}}%2F%3Futm_source%3D{{code.code}}%26utm_medium%3Dpartner-link%26utm_campaign%3D{{sitename|replace({' ':'_'})}}"><i class="fab fa-whatsapp fa-lg text-success"></i></a></button></div>
+ 
+            <h6>{{trans('backend.affiliate.below_statistics')|capitalize}}</h6>
+            <div class="row">
+            <div class="col-sm-6">
+             
+             <div class="card bg-info text-light">
+                    <div class="card-header bg-info text-light"><h5 class="text-light">{{trans('backend.affiliate.clicks')|capitalize}}</h5></div>
+                    <div class="card-body">{{trans('backend.affiliate.total_clicks_today')|capitalize}} <span class="fw-bolder">{{totalen.kliks}}</span></div>
+
+                    </div>
+            </div>
+            <div class="col-sm-6">
+             
+             <div class="card bg-info text-light">
+                    <div class="card-header bg-info text-light"><h5 class="text-light">{{trans('backend.affiliate.sales')|capitalize}}</h5></div>
+                    <div class="card-body">{{trans('backend.affiliate.total_sales_today')|capitalize}} <span class="fw-bolder">{{totalen.verkopen|default("0.00")}}</span></div>
+
+                    </div>
+                   </div>
+            </div>
+            <table class="table table-hover"> 
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{trans('backend.affiliate.link')}}</th>
+                <th>{{trans('backend.affiliate.time_date')}}</th>
+                <th>{{trans('backend.affiliate.referer')}}</th>
+                <th>{{trans('backend.affiliate.ipaddress')}}</th>  
+             </tr>
+            </thead>
+            <tbody>
+            {% if statistieken|length < 1 %}
+             <tr>
+                  <td colspan="5" class="text-center">{{trans('backend.affiliate.no_traffic',{sitename: sitename})|capitalize}}.</td>
+             </tr>
+            {% endif %}
+           {% if statistieken|length > 0 %}
+            {% for statistiek in statistieken %}
+              <tr>
+                <td>#</td>
+                <td>{{statistiek.link}}</td>
+                <td>{{statistiek.datum}}</td>
+                <td>{{statistiek.referal}}</td>
+                <td>{{statistiek.ipadres}}</td>
+             </tr>
+             {% endfor %}
+             {% endif %}
+            </tbody>
+    </table>
+
+        </div>
+      </div>
+            </div>
+{% include "frontend/footer.twig" %}

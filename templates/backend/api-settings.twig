@@ -1,0 +1,55 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+    <h1 class="pt-4 pb-4">{{trans('backend.settings.settings')|capitalize}}</h1>
+
+
+    {% include "backend/alert.twig" %}
+<div class="row mb-3">
+<div class="col-lg-6 col-md-12">
+     
+     <div class="card">
+         <div class="card-header"><h4>{{trans('backend.settings.api_settings')|capitalize}}</h4></div>
+     <div class="card-body">
+           <p>{{trans('backend.settings.api_message',{sitename: sitename})|capitalize}}.</p>
+
+    <form name="api-form" action="{{url}}/api-settings" id="ajax-form" method="POST" reload="true">
+
+     {{csrf() | raw }}
+
+    <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-md-3">{{trans('backend.settings.username')|capitalize}}</label>
+         <div class="col-md-9">
+         <input type="text" class="form-control" name="username" value="{{settings.username}}" placeholder="{{trans('backend.settings.username_text')|capitalize}} .." readonly>
+         </div>
+         </div>
+
+    <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-md-3">{{trans('backend.settings.password')|capitalize}}</label>
+         <div class="col-md-9">
+         <input type="text" class="form-control" name="ipaddress" value="{{settings.password}}" placeholder="{{trans('backend.settings.password_text')|capitalize}} .." readonly>
+         </div>
+         </div>
+
+
+    <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-md-3">{{trans('backend.settings.ipaddress')|capitalize}}</label>
+         <div class="col-md-9">
+         <input type="text" class="form-control" name="ipaddress" value="{{settings.ipaddress}}" placeholder="{{trans('backend.settings.ipaddress_text')|capitalize}} ..">
+         </div>
+         </div>
+          <button type="submit" class="btn btn-primary" id="submit-ajax">{{trans('backend.settings.save_settings')|capitalize}}</button>
+     </div>
+</form>
+    </div>
+
+</div>
+<div class="col-lg-6 col-md-12"><h1>{{trans('backend.settings.information')|capitalize}}</h1></div>
+</div>
+</div>
+
+
+</div>
+
+
+{% include "frontend/footer.twig" %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - {{sitename}} error page</title>
+    <link rel="shortcut icon" href="{{url}}/images/toetsmaken-icon.jpg" type="image/x-icon">
+    <link rel="icon" href="{{url}}/images/toetsmaken-icon.jpg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/cms/css/bootstrap.css">
+
+</head>
+<body>
+<div class="container fluid">
+        <div class="d-flex justify-content-center mt-5">
+        <figure class="figure">
+        <img class="figure-img img-fluid rounded" src="{{url}}/images/errors/error-500.png" alt="an error occured" style="width: 100%; height: auto;">
+          <figcaption class="figure-caption text-center">an error occured, this action is reported to the webmaster.</figcaption>
+         </figure>
+</div>
+
+           <div class="d-flex justify-content-center text-center mt-5">
+              <div class="col-md-6 col-sm-12">
+            <dl class="row">
+              <dt class="col-sm-3">message</dt><dd class="col-sm-9">{{message}}</dd>
+              <dt class="col-sm-3">line</dt><dd class="col-sm-9">{{line}}</dd>
+              <dt class="col-sm-3">code</dt><dd class="col-sm-9">{{code}}</dd>
+              <dt class="col-sm-3">file</dt><dd class="col-sm-9">{{file}}</dd>
+            </dl>
+          </div>
+    </div>
+</div>
+</body>
+</html>

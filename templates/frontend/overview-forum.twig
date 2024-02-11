@@ -1,0 +1,135 @@
+{% include "frontend/header.twig" %}
+
+{% include "frontend/svg/angle-right.twig" %}
+{% include "frontend/svg/comments-dotted.twig" %}
+{% include "frontend/svg/fa-eye.twig" %}
+{% include "frontend/svg/vote-yea.twig" %}
+<div class="container">
+
+<h1 class="pt-4 pb-4">{{sitename}} {{trans('forum.forum_overview')|capitalize}}</h1>
+
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{url}}">home</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="/forum">forum</a></li>
+    {% if category|length == 2 %}
+    <li class="breadcrumb-item" aria-current="page"><a href="/forum/{{category.name|replace({' ':'-'})}}/{{category.id}}/">{{category.name|lower}}</a></li>
+    {% endif %}
+  </ol>
+</nav>
+  
+
+      <div class="row">
+        <!-- Main content -->
+        <div class="col-md-6 mb-3">
+              <div class="dropdown bootstrap-select form-control form-control-lg bg-white bg-op-9 text-sm w-lg-50" style="width: 100%;">
+              <select class="form-control form-control-lg bg-white bg-op-9 text-sm w-lg-50" data-toggle="select" tabindex="-98" id="category">
+                <option value=""> {{trans('forum.select_category')}}</option>
+              {% for categorie in categories %}
+                <option value="{{categorie.id}}"{% if category.id == categorie.id %} selected{% endif %}>{{categorie.naam|capitalize}}</option>
+              {% endfor %}
+              </select>
+              </div>
+            </div>
+            <div class="col-md-6 text-lg-right mb-sm-3">
+              <div class="dropdown bootstrap-select form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50" style="width: 100%;">
+                  <select class="form-control form-control-lg bg-white bg-op-9 ml-auto text-sm w-lg-50" data-toggle="select" tabindex="-98" id="sortby">
+                    <option>{{trans('forum.filter_by')}}</option>
+                    <option value="votes"> {{trans('forum.votes')|capitalize}}</option>
+                    <option value="replies"> {{trans('forum.replies')|capitalize}}</option>
+                    <option value="views"> {{trans('forum.views')|capitalize}}</option>
+                  </select>
+              </div>
+          </div>
+</div>
+<div class="row">
+
+<div class="col-md-9 col-sm-12">
+<div class="card mb-3">
+<div class="card-body">
+{% for categorie in categories %}
+<h2  class="text-secondary">{{categorie.naam|capitalize}}</h2>
+{% if categorie.topics|length < 1 %}
+<p class="text-left">{{trans('forum.no_topics')|capitalize}}</p>
+{% endif %}
+
+{% if categorie.topics|length > 0 %}
+{% for topic in categorie.topics %}
+          <!-- End of post 1 -->
+          <div class="card py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
+            <div class="row text-left">
+              <div class="col-md-8 mb-3 mb-sm-0 position-relative">
+                <a href="/{{topic.title|replace({' ':'-'})|lower|url_encode(true)}}/topic-{{topic.id}}/"><h3 class="d-inline-block">{{topic.title|capitalize}}</h3></a>{% if topic.days < 2 %} <span class="badge bg-success position-absolute top-0 m-2">{{trans('forum.new')|capitalize}}</span>{% endif %} 
+
+                
+
+                <p class="small"><span>{{trans('forum.posted')|capitalize}}</span> <u>{{topic.date}}</u> <span>ago by</span> <i>{% if topic.forum_name %}{{topic.forum_name}}{%else%}{{topic.name}}{%endif%}</i></p>
+                <div class="small">search tags
+{% for tag in topic.tags|split(',') %}
+<a href="/search/{{tag|replace({' ':'-'})}}/" class="text-black mr-2">#{{tag}}</a>
+{% endfor %}
+              </div>
+            </div>
+              <div class="col-md-4">
+                <div class="row text-center small">
+                  <div class="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-muted" fill="fullColor"><use href="#vote-yea"></svg> <span class="d-block text-sm">{{topic.votes}} {{trans('forum.votes')|capitalize}}</span> </div>
+                  <div class="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-muted" fill="fullColor"><use href="#comments-dotted"></svg> <span class="d-block text-sm">{{topic.replies}} {{trans('forum.replies')|capitalize}}</span> </div>
+                  <div class="col"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16" height="16" class="bi text-muted" fill="fullColor"><use href="#fa-eye"></svg> <span class="d-block text-sm">{{topic.views}} {{trans('forum.views')|capitalize}}</span> </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /End of post 1 -->
+          {% endfor %}
+          {% endif %}
+          <span class="row text-end"><a href="/forum/{{categorie.naam|replace({' ':'-'})|lower}}/{{categorie.id}}/" class="link-secondary mb-3" title="read more in {{categorie.naam}}">{{trans('forum.more')|capitalize}} {{categorie.naam|lower}}</a></span>
+{% endfor %}
+</div>
+</div>
+</div>
+<div class="col-md-3 col-sm-12">
+
+<div class="card mb-3">
+  <a href="/ask-question" class="btn btn-success btn-lg" data-bs-toggle="tooltip" title="ask a question">{{trans('forum.ask_question')|capitalize}}</a>
+</div>
+
+
+<div class="card mb-3">
+<div class="card-body"><h3 class="card-title">{{trans('forum.latest_contributions')|capitalize}}</h3>
+{% for late in latest %}
+<span class="row d-flex"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-primary d-inline" fill="currentColor"><use href="#angle-right"></svg>  <a href="/{{late.title|replace({' ':'-','?':''})|lower|url_encode(true)}}/topic-{{late.id}}/" data-bs-toggle="tooltip" title="{{late.title}}">{{late.title|capitalize}}</a></span>
+<span class="row p-1"><small>by {{late.name}} in <i>{{late.categorie}}</i></small></span>
+{% endfor %}
+</div>
+</div>
+
+<div class="card mb-3">
+<div class="card-body"><h3 class="card-title">{{trans('forum.top_contributors')|capitalize}}</h3>
+{% for contributor in contributors %}
+<div class="row"> 
+
+   <div class="col-3">
+        <div class="d-flex justify-content-between align-items-center">
+           <div class="d-flex align-items-center"><img class="img-fluid img-thumbnail rounded" src="{{url}}/images/{% if contributor.icon != '' %}users/{{contributor.userid}}/{{contributor.icon}}{%else%}default-icon.jpg{%endif%}" alt="{{contributor.first_name|default('first name')}} {{contributor.last_name|default('lastname')}}" width="50" height="50">
+           </div>
+         </div>
+       </div>
+
+<div class="col-9">{{contributor.name|capitalize}} </div>
+</div>
+
+<div class="row p-1 text-end"><small>{{trans('forum.total_posts')}} <i>{{contributor.total}}</i></small></div>
+{% endfor %}
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+
+</div>
+{% include "frontend/footer.twig" %}

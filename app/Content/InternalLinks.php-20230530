@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @author Constan van Suchtelen van de Haere <constan@hostingbe.com>
+ * @copyright 2023 HostingBE
+ */
+
+namespace App\Content;
+
+class InternalLinks {
+
+protected $html;
+protected $keywords;
+protected $max = 3;
+
+public function __construct(string $html, array $keywords) {
+	$this->html = $html;
+	$this->keywords = $keywords;
+    }
+
+/**
+* parse the HTML and generate the links returning string of html
+*/
+public function generateLinks() :string {
+
+$counter = 0;
+
+$seen = array();
+
+//	$doc = new \DOMDocument();
+//	$doc->loadHTML($this->gethtml());
+//    $doc->removeChild($doc->doctype); 
+//	$xpath = new \DOMXPath($doc);
+
+foreach($this->adjustKeywords() as $row) {
+	
+	$doc = new \DOMDocument();
+	$doc->loadHTML($this->gethtml());
+    $doc->removeChild($doc->doctype); 
+	$xpath = new \DOMXPath($doc);
+
+
+    $replace = '<a href="'.$row['link'].'" class="link-primary" title="'.$row['keyword'].'">'.$row['keyword'].'</a>';
+	
+	if (isset($seen[$row['link']])) { continue; }
+	
+	// foreach ($xpath->query('//text()[not(ancestor::a)][(ancestor::p|ancestor::blockquote)]') as $text_node) { 
+	// print_r($text_node);  
+    foreach ($xpath->query('//text()[not(self::a)][(ancestor::p|ancestor::blockquote)]') as $text_node) { 
+      print_r($text_node);
+      $pos = strpos($text_node->nodeValue, $row['keyword']);
+      if ($pos !== false) {
+      $text_node->nodeValue = substr_replace($text_node->nodeValue, $replace, $pos, strlen($row['keyword']));
+      $seen[$row['link']] = 1;
+      $counter++;
+      }
+ }
+
+if ($counter >= $this->max) { break; }
+$content = $doc->saveHTML();
+$this->sethtml($content);
+}
+
+ 
+  
+print $this->gethtml();
+exit;  
+
+$content = str_replace('<html><body>', '', $content);
+$content = str_replace('</body></html>', '', $content);
+
+return html_entity_decode($content);
+}
+
+
+protected function sethtml($html) {
+	$this->html = $html;
+    }
+
+protected function gethtml() {
+	return $this->html;
+   }
+
+/**
+* @array keywords = array('keyword' => keyword, 'link'=> link) 
+*
+*/
+protected function adjustKeywords() :array {
+     $keywords = array();
+
+     foreach ($this->keywords as $keyword) {
+     		$a = explode(',',$keyword->tags);
+                 foreach ($a as $b) {
+                     $c = trim($b);
+                      $keywords[] = array('keyword' => $c, 'link' => $keyword->link);
+                 }
+            }
+  
+        return $keywords;
+        }
+  }
+
+?>

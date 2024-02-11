@@ -10,3 +10,5 @@ virtualmin-backup/
 .git/
 .bashrc
 .wget-hsts
+backup/
+templates_c/

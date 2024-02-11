@@ -1,0 +1,97 @@
+{% include "frontend/header.twig" %}
+
+
+<div class="container">
+<h1 class="pt-4 pb-4">Manager dashboard</h1>
+
+{% include "manager/manager-menu.twig" %}
+
+
+<div class="row">
+
+<div class="col">
+
+<div class="card">
+<div class="card-body">
+
+<table class="table table-hover">
+
+{% for search in searches %}
+<tr>
+<td>{{search.query}}</td>
+<td><a href="{{search.referer}}" target="_blank">{{search.referer}}</a></td>
+<td>{{search.date}}</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+
+</div>	
+
+</div>
+
+<div class="col">
+
+<div class="row">
+<div class="col-md-6">
+<div class="card bg-danger mb-3 text-white">
+<div class="card-header">Total users</div>
+<div class="card-body text-center">
+            <span class="display-3">{{totals.total_users}}</span>
+    </div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="card bg-danger mb-3 text-white">
+<div class="card-header">Users incomplete</div>
+<div class="card-body text-center">
+            <span class="display-3">{{totals.total_incomplete}}</span>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card bg-success mb-3 text-white">
+<div class="card-header">Blog comments</div>
+<div class="card-body text-center">
+            <span class="display-3">{{totals.total_blog_comments}}</span>
+    </div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="card bg-success mb-3 text-white">
+<div class="card-header">Support comments</div>
+<div class="card-body text-center">
+            <span class="display-3">{{totals.total_support_comments}}</span>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6">
+<div class="card bg-info mb-3 text-white">
+<div class="card-header">Forum topics</div>
+<div class="card-body text-center">
+            <span class="display-3">{{totals.total_forum}}</span>
+    </div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="card bg-info mb-3 text-white">
+<div class="card-header">Forum replies</div>
+<div class="card-body text-center">
+            <span class="display-3">{{totals.total_forum_reply}}</span>
+    </div>
+   </div>
+</div>
+   </div>
+</div>
+
+</div>
+</div>
+
+{% include "frontend/footer.twig" %}

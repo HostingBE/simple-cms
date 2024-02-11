@@ -1,0 +1,151 @@
+<script defer src="{{url}}/node_modules/jquery/dist/jquery.min.js"></script>
+<script defer src="{{url}}/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+{% if huidig in ['contact','create-account','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
+<script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
+{% endif %}
+
+
+{% if huidig in ['account-info','media-overzicht','ask'] %}
+<script defer src="{{url}}/node_modules/filepond/dist/filepond.min.js"></script>
+<script defer src="{{url}}/cms/js/upload-media.js"></script>
+
+<script>
+(function() {
+const cssMain = document.createElement('link');
+      cssMain.href = '{{url}}/node_modules/filepond/dist/filepond.min.css';
+      cssMain.rel = 'stylesheet';
+      cssMain.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(cssMain);
+})();
+</script>
+
+{% endif %}
+{% if huidig == "partner-link" %}
+<script defer src="{{url}}/cms/js/copy-clipboard.js"></script>
+{% endif %}
+{% if huidig in ['kanweg','bekijk-blog','view-support'] %}
+<script>
+(function() {
+const cssMain = document.createElement('link');
+      cssMain.href = '{{url}}/node_modules/prismjs/themes/prism-tomorrow.min.css';
+      cssMain.rel = 'stylesheet';
+      cssMain.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(cssMain);
+})();
+</script>
+
+<script defer src="{{url}}/node_modules/prismjs/prism.js"></script>
+{% endif %}
+
+{% if huidig in ["bekijk-blog","view-topic"] %}
+<script defer crossorigin="anonymous" src="https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v14.0" nonce="XzqtTNEI"></script>
+{% endif %}
+{% if huidig in ['account-info','manager-pagina-overzicht','todo-overview','media-overzicht','manager-blog-overzicht','manager-support-overzicht','manager-gebruikers-overzicht','manager-category-overview','manager-advertenties-overzicht'] %}
+<script defer src="{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+<script defer src="{{url}}/cms/js/sweet-alert.js"></script>
+{% endif %}
+{% if huidig in ['manager-blog-toevoegen','manager-blog-bewerken','manager-pagina-toevoegen','manager-pagina-bewerken'] %}
+<script defer src="{{url}}/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script defer src="{{url}}/cms/js/blog-toevoegen.js"></script>
+{% endif %}
+
+{% if huidig in ['manager-pagina-toevoegen','manager-pagina-bewerken','manager-support-toevoegen','manager-support-bewerken','manager-blog-toevoegen','manager-blog-bewerken'] and htmleditor == "on" %}
+<script src="{{url}}/node_modules/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="{{url}}/node_modules/tinymce/plugins/image/plugin.min.js"></script>
+<script type="text/javascript" src="{{url}}/node_modules/tinymce/plugins/link/plugin.min.js"></script>
+<script>
+  const example_image_upload_handler = (blobInfo, progress) => new Promise((resolve, reject) => {
+  
+  const xhr = new XMLHttpRequest();
+  xhr.withCredentials = false;
+  xhr.open('POST', '{{url}}/manager/upload-image');
+
+  xhr.upload.onprogress = (e) => {
+    progress(e.loaded / e.total * 100);
+  };
+
+  xhr.onload = () => {
+    if (xhr.status === 403) {
+      reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
+      return;
+    }
+
+    if (xhr.status < 200 || xhr.status >= 300) {
+      reject('HTTP Error: ' + xhr.status);
+      return;
+    }
+
+    const json = JSON.parse(xhr.responseText);
+
+    if (!json || typeof json.location != 'string') {
+      reject('Invalid JSON: ' + xhr.responseText);
+      return;
+    }
+
+    resolve(json.location);
+  };
+
+  xhr.onerror = () => {
+    reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+  };
+
+  const formData = new FormData();
+  formData.append('file', blobInfo.blob(), blobInfo.filename());
+  formData.append('csrf_name', $('input[name="csrf_name"]').val());
+  formData.append('csrf_value', $('input[name="csrf_value"]').val());
+  console.log('Upload csrfName' + $('input[name="csrf_name"]').val() + " value " + $('input[name="csrf_value"]').val() + ' voor bestand ' + blobInfo.filename());
+  xhr.send(formData);
+});
+
+
+
+tinymce.init({
+  selector: 'textarea#textarea-input',
+  images_upload_handler: example_image_upload_handler,  
+      setup: function (editor) {
+        editor.on('change', function () {
+            tinymce.triggerSave();
+        });
+    },
+  height: 500,
+  relative_urls : false,
+  remove_script_host : false,
+  document_base_url : '{{url}}',
+  images_upload_url: '{{url}}/manager/upload-image',
+  extended_valid_elements: "img[class=img-fluid rounded|src|border=0|alt|title|hspace|vspace|align|onmouseover|onmouseout|name],h1[class=pt-2 pb-2|id]",
+  plugins: [
+    'link','image', 'wordcount','code','codesample','media','preview'
+  ],
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | preview link image media code codesample'
+});
+</script>
+{% endif %}
+{% if huidig == "bekijk-logging" %}
+<script defer src="{{url}}/cms/js/bekijk-logging.js"></script>
+{% endif %}
+{% if huidig in ['blog','category-blog','blog-search'] %}
+<script defer src="{{url}}/cms/js/blog-overview.js"></script>
+{% endif %}
+{% if huidig == 'media-overzicht' %}
+    <script defer src="{{url}}/cms/js/media-overview.js"></script>
+{% endif %}
+{% if huidig == "view-topic" %}
+<script defer src="{{url}}/cms/js/view-topic.js"></script>
+{% endif %}
+{% if huidig == "ask" %}
+<script defer src="{{url}}/cms/js/ask-question.js"></script>
+{% endif %}
+{% if huidig in ['forum-overview','overview-forum-category'] %}
+<script defer src="{{url}}/cms/js/forum-overview.js"></script>
+{% endif %}
+{% if huidig in ['view-support'] %}
+<script defer src="{{url}}/cms/js/support-view.js"></script>
+{% endif %}
+<script defer src="{{url}}/cms/js/search-overview.min.js"></script>
+<script defer src="{{url}}/cms/js/cms-hostingbe.min.js"></script>
+<script defer src="{{url}}/node_modules/bootstrap-cookie-consent-settings/src/bootstrap-cookie-consent-settings.js"></script>
+<script defer src="{{url}}/cms/js/cookie-consent.min.js"></script>
+{% if advertenties == "on" %}
+<script defer src="{{url}}/cms/js/ads.min.js"></script>
+{% endif %}

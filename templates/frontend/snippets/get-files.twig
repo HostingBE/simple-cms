@@ -1,0 +1,15 @@
+<h6>Files overview</h6>
+{% if files|length < 1 %}
+no files uploaded yet!
+{% endif %}
+{% if files|length > 0 %}
+<ul class="list-unstyled">
+{% for file in files %}
+<li><a href="#" class="link-default" data-filename="{{file}}"><i class="fas fa-close text-danger fa-lg"></i></a> {{file}}</li>
+
+{% endfor %}
+</ul>
+
+<a href="/topic-delete-all" data-bs-toggle="tooltip" title="delete all uploaded files!">delete all files</a>
+
+{% endif %}

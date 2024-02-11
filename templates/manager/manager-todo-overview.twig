@@ -1,0 +1,75 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+<h1 class="pt-4 pb-4">Todo website overview</h1>
+
+
+{% include "manager/manager-menu.twig" %} 
+
+
+       {% include "backend/alert.twig" %} 
+        
+<form name="todo" action="/manage/toevoegen-todo" method="POST">
+{{ csrf() | raw }}
+<div class="row mb-2">
+<div class="col">Voeg een todo toe</div>
+<div class="col"><input type="text" name="ap-todo" class="form-control" value=""></div>
+<div class="col"><select name="ap-categorie" class="form-control">
+   {% for cat in categorie %}
+    <option value="{{cat.id}}"{% if todo.categorie == cat.id %} selected{% endif %}>{{cat.naam}}</option>
+  {% endfor %}
+</select></div>
+<div class="col"><select name="ap-status" class="form-control">
+<option value="o">open</option>
+<option value="c">closed</option>
+</select></div>
+<div class="col"><button class="btn btn-success" type="submit">toevoegen</button></div>
+</div>
+
+</form>
+
+
+<div class="row">
+<div class="card mb-3">
+<div class="card-body">
+<table class="table dark">
+<tr>
+<th>#</th>
+<th class="text-center">categorie</th>
+<th>todo</th>
+<th>status</th>
+<th>datum</th>
+<th class="text-center">beheer</th>
+</tr>
+
+{% if todos|length < 1 %}
+<tr>
+		<td colspan="5" class="text-center">Er zijn nog geen todo's beschikbaar</td>
+</tr>
+{% endif %}
+
+{% if todos|length > 0 %}
+{% for todo in todos %}
+<tr>
+<td>#</td>
+<td class="text-center"><span class="badge bg-{% if todo.categorie_naam == "blog" %}accent{% endif %}{% if todo.categorie_naam == "feature" %}warning{% endif %}{% if todo.categorie_naam == "bug" %}danger{% endif %}">{{todo.categorie_naam}}</span></td>
+<td>{{todo.todo|capitalize}}</td>
+<td>{% if todo.status == "o" %}open{% endif %}{% if todo.status == "c" %}closed{% endif %}</td>
+<td>{{todo.datum}}</td>
+<td class="text-center"><a href="/manager/todo-bewerken/{{todo.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="/verwijder-manager-todo/{{todo.id}}/" data-url="/verwijder-manager-todo/{{todo.id}}/" class="btn btn-danger btn-sm">verwijder</a></td>
+
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+
+
+{% include "frontend/footer.twig" %}

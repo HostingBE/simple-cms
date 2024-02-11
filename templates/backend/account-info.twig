@@ -1,0 +1,108 @@
+{% include "frontend/header.twig" %}
+
+
+<div class="container">
+    <h1 class="pt-4 pb-4">{{trans('backend.account.account_info')|capitalize}}</h1>
+
+        <div class="row">
+     
+{% include "backend/alert.twig" %}
+
+            <div class="col-lg-6 col-md-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h4 class="card-title">{{trans('backend.account.account_information')|capitalize}}</h4>
+                    </div>
+
+                    <div class="card-body">
+                          <form name="account" action="{{url}}/my-account" method="POST" reload="true">
+
+                            {{ csrf() | raw }}
+                                <p>{{trans('backend.account.message')}}</p>
+                                <div class="form-group row align-items-center p-2">
+                                    <div class="col-lg-4 col-3">
+                                        <label class="col-form-label">{{trans('backend.account.first_name')}}</label>
+                                    </div>
+                                    <div class="col-lg-8 col-9">
+                                        <input type="text" id="first-name" class="form-control" name="first_name" placeholder="{{trans('backend.account.first_name')}}" value="{{user.first_name}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-center p-2">
+                                    <div class="col-lg-4 col-3">
+                                        <label class="col-form-label">{{trans('backend.account.last_name')}}</label>
+                                    </div>
+                                    <div class="col-lg-8 col-9">
+                                        <input type="text" id="last-name" class="form-control" name="last_name" placeholder="{{trans('backend.account.last_name')}}" value="{{user.last_name}}">
+                                    </div>
+                            </div>
+                                  <div class="form-group row align-items-center p-2">
+                                    <div class="col-lg-4 col-3">
+                                        <label class="col-form-label">{{trans('backend.account.email_address')}}</label>
+                                    </div>
+                                    <div class="col-lg-8 col-9">
+                                        <input type="text" id="email" class="form-control" name="email" placeholder="{{trans('backend.account.email_address')}}" value="{{user.email}}">
+                                    </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary p-2">{{trans('backend.account.save')}}</button>
+                            </form>
+                          </div>
+                    </div>
+
+                 <div class="card mb-3">
+           <div class="card-header"><h5 class="card-title">{{trans('backend.account.login_data')}}</h5></div>
+                    <div class="card-body">
+                        <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <thead> 
+                            <tr>    
+                                <th>{{trans('backend.account.device')}}</th>
+                                <th>{{trans('backend.account.hostname')}}</th>
+                                <th>{{trans('backend.account.city')}}</th>
+                                <th>{{trans('backend.account.country')}}</th>
+                                <th>{{trans('backend.account.date')}}</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+
+                   {% for login in logins %}
+                   <tr>
+                        <td>{{login.apparaat}}</td>
+                        <td>{{login.hostname}}</td>
+                        <td>{{login.plaats}}</td>
+                        <td>{{login.land}}</td>
+                        <td>{{login.datum}}</td>
+                    </tr>
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+                 </div>
+               </div>
+
+                    <div class="card mb-3">
+                    <div class="card-header"><h5 class="card-title">{{trans('backend.account.permanent_delete')|capitalize}}</h5></div>
+                    <div class="card-body">
+                    <p>{{trans('backend.account.permanent_message')}}</p>
+                    <a ref="/delete-account" type="button" data-url="{{url}}/delete-account" data-reload="true" class="btn btn-danger btn-sm">{{trans('backend.account.delete_account')}}</a></div>
+                    </div>
+                </div>
+          <div class="col-lg-6 col-md-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">{{trans('backend.account.upload_icon')|capitalize}}</h5>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <p class="card-text">{{trans('backend.account.icon_message')}}.</p>
+                            <p><img class="img-thumbnail rounded" src="{{url}}/images/{% if user.icon|length > 2 %}users/{{user.id}}/{{user.icon}}{%else%}default-icon.jpg{% endif %}" alt="{{user.firt_name}} {{user.last_name}}" style="width: 200px; height=200px;"></p>
+
+                            <!-- Basic file uploader -->
+                            <input type="file" name="file" class="basic-filepond" id="fileuploader" data-url="{{url}}/upload-icon">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% include "frontend/footer.twig" %}

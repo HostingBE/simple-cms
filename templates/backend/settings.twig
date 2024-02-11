@@ -1,0 +1,75 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+    <h1 class="pt-4 pb-4">{{trans('backend.settings.settings')|capitalize}}</h1>
+
+
+    {% include "backend/alert.twig" %}
+<div class="row mb-3">
+<div class="col-lg-6 col-md-12">
+	<div class="card mb-3">
+	    <div class="card-header"><h4>{{trans('backend.settings.settings_account')|capitalize}}</h4></div>
+       
+
+		<div class="card-body">
+         <p>{{trans('backend.settings.settings_message',{sitename: sitename})|capitalize}}.</p>
+
+    <form name="ajax-form" action="{{url}}/settings" id="ajax-form" method="POST">
+
+     {{csrf() | raw }}
+		<div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-3">{{trans('backend.settings.email')|capitalize}}</label>
+         <div class="col-9">
+         <input type="email" class="form-control" name="email" value="{{settings.email}}" placeholder="{{trans('backend.settings.email_text')|capitalize}} ..">
+         </div>
+         </div>
+      <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-3">{{trans('backend.settings.language')|capitalize}}</label>
+         <div class="col-9">
+         <select name="language" class="form-control">
+         <option value="en"{% if settings.language ==  "en" %} selected{% endif %}>English</option>
+         <option value="nl"{% if settings.language ==  "nl" %} selected{% endif %}>Dutch</option>
+         </select>
+         </div>
+         </div>     
+
+          <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-3">{{trans('backend.settings.forum_name')|capitalize}}</label>
+         <div class="col-9">
+         <input type="text" class="form-control" name="forum_name" value="{{settings.forum_name}}" placeholder="{{trans('backend.settings.forum_name_text')|capitalize}} ..">
+         </div>
+         </div>          
+
+
+         <h4>{{trans('backend.settings.pushover')|capitalize}}</h4>
+         <p>{{trans('backend.settings.pushover_message')|capitalize}}</p>
+    <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-md-3">{{trans('backend.settings.application')|capitalize}}</label>
+         <div class="col-md-9">
+         <input type="email" class="form-control" name="application" value="{{settings.pushover_app}}" placeholder="{{trans('backend.settings.application_text')|capitalize}} ..">
+         </div>
+         </div>
+    <div class="row form-group align-items-center mb-2">
+         <label class="col-form-label col-md-3">{{trans('backend.settings.recipient')|capitalize}}</label>
+         <div class="col-md-9">
+         <input type="email" class="form-control" name="recipient" value="{{settings.pushover_recipient}}" placeholder="{{trans('backend.settings.recipient_text')|capitalize}} ..">
+         </div>
+         </div>         
+         <button type="submit" class="btn btn-primary" id="submit-ajax">{{trans('backend.settings.save_settings')|capitalize}}</button>
+        </form>
+        </div>
+
+
+</div>
+     </div>
+<div class="col-lg-6 col-md-12"><h1>{{trans('backend.settings.information')|capitalize}}</h1></div>
+</div>
+
+</div>
+</div>
+
+
+</div>
+
+
+{% include "frontend/footer.twig" %}

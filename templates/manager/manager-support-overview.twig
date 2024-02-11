@@ -1,0 +1,59 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+
+        <h1 class="pt-4 pb-4">Manager support overzicht</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %} 
+</div>
+        
+<div class="row">
+       {% include "backend/alert.twig" %} 
+
+<div class="card mb-3">
+<div class="card-body">
+<table class="table dark">
+<tr>
+<th>#</th>
+<th>naam</th>
+<th>titel</th>
+<th>meta description</th>
+<th>meta keywords</th>
+<th>datum</th>
+<th class="text-center">beheer</th>
+</tr>
+
+{% if artikelen|length < 1 %}
+<tr>
+		<td colspan="7" class="text-center">Er zijn nog geen support pagina's beschikbaar</td>
+</tr>
+{% endif %}
+
+{% if artikelen|length > 0 %}
+{% for artikel in artikelen %}
+<tr>
+<td>..</td>
+<td>{{artikel.naam}}</td>
+<td>{{artikel.titel}}</td>
+<td class="text-center"><span class="badge bg-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta description" data-bs-content="{{artikel.description}}">{{artikel.description|length}}</span></td>
+<td class="text-center"><span class="badge bg-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta keywords" data-bs-content="{{artikel.keywords}}">{{artikel.keywords|length}}</span></td>
+<td>{{artikel.datum}}</td>
+<td class="text-center"><a href="/manager/support-bewerken/{{artikel.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="/manager/verwijder-support/{{artikel.id}}/" class="btn btn-danger btn-sm" data-url="/manager/verwijder-support/{{artikel.id}}/">verwijder</a></td>
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+      </div>
+
+
+{% include "frontend/footer.twig" %}

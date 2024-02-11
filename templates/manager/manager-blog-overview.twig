@@ -1,0 +1,67 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="pt-4 pb-4">Manager blog overzicht</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+
+
+       {% include "backend/alert.twig" %} 
+
+<div class="card mb-3">
+      <div class="card-body">
+
+<table class="table dark">
+<tr>
+<th>#</th>
+<th class="text-center">categorie</th>
+<th>titel</th>
+<th>tags</th>
+<th class="text-center">publish</th>
+<th class="text-center">reacties</th>
+<th>datum</th>
+<th class="text-center">beheer</th>
+</tr>
+
+{% if blogs|length < 1 %}
+<tr>
+		<td colspan="6" class="text-center">Er zijn nog geen blogs beschikbaar</td>
+</tr>
+{% endif %}
+
+{% if blogs|length > 0 %}
+{% for blog in blogs %}
+<tr>
+<td>#</td>
+<td >{{blog.categorie_naam}}</td>
+<td>{{blog.title|capitalize}}</td>
+<td>{{blog.tags}}</td>
+<td class="text-center">{{blog.publish}}</td>
+<td class="text-center">{{blog.reacties}}</td>
+<td>{{blog.date}}</td>
+<td class="text-center"><a href="/manager/blog-bewerken/{{blog.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="/manager/verwijder-blog/{{blog.id}}/" class="btn btn-danger btn-sm" data-url="/manager/verwijder-blog/{{blog.id}}/">verwijder</a></td>
+
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

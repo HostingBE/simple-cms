@@ -1,5 +1,5 @@
 <?php
 
-echo "test bestand";
+require __DIR__ . '/../bootstrap/app.php';
 
 ?>

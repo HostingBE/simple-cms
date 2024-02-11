@@ -1,0 +1,66 @@
+// custom variables
+
+
+.callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+  h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+  code {
+    border-radius: 3px;
+  }
+  & + .bs-callout {
+    margin-top: -5px;
+  }
+}
+@each $name,$color in (default,#777),(primary,#606060),(secondary,#D6ED17),(success,#5cb85c),(danger,#d9534f),(warning,#f0ad4e),(info,#5bc0de), (bdc,#29527a) {
+  .callout-#{$name} {
+    border-left-color: $color;
+    h4 {
+      color: $color;
+    }
+  }
+}
+
+$primary: #233147;
+$secondary: #65a7ed;
+$red: #ff0000;
+$light: #FDE3D3;
+$min-contrast-ratio: 0;
+$headings-font-family: Oswald;
+$body-bg: #E3E1D2;
+
+@import '../../public_html/node_modules/bootstrap/scss/_functions';
+@import '../../public_html/node_modules/bootstrap/scss/_variables';
+
+$custom-theme-colors: (
+"hb-blue-light": #01B9FF,
+"hb-blue-dark":  #233147,
+"hb-orange": #FF9900,
+"hb-grey":  #62686C
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+
+
+
+// importing bootstrap
+@import '../../public_html/node_modules/bootstrap/scss/bootstrap';
+
+:root {
+--bs-body-font-family: 'Roboto Condensed';
+}
+
+
+
+
+

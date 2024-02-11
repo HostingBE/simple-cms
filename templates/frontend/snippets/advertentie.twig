@@ -1,0 +1,15 @@
+{% if advertentie.soort == "text" %}
+{% set colors = ['primary','secondary','success','info'] %}
+
+<div class="card mb-3 bg-{{random(colors)}} bg-opacity-50">
+	<div class="card-header"><h4>{{advertentie.titel|capitalize}}</h4></div>
+	<div class="card-body">{{advertentie.omschrijving}}</div>
+	<div class="card-footer"><a href="{{url}}/outgoing-link/{{advertentie.id}}/{{advertentie.code}}/" target="_blank">ga naar</a></div>
+</div>
+{% endif %}
+
+{% if advertentie.soort == "script" %}
+<div class="mb-3">
+{{advertentie.script|raw}}
+</div>
+{% endif %}

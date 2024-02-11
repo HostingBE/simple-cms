@@ -1,0 +1,85 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+<div class="row pt-4 pb-4">
+
+{% include "backend/alert.twig" %}
+
+<div class="col-md-9">
+
+<div class="card">
+<div class="card-header"><h4>{{trans('contact.contact_us_at')|capitalize}} {{sitename}}</h4></div>
+<div class="card-body">
+
+<form name="contact" action="/contact-form" id="ajax-form" method="POST"> 
+{{ csrf() | raw }}
+<div class="row mb-3">
+<label class="col-md-3" for="company">{{trans('contact.company')|capitalize}}</label>
+<div class="col-md-9">
+<input type="text" class="form-control" name="company" placeholder="{{trans('contact.company_text')}} ..">
+   </div>
+</div>
+<div class="row mb-3">
+<label class="col-md-3" for="name">{{trans('contact.name')|capitalize}}</label>
+<div class="col-md-9">
+<input type="text" class="form-control" name="name" placeholder="{{trans('contact.name_text')}} ..">
+   </div>
+</div>
+<div class="row mb-3">
+<label class="col-md-3" for="email">{{trans('contact.email')|capitalize}}</label>
+<div class="col-md-9">
+<input type="text" class="form-control" name="email" placeholder="{{trans('contact.email_text')}} ..">
+   </div>
+</div>
+
+<div class="row mb-3">
+<label class="col-md-3" for="subject">{{trans('contact.subject')|capitalize}}</label>
+<div class="col-md-9">
+<input type="text" class="form-control" name="subject" placeholder="{{trans('contact.subject_text')}} ..">
+   </div>
+</div>
+
+<div class="row mb-3">
+<label class="col-md-3" for="message">{{trans('contact.message')|capitalize}}</label>
+<div class="col-md-9">
+<textarea name="message" class="form-control" cols="60" rows="10" placeholder="{{trans('contact.message_text')}} .. "></textarea>
+  </div>
+</div>
+
+                                    <div class="row mb-3">
+                                    <div class="col-lg-6 col-6">
+                                        <img src="{{captcha|raw}}" class="rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{trans('contact.solve_sum_text')}}" width="168" height="37"> <a href='#!'>refresh</a>
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('contact.solve_sum')}}..">
+                                    </div>
+                                </div>
+
+<button  type="submit" class="btn btn-primary" id="submit-ajax">{{trans('contact.send_form')|capitalize}}</button>
+</form>
+		</div>
+     </div>
+</div>
+<div class="col-md-3"><h5>{{trans('contact.contact')|capitalize}} {{sitename}}</h5>
+<p>{{trans('contact.contact_message')}}.</p>
+         
+          <address>
+            <ul class="list-unstyled">
+            <li>{{sitename}}</li>
+            <li>{{company.address|capitalize}}</li>
+            <li>{{company.zipcode|upper}} {{company.city|upper}}</li>
+            <li>{{company.country|capitalize}}</li>
+            <li>{{trans('contact.coc_number')|capitalize}}: {{company.coc|upper}}</li>
+            <li>{{trans('contact.vat_number')|capitalize}}: {{company.vat|upper}}</li>
+            <li>IBAN: {{company.iban|upper}}</li>
+            <li><a href="{{locale_url}}/contact-form" data-bs-toggle="tooltip" title="{{trans('contact.contact')|capitalize}} {{sitename}} {{trans('contact.via_email')}}">{{trans('contact.contact_form')|capitalize}}</a></li>
+            </ul>
+            </address>
+</div>
+		</div>
+
+</div>
+</div>
+</div>
+
+{% include "frontend/footer.twig" %}

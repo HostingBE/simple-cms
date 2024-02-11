@@ -1,0 +1,64 @@
+
+
+        <div class="container-fluid bg-primary h-100 p-2">
+        <div class="container-xl text-light">
+           <div class="row">
+           	<div class="col-md-4 col-sm-12 mb-3">
+            
+            {% for key, value in footerlinks %}
+             <h4 class="text-white">{{key|capitalize}}</h4>
+            <ul class="list-unstyled">
+            {% for link in value %}
+            <li><a class="link-secondary" href="{{link.url}}" data-bs-toggle="tooltip" title="{{link.title}}">{{link.name|capitalize}}</a></li>
+            {% endfor %}
+            </ul>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 col-sm-12 mb-3"><h4 class="text-white">Cookie</h4>
+        <ul class="list-unstyled">
+            <li><a class="link-secondary" href="#" data-bs-toggle="tooltip" title="change your cookie consent" id="cookieconsent">Cookie consent</a></li>
+        </ul>
+        {% if multilanguage == "on" %}
+        <div class="btn-group" role="group" id="btngroup">
+        <a href="{{url}}/en" class="btn btn-primary btn-sm"><img src="{{url}}/images/en.jpg" width="42" height="22" alt="English" /></a>
+        <a href="{{url}}" class="btn btn-primary btn-sm"><img src="{{url}}/images/nl.jpg" width="42" height="22" alt="Nederlands" /></a>
+        <a href="{{url}}/de" class="btn btn-primary btn-sm"><img src="{{url}}/images/de.jpg" width="42" height="22" alt="Deutsch" /></a>
+        </div>
+        {% endif %}
+
+        </div>
+        <div class="col-md-4 col-sm-12 mb-3"><h4 class="text-white">{{ trans('footer.blog_articles')|capitalize }}</h4>
+        {% if footer_blogs|length == 0 %}
+        <p>{{trans('footer.no_articles')}}</p>
+        {% endif %}
+        
+        {% if footer_blogs|length != 0 %}
+        {% for blog in footer_blogs %}
+            <article class="d-flex align-items-start text-light"><img class="img img-fluid rounded p-2" loading="eager" src="{{url}}/uploads/{% if blog.media %}{{blog.imagename}}-200.webp{%else%}/images/default-image.jpg{% endif %}" width="200" height="125" alt="{{blog.alt}}">
+              <div>
+                <h5 class="mb-2"><a class="nav-link text-light" href="/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" data-bs-toggle="tooltip" title="read {{blog.title}} article"> {{blog.title|capitalize}}</a></h5> in {{blog.categorienaam|capitalize}}
+                <p class="mb-2">{{blog.content|striptags}}..</p> 
+                <span class="fs-6 text-light">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-light mb-1" fill="currentColor"><path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z"/></svg> {{blog.datum}}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-light mb-1" fill="currentColor"><path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"/></svg> {{blog.reacties}} {{trans('footer.comments')}}</span>
+              </div>
+            </article>
+            <hr class="text-dark opacity-10 my-4">
+            {% endfor %}  
+            {% endif %}
+            </div>
+       </div>
+    </div>
+</div>
+        <div class="container-fluid bg-dark text-white">
+            <div class="row p-3">
+                <div class="col-md-6 col-sm-12">
+                    <p>2022 &copy; HostingBe.com CMS {{ trans('footer.version') }} {{version}} <img class="img-thumbnail" src="{{url}}/images/icon-hostingbe.png" style="width: 40px; height: 40px;" alt="hostingbe.com owner of {{sitename}}"></p>
+                </div>
+                <div class="col-md-6 col-sm-12 text-end">Powered by <a href="https://getbootstrap.com" class="link-light" title="download bootstrap a HTML, JS, CSS framework">Bootstrap</a> 5 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="24" height="24" class="bi text-light" fill="currentColor"><path d="M333.5,201.4c0-22.1-15.6-34.3-43-34.3h-50.4v71.2h42.5C315.4,238.2,333.5,225,333.5,201.4z M517,188.6 c-9.5-30.9-10.9-68.8-9.8-98.1c1.1-30.5-22.7-58.5-54.7-58.5H123.7c-32.1,0-55.8,28.1-54.7,58.5c1,29.3-0.3,67.2-9.8,98.1 c-9.6,31-25.7,50.6-52.2,53.1v28.5c26.4,2.5,42.6,22.1,52.2,53.1c9.5,30.9,10.9,68.8,9.8,98.1c-1.1,30.5,22.7,58.5,54.7,58.5h328.7 c32.1,0,55.8-28.1,54.7-58.5c-1-29.3,0.3-67.2,9.8-98.1c9.6-31,25.7-50.6,52.1-53.1v-28.5C542.7,239.2,526.5,219.6,517,188.6z M300.2,375.1h-97.9V136.8h97.4c43.3,0,71.7,23.4,71.7,59.4c0,25.3-19.1,47.9-43.5,51.8v1.3c33.2,3.6,55.5,26.6,55.5,58.3 C383.4,349.7,352.1,375.1,300.2,375.1z M290.2,266.4h-50.1v78.4h52.3c34.2,0,52.3-13.7,52.3-39.5 C344.7,279.6,326.1,266.4,290.2,266.4z"/></svg></div>
+                </div>
+            </div>
+      </div>
+{% include "frontend/javascripts.twig" %}
+</body>
+</html>

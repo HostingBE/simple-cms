@@ -1,0 +1,102 @@
+{% include "frontend/header.twig" %}
+
+
+<div class="container">
+
+	<h1 class="pt-4 pb-4">Links overview</h1>
+
+<div class="row mb-4">
+{% include "manager/manager-menu.twig" %}
+</div>
+
+{% include "backend/alert.twig" %}
+
+<div class="row">
+<div class="col-sm-6">
+
+<div class="card mb-3">
+<div class="card-body">
+<h2>Overview links</h2>
+
+<form name="delete" action="/manager/delete-links" method="POST">
+	{{ csrf()|raw }}
+<table class="table table-hover">
+<thead>
+   <tr>
+   	    <th>#</th>
+        <th>title</th>
+        <th>url</th>
+        <th>menu</th>
+   </tr>     
+</thead>
+<tbody>
+{% for link in links %}
+<tr>
+	<td class="text-center"><div class="form-check">
+  <input type="checkbox" class="form-check-input" name="id[]" value="{{link.id}}"></td>
+</div></td>
+	<td>{{link.title}}</td>
+	<td><a href="{{link.url}}" target="_blank" data-bs-toggle="tooltip" title="{{link.title}}">{{link.url}}</a></td>
+    <td>{{link.category_name}}</td>
+</tr>
+{{link.url}}
+{% endfor %}	
+
+</tbody>
+</table>
+<button class="btn btn-success btn-sm">delete links</button>
+</form>
+</div>
+
+</div>
+
+
+</div>
+
+<div class="col-sm-6">
+
+<div class="card mb-3">
+<div class="card-body">
+
+<form name="add_link" action="/manager/add-link" method="POST" id="ajax-form" data-reload="true">
+  {{ csrf() | raw }}
+
+<div class="mb-3">
+  <label for="text-input" class="form-label">Naam</label>
+  <input class="form-control" type="text" name="name" value="" placeholder="name of link ..">
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">Title</label>
+  <input class="form-control" type="text" name="title" value="" placeholder="title of link ..">
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">URL</label>
+  <input class="form-control" type="text" name="url" value="" placeholder="URL of link ..">
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">Menu place</label>
+<select class="form-control" name="category">
+{% for categorie in categories %}
+<option value="{{categorie.id}}">{{categorie.naam}}</option>
+{% endfor %}
+</select>
+</div>
+
+  <button class="btn btn-primary" type="submit" id="submit-ajax">ADD link</button>
+</form>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

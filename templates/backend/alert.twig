@@ -1,0 +1,43 @@
+<div class="alert alert-danger d-none"></div>
+<div class="alert alert-warning d-none"></div>
+<div class="alert alert-success d-none"></div>
+<div class="alert alert-primary d-none"></div>
+<div class="alert alert-info d-none"></div>
+
+
+{% if status != "" %}
+
+<div class="alert bg-primary text-white">
+{{ status }}
+</div>
+
+{% endif %}
+
+
+{% if success != "" %}
+<div class="alert alert-success">
+{{ success }}
+</div>
+
+{% endif %}
+
+{% if errors != "" %}
+
+{% if errors is iterable %}
+
+{% for key, value in errors %}
+   <div class="alert alert-danger">{{ value|first }}</div>
+    {% endfor %}    
+    
+{% else %}
+ <div class="alert alert-danger">{{ errors }} </div>
+
+{% endif %}
+{% endif %}
+{% if info != "" %}
+
+<div class="alert alert-info">
+ {{ info }}
+</div>
+
+{% endif %}

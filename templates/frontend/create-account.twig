@@ -1,0 +1,78 @@
+{% include "frontend/header.twig"  %}
+
+<div class="container">
+<div class="row pt-4 pb-4">
+
+{% include "backend/alert.twig" %}
+
+
+<div class="col-md-6 col-sm-12">
+
+
+            <h1>{{trans('account.register_free')|capitalize}}!</h1>
+
+            <form name="register" id="ajax-form" action="{{url}}/create-account" method="POST">
+                    {{ csrf() | raw }}            
+                                <div class="card mb-3">
+                                <div class="card-body">
+                                <div class="form-group row align-items-center p-2">
+                                    <div class="col-lg-3 col-4">
+                                        <label class="col-form-label">{{trans('account.first_name')|capitalize}}</label>
+                                    </div>
+                                    <div class="col-lg-9 col-8">
+                                        <input type="text" id="first-name" class="form-control" name="first_name" placeholder="{{trans('account.first_name_text')|capitalize}}">
+                                    </div>
+                                </div>
+                                <div class="form-group row align-items-center p-2">
+                                    <div class="col-lg-3 col-4">
+                                        <label class="col-form-label">{{trans('account.last_name')|capitalize}}</label>
+                                    </div>
+                                    <div class="col-lg-9 col-8">
+                                        <input type="text" id="last-name" class="form-control" name="last_name" placeholder="{{trans('account.last_name_text')|capitalize}}">
+                                    </div>
+                                </div>
+                                       <div class="form-group row align-items-center p-2">
+                                    <div class="col-lg-3 col-4">
+                                        <label class="col-form-label">{{trans('account.email')|capitalize}}</label>
+                                    </div>
+                                    <div class="col-lg-9 col-8">
+                                        <input type="text" id="email-address" class="form-control" name="email" placeholder="{{trans('account.email_text')|capitalize}}">
+                                    </div>
+                                </div>
+                                    <div class="form-group row p-2">
+                                    <div class="col-lg-6 col-6">
+                                        <img src="{{captcha|raw}}" class="rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{trans('account.solve_sum_message')|capitalize}}!" width="168" height="37">
+                                    </div>
+                                    <div class="col-lg-6 col-6">
+                                        <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('account.solve_sum')|capitalize}}..">
+                                    </div>
+                                </div>
+
+            <button type="submit" class="btn btn-primary p-2" id="submit-ajax">{{trans('account.register_now')|capitalize}}</button>
+            </div>
+            </div>
+		</form>
+
+
+</div>
+<div class="col-md-6 col-sm-12">
+            <h2>{{trans('account.claim_account')|capitalize}}!</h2>
+    <div class="card">
+        <div class="card-body">
+<p>{{trans('account.create_account_message')|capitalize}}.</p>
+
+<h3>{{trans('account.howto_sign_up')|capitalize}}?</h3>
+
+<p>{{trans('account.message_one', {sitename: sitename})|capitalize}}.</p>
+<p>{{trans('account.message_two')|capitalize}}.</p>
+
+        </div>
+    </div>    
+
+			</div>
+	</div>
+</div>
+
+
+
+{% include "frontend/footer.twig"  %}

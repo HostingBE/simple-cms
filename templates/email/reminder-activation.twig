@@ -1,0 +1,51 @@
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<style>
+		body,td{font-size:10pt;font-family:Arial;line-height:22px;}
+	</style>
+</head>
+<body bgcolor="#E3E1D2" style="height: 100%;">
+<table width="700" align="center">
+<tr>
+<td>&nbsp;</td>
+<td width="700" align="center">
+
+<div style="max-width:700px; min-width:320px;">
+<div style="background-color:rgb(35,49,71); border: 1px solid rgb(35,49,71); text-align:left;color: #FFFFFF; height: 80px; padding: 30px; font-size: 50px;">{{sitename}}</div>
+<div style="background-color:white; border:2px solid #313f64;text-align:left;padding:15px;">
+<div>
+<p>Dear {{activation.first_name}} {{activation.last_name}},</p>
+
+<p>thank you for registering at <a href="{{url}}">{{url}}</a>, unfortunately you have the registration
+not yet completed by clicking the confirmation link in the email.</p>
+
+<p style="color: rgb(49, 63, 100); font-size: 150%;"><strong>Activate account</strong></p>
+
+<p>If you still want to register for {{url}} click on the link below<br />
+<a href="{{url}}/activate-user/{{activation.code}}/{{activation.email}}/">activate my account</a>
+
+<p>The password to login was sent in the first email together with
+the confirmation link. If you don't have it anymore, you can get a new password.</p>
+
+<p>Request via the forgot password link a new <a href="{{url}}/request-password">request password</a></p>
+
+<p style="color: rgb(49, 63, 100); font-size: 150%;"><strong>Cancel registration</strong></p>
+
+<p>If you want to cancel your registration, click on the link below and your account will become
+permanently deleted:<br />
+<a href="{{url}}/delete-user/{{activation.code}}/{{activation.email}}/">cancel registration</a>
+
+<p>&nbsp;</p>
+</div>
+		{{footer|nl2br}}
+<div>
+</div>
+</div>
+</td>
+</tr>
+</table>
+<p style="font-family: 'Arial', Helvetica, Arial, sans-serif;;font-size: 16px; color: rgb(35,49,71);padding: 0px 0px;" bgcolor="#281875" align="center">Having trouble reading this e-mail? <a href="{{url}}/view-email/{{code}}/{{email_hash}}/">View online!</a></p>
+</body>
+</html>
+

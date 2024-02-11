@@ -1,0 +1,46 @@
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <style>
+        body,td{font-size:10pt;font-family:Arial;line-height:22px;}
+    </style>
+</head>
+<body bgcolor="#E3E1D2" style="height: 100%;">
+<table width="700" align="center">
+<tr>
+<td>&nbsp;</td>
+<td width="700" align="center">
+
+<div style="max-width:700px; min-width:320px;">
+<div style="background-color:rgb(35,49,71); border: 1px solid rgb(35,49,71); text-align:left;color: #FFFFFF; height: 80px; padding: 30px; font-size: 50px;">{{sitename}}</div>
+<div style="background-color:white; border:2px solid #313f64;text-align:left;padding:15px;">
+<div>
+<p>Dear website owner,</p>
+
+<p>A contact form has been processed on the website, with the following data: </p>
+
+Company: {{bedrijfsnaam}}<br />
+Name: {{naam}}<br />
+E-mail: {{email}}<br />
+Subject: {{onderwerp}}<br />
+
+<p>&nbsp;</p>
+
+<p style="color: rgb(49, 63, 100); font-size: 150%;"><strong>Message</strong></p>
+
+<p>{{bericht}}</p>
+
+<p>&nbsp;</p>
+
+</div>
+        {{footer|nl2br}}
+<div>
+
+</div>
+
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

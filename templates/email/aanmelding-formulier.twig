@@ -1,0 +1,45 @@
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<style>
+		body,td{font-size:10pt;font-family:Arial;line-height:22px;}
+	</style>
+</head>
+<body bgcolor="#E3E1D2" style="height: 100%;">
+<table width="700" align="center">
+<tr>
+<td>&nbsp;</td>
+<td width="700" align="center">
+
+<div style="max-width:700px; min-width:320px;">
+<div style="background-color:rgb(35,49,71); border: 1px solid rgb(35,49,71); text-align:left;color: #FFFFFF; height: 80px; padding: 30px; font-size: 50px;">{{sitename}}</div>
+<div style="background-color:white; border:2px solid #313f64;text-align:left;padding:15px;">
+<div>
+<p>Dear {{naam}},</p>
+
+<p>thank you for signing up to hostingbe.com, to complete your signup
+click on the link below:<br />
+<a href="{{url}}/activate-user/{{activation_code}}/{{email}}/">activate account</a>
+
+<p>If you have clicked the activation link you can log in to hostingbe.com with<br />
+
+<p style="color: rgb(49, 63, 100); font-size: 150%;"><strong>Login information</strong></p>
+
+username: {{email}}<br />
+password: {{wachtwoord}}<br />
+
+<p>&nbsp;</p>
+
+</div>
+		{{footer|nl2br}}
+<div>
+
+</div>
+
+</div>
+</td>
+</tr>
+</table>
+<p style="font-family: 'Arial', Helvetica, Arial, sans-serif;;font-size: 16px; color: rgb(35,49,71);padding: 0px 0px;" bgcolor="#281875" align="center">Having trouble reading this e-mail? <a href="{{url}}/view-email/{{code}}/{{email_hash}}/">View online!</a></p>
+</body>
+</html>

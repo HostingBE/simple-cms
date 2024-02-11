@@ -1,0 +1,82 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="pt-4 pb-4">Manager blog overzicht</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+       {% include "backend/alert.twig" %} 
+
+<div class="col">
+<h4>Categorie overzicht</h4>
+<div class="card mb-3">
+      <div class="card-body">
+<table class="table table-hover">
+<thead>
+ <tr>
+      <th>#</th>
+      <th>naam</th>
+      <th>soort</th>
+      <th class="text-center">beheer</th>
+</tr>   
+</thead>  
+<tbody>
+
+{% for categorie in categories %}
+
+ <tr>
+      <td>{{categorie.id}}</td>
+      <td>{{categorie.naam}}</td>
+      <td>{% if categorie.soort == "h" %}support/helpdesk{% endif %}{% if categorie.soort == "t" %}todo manager{% endif %}{% if categorie.soort == "f" %}forum{% endif %}{% if categorie.soort == "w" %}weblog{% endif %}{% if categorie.soort == "m" %}Menu{% endif %}</td>
+      <td class="text-center"><a href="/manager/verwijder-categorie/{{categorie.id}}/" class="btn btn-danger btn-sm" data-url="/manager/verwijder-categorie/{{categorie.id}}/" data-reload="true">verwijder</a></td>
+</tr>  
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="col">
+
+<h4>Categorie toevoegen</h4>
+<div class="card mb-3">
+<div class="card-body">
+
+<form name="todo" action="/manager/categorie-toevoegen" method="POST" id="ajax-form" data-reload="true">
+  {{ csrf() | raw }}
+<!-- Text input -->
+<div class="mb-3">
+  <label for="text-input" class="form-label">Naam</label>
+  <input class="form-control" type="text" name="naam" value="" placeholder="name of categorie ..">
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">type</label>
+<select class="form-control" name="soort">
+<option value="f">Forum</option>
+<option value="m">Menu</option>
+<option value="h">Support/Helpdesk</option>
+<option value="t">Todo manager</option>
+<option value="w">Weblog</option>
+</select>
+</div>
+
+  <button class="btn btn-primary" type="submit" id="submit-ajax">categorie toevoegen</button>
+</form>
+</div>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

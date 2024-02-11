@@ -1,0 +1,52 @@
+<div class="col">
+<nav class="navbar navbar-expand-lg navbar-light mb-4 rounded bg-hb-orange">
+  <div class="container-fluid">
+    <i class="fas fa-bar-chart-steps text-primary p-2"></i> <a class="navbar-brand" href="#">{{manager_heading|default('Manager Menu')}}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/manager/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/manager/bekijk-logging">Bekijk logging</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Manager overzichten
+          </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="/manager/todo-overview">Todo overzicht</a></li>
+            <li><a class="dropdown-item" href="/manager/support-overzicht">Support overzicht</a></li>
+            <li><a class="dropdown-item" href="/manager/support-toevoegen">Support toevoegen</a></li>    
+             <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/links-overview">Links overview</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/settings-overview">Settings overview</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/advertenties-overview">Advertenties overzicht</a></li>
+            <li><a class="dropdown-item" href="/manager/advertentie-toevoegen">Advertentie toevoegen</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/gebruikers-overzicht">Gebruikers overzicht</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/pagina-overzicht">Pagina overzicht</a></li>
+            <li><a class="dropdown-item" href="/manager/pagina-toevoegen">Pagina toevoegen</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/categorie-overzicht">Categorie overzicht</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/templates-overzicht">Templates overzicht</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/media-overzicht">Media overzicht</a></li>   
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/manager/blog-overzicht">Blog overzicht</a></li>   
+            <li><a class="dropdown-item" href="/manager/blog-toevoegen">Blog toevoegen</a></li>   
+  
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
