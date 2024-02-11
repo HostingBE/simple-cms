@@ -43,7 +43,7 @@ $info = json_decode($this->get_ip_info($this->get_client_ip()));
 
 # internal network address continue
 if ($info->bogon == 1) {
-
+    $_SESSION['info'] = $info;
 return $response;
 }
 

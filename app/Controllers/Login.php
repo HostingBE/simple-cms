@@ -103,7 +103,6 @@ class Login {
 /*
 * succesvol login loggen in de database
 */
-  
 $sql = $this->db->prepare("INSERT INTO logins (user,ip,hostname,plaats,land,apparaat,useragent,datum) VALUES(:user,:ip,:hostname,:plaats,:land,:apparaat,:useragent,now())");
 $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
 $sql->bindparam(":ip",$_SESSION['info']->ip,PDO::PARAM_STR);

@@ -13,9 +13,12 @@ virtualmin-backup/
 .config/
 sess_*
 .cache/
+.npm/
 cache/
 .bashrc
 .wget-hsts
 composer.lock
 backup/
 config/config.php
+public_html/node_modules/
+public_html/package-lock.json
