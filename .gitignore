@@ -4,8 +4,8 @@ cgi-bin/
 etc/
 homes/
 logs/*
-Maildir/.
-virtualmin-backup/.
+Maildir/
+virtualmin-backup/
 .bash_*
 .git/
 .bashrc
