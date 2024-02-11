@@ -1,7 +1,0 @@
-# This is Git's per-user configuration file.
-[user]
-# Please adapt and uncomment the following lines:
-	name = Constan van Suchtelen van de Haere
-	email = constan@hostinbe.com
-[color]
-	ui = true
