@@ -1,0 +1,12 @@
+.vscode-server/
+.ssh/
+cgi-bin/
+etc/
+homes/
+logs/*
+Maildir/.
+virtualmin-backup/.
+.bash_*
+.git/
+.bashrc
+.wget-hsts
