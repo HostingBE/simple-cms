@@ -12,4 +12,4 @@ Howto get started
 
 Website design
 ==============
-Design done by [https://getbootstrap.com,Bootstrap 5], create a custom SCSS and create the CSS file for your design
+Design done by (https://getbootstrap.com "Bootstrap 5"), create a custom SCSS and create the CSS file for your design
