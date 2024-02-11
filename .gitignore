@@ -12,3 +12,4 @@ virtualmin-backup/
 .wget-hsts
 backup/
 templates_c/
+config/config.php
