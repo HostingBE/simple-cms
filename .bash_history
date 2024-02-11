@@ -1,4 +1,0 @@
-uptime
-w
-uptime
-exit
