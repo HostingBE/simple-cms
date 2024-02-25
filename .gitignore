@@ -9,6 +9,7 @@ vendor/
 virtualmin-backup/
 .bash_*
 .git/
+.composer/
 .local/
 .config/
 sess_*
