@@ -49,6 +49,8 @@ print '
     </head>
 <body>
 <div class="container">
+<h1 class="pt-5">'.$this->gettitle().'</h1>
+
 <div class="row pt-5">
 <div class="col-md-3 bg-secondary opacity rounded rounded-5">Menu
 <ul class="list-unstyled">';
