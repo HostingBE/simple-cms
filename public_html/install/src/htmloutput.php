@@ -50,7 +50,7 @@ print '
 <body>
 <div class="container">
 <div class="row pt-5">
-<div class="col-md-3 bg-secondary opacity">Menu
+<div class="col-md-3 bg-secondary opacity rounded rounded-5">Menu
 <ul class="list-unstyled">';
 
 foreach ($this->getmenu() as $menu) {
