@@ -1,7 +1,14 @@
 <?php
 
+require 'src/htmloutput.php';
+
+
 // configuration settings
-$url = 'https://simple-cms.github.com';
+$downloadurl = 'https://simple-cms.github.com';
+
+$url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+
+$path = $_SERVER['SCRIPT_FILENAME'];
 
 $phpversion = '8.1';
 
@@ -11,6 +18,14 @@ $directories = array(   'tmp' => array('name' => 'tmp','chmod' => '755'),
 );
 
 
-echo "We gaan de install beginnen " . $phpversion;
 
+
+$html = new Install\htmloutput();
+
+
+$html->header();
+
+$html->getdatabase();
+
+$html->footer();
 ?>
