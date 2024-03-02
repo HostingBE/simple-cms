@@ -1,0 +1,28 @@
+{% include 'header.twig' %}
+
+<div class="d-flex justify-content-center">
+<div class="row pt-5 w-50">
+    <h1 class="pt-5 text-white">{{ title | capitalize }}</h1>
+    {% include 'menu.twig' %}
+
+    <div class="col-md-9 bg-white rounded-right-3">
+
+<h2 class="py-4">Algemene voorwaarden</h2>
+<p>Het gebruik van de applicatie {{ name }} is toegstaan voor eigen gebruik en zonder commerciele doeleinden!</p>
+<p>Doorloop de installatie stappen om het pakket <strong>{{ name }}</strong> te installeren.</p>
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="voorwaarden" checked>
+    <label class="form-check-label" for="voorwaarden">
+      Ik ga akkoord met de voorwaarden
+    </label>
+  </div>
+
+
+<button type="submit" class="btn btn-primary float-end my-2">Next</button>
+</div>
+{% include 'urls.twig' %}
+</div>
+</div>
+
+{% include 'footer.twig' %}

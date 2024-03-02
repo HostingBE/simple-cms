@@ -1,31 +1,51 @@
 <?php
 
-require 'src/htmloutput.php';
+
+require __DIR__ . '/assets/vendor/autoload.php';
+require __DIR__ . '/src/htmloutput.php';
+
+use Install\HtmlOutput;
 
 
-// configuration settings
-$downloadurl = 'https://simple-cms.github.com';
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/assets/templates');
+$twig = new \Twig\Environment($loader, [
+    'debug' => true,
+    'cache' => __DIR__ . '/assets/templates_c',
+]);
 
-$url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+$html = new HtmlOutput();
 
-$path = $_SERVER['SCRIPT_FILENAME'];
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+    $method = "get";
+    $page;
+    if (isset($_GET['page'])) { 
+        $page = $_GET['page'];
+        } 
+ }
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $method = "post";
+    }
 
-$phpversion = '8.1';
+if ($page == "admin") {
+    echo $twig->render('admin.twig', ['title' => $html->getTitle(),'menu' => $html->getMenu() ]);
+    }
 
-$directories = array(   'tmp' => array('name' => 'tmp','chmod' => '755'),
-                        'data' => array('name' => 'data','chmod' => '755'),
-                        'config' => array('name' => 'config','chmod' => '644'),
-);
+if ($page == "version") {
+    echo $twig->render('version.twig', ['title' => $html->getTitle(),'menu' => $html->getMenu(),'php' => $html->getPHPversion(),'modules' => $html->getModules() ]);
+    }
 
+if ($page == "database") {
+    echo $twig->render('database.twig', ['title' => $html->getTitle(),'menu' => $html->getMenu() ]);
+    }
+if ($page == "voorwaarden") {
+    echo $twig->render('voorwaarden.twig', ['title' => $html->getTitle(),'menu' => $html->getMenu(),'name' => $html->getName() ]);
+    }
+if ($page == "permissions") {
+    echo $twig->render('permissions.twig', ['title' => $html->getTitle(),'menu' => $html->getMenu(),'name' => $html->getName(),'directories' => $html->getDirectories()]);
+    }
 
-
-
-$html = new Install\htmloutput();
-
-
-$html->header();
-
-$html->getdatabase();
-
-$html->footer();
+        
+if (!$page) {
+    echo $twig->render('install.twig', ['title' => $html->getTitle(),'menu' => $html->getMenu() ]);
+    }
 ?>

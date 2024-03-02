@@ -2,78 +2,61 @@
 
 namespace Install;
 
-class htmloutput {
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 
-public function _construct() {
+class HtmlOutput {
 
+    private $config;
+
+public function __construct() {
+    $this->config = $this->getConfig();
     }
 
 
-public function gettitle() {
-         return "install script by HostingBE";    
-}
-
-
-
-public function getdatabase() {
-
-print '
-<div class="row">
-<div class="col-md-6">
-
-
-</div>
-</div>
-';
-}
-
-
-public function getmenu() {
-
-return array(['name' => 'algemene voorwaarden','link' => '/install/install.php?page=voorwaarden'],['name' => 'database gegevens','link' => '/install/install.php?page=database']);
-
-}
-
-
-public function header() {
-
-print '
-<!doctype html>
-<html lang="en">
-    <head>
-    <title>'. $this->gettitle(). '</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </head>
-<body>
-<div class="container">
-<h1 class="pt-5">'.$this->gettitle().'</h1>
-
-<div class="row pt-5">
-<div class="col-md-3 bg-secondary opacity rounded rounded-5">Menu
-<ul class="list-unstyled">';
-
-foreach ($this->getmenu() as $menu) {
-    print '<li class="m-2"><a href="'.$menu['link'].'">'.$menu['name'].'</li>';
+private function getConfig($yamlfile = __DIR__ . '/../config/config.yaml') {
+    
+    try {
+        $cfg = Yaml::parseFile($yamlfile);
+    } catch (ParseException $exception) {
+        printf('Unable to parse the YAML string: %s', $exception->getMessage());
     }
 
-print '</ul>
-</div>
-<div class="col-md-9 bg-primary">
-';
+    return (array) $cfg;
     }
 
-public function footer() {
-
-print "
-</div>
-</div>
-</body>
-</html>
-";
+public function getPHPversion() {
+if (phpversion() < $this->config['phpversion']) {
+    return array('version' => phpversion(),'check' => false,'message' => 'your php version ' . phpversion() . ' does not meet the standard ' . $this->config['phpversion']);
     }
+if (phpversion() >= $this->config['phpversion']) {
+    return array('version' => phpversion(),'check' => true,'message' => 'your php version ' . phpversion() . ' is good to go at least ' . $this->config['phpversion']);
+    }    
+return array();
 }
 
+
+public function getName() {
+    return $this->config['name'];    
+    }
+
+public function getTitle() {
+    return $this->config['title'];       
+    }
+
+public function getModules() {
+    return $this->config['modules'];       
+    }
+
+public function getDirectories() {
+    return $this->config['directories'];       
+    }
+
+
+public function getMenu() {
+    $sort = array_column($this->config['menu'], 'sort');
+    array_multisort($sort, SORT_ASC, $this->config['menu']);
+    return $this->config['menu'];
+    }
+}
 ?>

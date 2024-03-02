@@ -1,0 +1,35 @@
+---
+title: install script by HostingBE
+name: simple-cms by HostingBE
+menu:
+  - name: algemene voorwaarden
+    link: /install/install.php?page=voorwaarden
+    sort: 1
+  - name: database gegevens
+    link: /install/install.php?page=database
+    sort: 2
+  - name: version checks
+    link: /install/install.php?page=version
+    sort: 3
+  - name: file permissions
+    link: /install/install.php?page=permissions
+    sort: 4        
+  - name: admin gegevens
+    link: /install/install.php?page=admin
+    sort: 5
+phpversion: 8.1
+sqlfile: /install/database.sql
+modules:
+  - name: mysqld
+  - name: zip
+  - name: ldap
+directories:
+  - name: tmp
+    chmod: 755
+    type: directory
+  - name: data
+    chmod: 755
+    type: directory   
+  - name: config.php
+    chmod: 644
+    type: file

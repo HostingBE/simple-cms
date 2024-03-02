@@ -1,0 +1,8 @@
+<div class="col-md-3 bg-secondary bg-opacity-75 text-white p-2">Menu
+<ul class="list-unstyled">
+
+{% for menuitem in menu %}
+<li><a href="{{ menuitem.link }}" class="text-white">{{ menuitem.name | capitalize }}</a></li>
+{% endfor %}
+</ul>
+</div>

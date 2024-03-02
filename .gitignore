@@ -21,6 +21,11 @@ cache/
 .wget-hsts
 composer.lock
 backup/
+tmp/
+public_sql/
 config/config.php
 public_html/node_modules/
 public_html/package-lock.json
+public_html/install/assets/vendor/
+public_html/install/assets/composer.lock
+public_html/install/assets/templates_c/

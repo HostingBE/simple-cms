@@ -1,0 +1,33 @@
+{% include 'header.twig' %}
+<div class="d-flex justify-content-center">
+<div class="row pt-5 w-50">
+    <h1 class="pt-5 text-white">{{ title | capitalize }}</h1>
+    {% include 'menu.twig' %}
+
+    <div class="col-md-9 bg-white rounded-right-3">
+
+<h2 class="py-4">Version and permissions check</h2>
+<p>Het gebruik van de applicatie {{ name }} is toegstaan voor eigen gebruik en zonder commerciele doeleinden!</p>
+<p>Doorloop de installatie stappen om het pakket <strong>{{ name }}</strong> te installeren.</p>
+
+{% if php.check == 0 %}
+<i class="fa fa-solid fa-circle-check fa-lg text-danger"></i> PHP {{php.version}} {{php.message}}
+{% endif %}
+
+{% if php.check == 1 %}
+<i class="fa fa-solid fa-circle-check fa-lg text-success"></i> PHP {{php.version}} {{php.message}}
+{% endif %}
+
+<ul class="list-unstyled">
+{% for module in modules %}
+<li class="py-2"><i class="fa fa-solid fa-circle-check fa-lg text-success"></i> {{ module.name }} </li>
+{% endfor %}
+</ul>
+
+<button type="submit" class="btn btn-primary float-end my-2">Next</button>
+</div>
+{% include 'urls.twig' %}
+</div>
+</div>
+
+{% include 'footer.twig' %}
