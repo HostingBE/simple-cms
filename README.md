@@ -11,10 +11,15 @@ Simple CMS written in PHP with slim 4 framework
 
 ## crontab ##
 
-their are several crontabs which you can set which will run on the times your specified
+Their are several crontabs which you can set which will run on the times your specified
 
+The activate reminder script will send reminders to users who did not activate the account yet.
 ```
 0 3 * * * /usr/bin/php /home/username/bin/console.php reminder-email activate-reminder
+```
+
+The send-reminders will send reminders to users who are not logged in for a certain count of days (7,30,60)
+```
 30 3 * * * /usr/bin/php /home/username/bin/console.php reminder-email send-reminders
 ```
 
