@@ -5,9 +5,10 @@ Simple CMS written in PHP with the use of slim 4 framework
 ## Howto get started ##
 
 * Copy config/config-sample.php to config/config.php and change the settings
-* import the database sql schema from the sql directory
-* run composer update
-* run npm i in the public_html directory
+* Import the database sql schema from the sql directory
+* Run composer update
+* Run npm i in the public_html directory
+* Rename htaccess to .htaccess in public_html directory
 
 ## crontab ##
 
