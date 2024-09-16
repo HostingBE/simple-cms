@@ -30,6 +30,7 @@ public function install() {
     $this->setSettings();
     $this->createPage();
     $this->removeInstallFile();
+    $this->attachRoles();
     }
 
 private function removeInstallFile() {
@@ -38,6 +39,23 @@ private function removeInstallFile() {
           }
     
     }
+private function attachRoles() {
+$roles = array('administrator' => array('name' => 'administrator','created_at' => date('Y-m-d'),'updated_at' => date('Y-m-d')),
+               'customer' => array('name' => 'customer','created_at' => date('Y-m-d'),'updated_at' => date('Y-m-d')),
+               'visitor' => array('name' => 'visitor','created_at' => date('Y-m-d'),'updated_at' => date('Y-m-d')),
+                );
+
+
+    $sql = $this->db->prepare("INSERT INTO roles(slug,name,created_at,updated_at) VALUES(:slug,:name,:created_at,:updated_at)");
+
+    foreach ($roles as $key => $val) {
+        $sql->bindparam(":slug",$key,PDO::PARAM_STR);
+        $sql->bindparam(":name",$val['name'],PDO::PARAM_STR);
+        $sql->bindparam(":created_at",$val['created_at'],PDO::PARAM_STR);
+        $sql->bindparam(":updated_at",$val['updated_at'],PDO::PARAM_STR);
+        $sql->execute();
+        }
+}
 
 
 private function setSettings() {

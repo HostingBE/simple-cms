@@ -59,8 +59,6 @@ class Page  {
     $run->install();
     }
        
-
-
     $sql = $this->db->prepare("SELECT id,name,titel,description,keywords,content,template FROM pages WHERE name=:slug AND language=:language AND publish='y' LIMIT 1");
     $sql->bindParam(':slug',$page,PDO::PARAM_STR);
     $sql->bindParam(':language',$this->locale,PDO::PARAM_STR,2);   
