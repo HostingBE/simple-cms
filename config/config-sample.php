@@ -5,7 +5,7 @@ return [
                    'displayErrorDetails' => true,
                    'logErrorDetails' => true,
                    'debug' => true,
-                   'version' => '2.2.3',
+                   'version' => '2.2.4',
                    'logger' => [
                    'name' => '[logname]',
                    'path' => __DIR__ . '/../logs/'.date('d-m-Y').'-app.log',
