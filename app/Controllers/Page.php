@@ -18,12 +18,15 @@ class Page  {
 	protected $view;
 	protected $db;
 	protected $flash;
+    protected $logger;
+    protected $locale;
 	
-	public function __construct(Twig $view,$db,$flash,$locale,$default) {
+	public function __construct(Twig $view,$db, $flash, $logger, $locale, $default) {
 
 	$this->view = $view;
 	$this->db = $db;
 	$this->flash = $flash;
+    $this->logger = $logger;
 	$this->locale = $locale ?: $default;
 	}
 
@@ -51,7 +54,13 @@ class Page  {
 	  	 $page = "index";
 	  	 }
 
+    if (file_exists(__DIR__ . '/../../.new_install')) {
+    $run = new \App\Controllers\FirstRun($this->view, $this->db, $this->logger);
+    $run->install();
+    }
        
+
+
     $sql = $this->db->prepare("SELECT id,name,titel,description,keywords,content,template FROM pages WHERE name=:slug AND language=:language AND publish='y' LIMIT 1");
     $sql->bindParam(':slug',$page,PDO::PARAM_STR);
     $sql->bindParam(':language',$this->locale,PDO::PARAM_STR,2);   
@@ -61,7 +70,7 @@ class Page  {
     if (!is_object($pageobj)) {
     throw new HttpNotFoundException($request);
     }
-    
+
     $meta['title'] = $pageobj->titel;
     $meta['description'] = $pageobj->description;
     $meta['keywords'] = $pageobj->keywords;

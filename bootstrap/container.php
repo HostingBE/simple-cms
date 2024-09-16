@@ -236,10 +236,12 @@ $container->get("view")->getEnvironment()->addGlobal('headerlinks', (array) $hea
 $container->get("view")->getEnvironment()->addGlobal('footerlinks', (array) $footerlinks);
 
 $container->set(Page::class, function($container) {
+
 return new Page(
       $container->get('view'),
       $container->get('db'),
       $container->get('flash'),
+      $container->get('logger'),
       $container->get('locale'),
       $container->get('settings')['translations']['fallback']
       );
