@@ -2,6 +2,8 @@
 
 Simple CMS written in PHP with the use of slim 4 framework
 
+![Screenshot Simple CMS](images/screenshot-simple-cms.png)
+
 ## Howto get started ##
 
 * Copy config/config-sample.php to config/config.php and change the settings
