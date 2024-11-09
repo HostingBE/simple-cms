@@ -63,11 +63,13 @@ $sql->execute();
 $username = random(32);
 $password = random(32);
 
+$hash = password_hash($password, PASSWORD_DEFAULT);
+
 
 $sql = $this->db->prepare("INSERT INTO api (user,username,password,ipaddress,datum) VALUES(:user,:username,:password,:ipaddress,now())");
 $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
 $sql->bindparam(":username",$username,PDO::PARAM_STR);
-$sql->bindparam(":password",$password,PDO::PARAM_STR);
+$sql->bindparam(":password",$hash,PDO::PARAM_STR);
 $sql->bindparam(":ipaddress",$data['ipaddress'],PDO::PARAM_STR);
 $sql->execute();
 }
@@ -144,6 +146,25 @@ public function api(Request $request, Response $response) {
   $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
   $sql->execute();
   $settings = $sql->fetch(PDO::FETCH_OBJ);
+ 
+  if ($sql->rowcount() == 0) {
+    $settings = new \stdClass();
+    $settings->username = random(32);
+    $settings->password = random(32);
+    $settings->ipaddress = get_client_ip();
+    
+    $hash = password_hash($settings->password, PASSWORD_DEFAULT);
+    
+    $sql = $this->db->prepare("INSERT INTO api (user,username,password,ipaddress,datum) VALUES(:user,:username,:password,:ipaddress,now())");
+    $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
+    $sql->bindparam(":username",$settings->username,PDO::PARAM_STR);
+    $sql->bindparam(":password",$hash,PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress",$settings->ipaddress,PDO::PARAM_STR);
+    $sql->execute();
+    }
+    
+ 
+ 
   return $this->view->render($response,'backend/api-settings.twig',['huidig' => 'api-settings','settings' => $settings ]);
   }
 
