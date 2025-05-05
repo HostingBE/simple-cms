@@ -25,6 +25,11 @@ return [
 'your_comment' => 'your comment about this article',
 'post_comment' => 'post comment', 
 'no_comments' => 'no comments on this article, or your comment is not yet approved!',
+'newest' => 'newest',
+'oldest' => 'oldest',
+'populair' => 'most populair',
+'sponsored' => 'sponsored',
+'no_results' => 'no results in the blog articles for query',
 ];
 
 
