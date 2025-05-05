@@ -22,7 +22,7 @@
               </div>
 
              {{ csrf() | raw }}
-              <input class="file-uploader file-uploader-grid" type="file" name="file" id="fileuploader" data-url="/manager/upload-media" id="fileuploader" multiple data-max-file-size="10MB" accept="image/png, image/jpeg, video/mp4, video/mov" data-label-idle="&lt;div class=&quot;btn btn-primary mb-3&quot;&gt;&lt;i class=&quot;fi-cloud-upload me-1&quot;&gt;&lt;/i&gt;Upload photos / video&lt;/div&gt;&lt;br&gt;of sleep de bestanden"  enctype="multipart/form-data">
+              <input class="file-uploader file-uploader-grid" type="file" name="file" id="fileuploader" data-url="{{url}}/manager/upload-media" id="fileuploader" multiple data-max-file-size="10MB" accept="image/png, image/jpeg, video/mp4, video/mov" data-label-idle="&lt;div class=&quot;btn btn-primary mb-3&quot;&gt;&lt;i class=&quot;fi-cloud-upload me-1&quot;&gt;&lt;/i&gt;Upload photos / video&lt;/div&gt;&lt;br&gt;of sleep de bestanden"  enctype="multipart/form-data">
             </section>
 </div>
 <div class="row">
@@ -42,7 +42,7 @@
 
 {% if media|length < 1 %}
 <tr>
-		<td colspan="7" class="text-center">Er is nog geen media items beschikbaar</td>
+		<td colspan="8" class="text-center">{{ trans('manager.media.no_media') }}</td>
 </tr>
 {% endif %}
 
@@ -52,11 +52,11 @@
 <td>..</td>
 <td>{{medium.naam|capitalize}}</td>
 <td>{{medium.extentie}}</td>
-<td class="text-center"><a href="/uploads/{{medium.naam}}" target="_blank">link</a></td>
+<td class="text-center"><a href="{{url}}/uploads/{{medium.naam}}" target="_blank">link</a></td>
 <td class="text-center"><input type="text" class="form-control" name="alt-text" placeholder="..image alt text.." data-id="{{medium.id}}" value="{{medium.alt}}"></td>
 <td>{{medium.size|round(2)}} Kb</td>
 <td>{{medium.datum}}</td>
-<td class="text-center"><a href="/manager/verwijder-media/{{medium.id}}/" class="btn btn-danger btn-sm" data-url="/manager/verwijder-media/{{medium.id}}/">verwijder</a></td>
+<td class="text-center"><a href="{{url}}/manager/delete-media/{{medium.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-media/{{medium.id}}/" data-reload="true">{{ trans('manager.media.delete') }}</a></td>
 
 </tr>
 

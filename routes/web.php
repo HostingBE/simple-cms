@@ -40,14 +40,14 @@ $csrfroute->get('/request-activation-code', Account::class . ':request_code')->s
 $csrfroute->get('/bevestig-wachtwoord/{gebruiker}/{email}/{code}',Account::class . ':confirm_password')->setName('account.confirm_password');
 $csrfroute->get('/delete-user/{code}/{email}/', Account::class . ':delete')->setName('account.delete');
 $csrfroute->get('/blog-{id:[0-9]+}-{title:[^\/]+}/', Blog::class . ':view')->setName('blog.view');
-$csrfroute->get('/seo-blog/{id:[0-9]+}-{category:[^\/]+}/', Blog::class . ':category')->setName('blog.category');
+$csrfroute->get('/blog/{id:[0-9]+}-{category:[^\/]+}/', Blog::class . ':category')->setName('blog.category');
 $csrfroute->get('/advertentie', Advertenties::class . ':advertentie')->setName('advertenties.advertentie');
 $csrfroute->get('/outgoing-link/{id:[0-9]+}/{code:[a-zA-Z0-9]+}/', Advertenties::class . ':outgoing')->setName('advertenties.outgoing');
 
 $csrfroute->get('/search/{q:[a-zA-Z0-9\-]+}/', Search::class . ':search')->setName('search.search');
 
-$csrfroute->get('/seo-support', Support::class . ':overview')->setName('support.overview');
-$csrfroute->get('/seo-support/{id:[0-9]+}/{name:[^\/]+}/', Support::class . ':view_category')->setName('support.view_category');
+$csrfroute->get('/support', Support::class . ':overview')->setName('support.overview');
+$csrfroute->get('/support/{id:[0-9]+}/{name:[^\/]+}/', Support::class . ':view_category')->setName('support.view_category');
 $csrfroute->get('/support/{id:[0-9]+}-{title:[^\/]+}/', Support::class . ':view')->setName('support.view');
 $csrfroute->get('/view-email/{code:[^\/]{32}}/{hash:[a-z0-9]{64}}/',Email::class . ':view')->setName('email.view');
 

@@ -20,10 +20,12 @@
 <meta name="description" content="{{meta.description}}">
 <meta name="keywords" content="{{meta.keywords}}">
 <meta name="author" content="HostingBE">
-<link rel="alternate"  hreflang="en-eu" href="{{url}}" />
+<link rel="alternate"  hreflang="{{locale}}-{{locale|upper}}" href="{{url}}" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="{{url}}/images/icon-cms-hostingbe.png" type="image/x-icon">
 <link rel="icon" href="{{url}}/images/icon-cms-hostingbe.png" type="image/x-icon">
+
+<link rel="canonical" href="{{url}}/{{current}}" />
 
 {% if huidig in ['account-info','manager-pagina-overzicht','media-overzicht','todo-overview','manager-blog-overzicht','manager-support-overzicht','manager-gebruikers-overzicht','manager-category-overview'] %}
 <link rel="stylesheet" href="{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.css">

@@ -8,40 +8,43 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/manager/dashboard">Dashboard</a>
+          <a class="nav-link" href="{{url}}/manager/dashboard">{{ trans('manager.menu.dashboard') | capitalize }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/manager/bekijk-logging">Bekijk logging</a>
+          <a class="nav-link" href="{{url}}/manager/view-logging">{{ trans('manager.menu.view_logging') | capitalize }}</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url}}/manager/chat-overview">{{ trans('manager.menu.chat_overview') | capitalize }}</a>
+        </li>        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Manager overzichten
+            {{ trans('manager.menu.manager_overview') | capitalize }}
           </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="/manager/todo-overview">Todo overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/support-overzicht">Support overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/support-toevoegen">Support toevoegen</a></li>    
+            <li><a class="dropdown-item" href="{{url}}/manager/todo-overview">Todo overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/support-overzicht">Support overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/support-toevoegen">Support toevoegen</a></li>    
              <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/links-overview">Links overview</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/links-overview">Links overview</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/settings-overview">Settings overview</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/settings-overview">Settings overview</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/advertenties-overview">Advertenties overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/advertentie-toevoegen">Advertentie toevoegen</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/advertenties-overview">Advertenties overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/advertentie-toevoegen">Advertentie toevoegen</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/gebruikers-overzicht">Gebruikers overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/gebruikers-overzicht">Gebruikers overzicht</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/pagina-overzicht">Pagina overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/pagina-toevoegen">Pagina toevoegen</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/pagina-overzicht">Pagina overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/pagina-toevoegen">Pagina toevoegen</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/categorie-overzicht">Categorie overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/categorie-overzicht">Categorie overzicht</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/templates-overzicht">Templates overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/templates-overzicht">Templates overzicht</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/media-overzicht">Media overzicht</a></li>   
+            <li><a class="dropdown-item" href="{{url}}/manager/media-overview">{{ trans('manager.menu.media') | capitalize }} {{ trans('manager.menu.overview') }}</a></li>   
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/blog-overzicht">Blog overzicht</a></li>   
-            <li><a class="dropdown-item" href="/manager/blog-toevoegen">Blog toevoegen</a></li>   
+            <li><a class="dropdown-item" href="{{url}}/manager/blog-overzicht">Blog overzicht</a></li>   
+            <li><a class="dropdown-item" href="{{url}}/manager/blog-toevoegen">Blog toevoegen</a></li>   
   
           </ul>
         </li>

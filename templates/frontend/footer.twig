@@ -34,9 +34,9 @@
         
         {% if footer_blogs|length != 0 %}
         {% for blog in footer_blogs %}
-            <article class="d-flex align-items-start text-light"><img class="img img-fluid rounded p-2" loading="eager" src="{{url}}/uploads/{% if blog.media %}{{blog.imagename}}-200.webp{%else%}/images/default-image.jpg{% endif %}" width="200" height="125" alt="{{blog.alt}}">
+            <article class="d-flex align-items-start text-light"><img class="img img-fluid rounded round-2 p-2" loading="eager" src="{{url}}/uploads/{% if blog.media %}{{blog.imagename}}-200.webp{%else%}/images/default-image.jpg{% endif %}" width="200" height="125" alt="{{blog.alt}}">
               <div>
-                <h5 class="mb-2"><a class="nav-link text-light" href="/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" data-bs-toggle="tooltip" title="read {{blog.title}} article"> {{blog.title|capitalize}}</a></h5> in {{blog.categorienaam|capitalize}}
+                <h5 class="mb-2"><a class="nav-link text-light" href="{{url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" data-bs-toggle="tooltip" title="read {{blog.title}} article"> {{blog.title|capitalize}}</a></h5> in {{blog.categorienaam|capitalize}}
                 <p class="mb-2">{{blog.content|striptags}}..</p> 
                 <span class="fs-6 text-light">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-light mb-1" fill="currentColor"><path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z"/></svg> {{blog.datum}}

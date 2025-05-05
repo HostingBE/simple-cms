@@ -21,7 +21,12 @@ return [
                'keywords' => '',
                'url' => '',
                ],
-
+'blog-overview' => [
+               'title' =>  'Simple CMS Blog overview',
+               'description' => 'Simple CMS Blog overview',
+               'keywords' => 'Simple CMS Blog overview',
+               'url' => '',
+               ],
 
    ];
 ?>

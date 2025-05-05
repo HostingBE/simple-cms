@@ -20,6 +20,7 @@ use App\Controllers\Account;
 use App\Controllers\Advertenties;
 use App\Controllers\Blog;
 use App\Controllers\Category;
+use App\Controllers\Chat;
 use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
@@ -190,6 +191,19 @@ $container->set('mail', function () {
     return $mail;
 });
 
+/**
+ * create the REDIS adapter
+ */
+$container->set('cache', function () {
+      $cache = new \App\Cache\RedisAdapter(new \Predis\Client([
+                                          'scheme' => 'tcp',
+                                          'host' => '127.0.0.1',
+                                          'port' => 6379,
+                                          'password' => null
+                                          ]));
+      return $cache;
+      });
+
 /*
 * management ip excluding from statistics and chat
 */
@@ -200,16 +214,29 @@ $container->get("view")->getEnvironment()->addGlobal('management_ip',$management
 /*
 * blogs for footer
 */
-$sql = $container->get('db')->prepare("SELECT a.id,a.title,a.user,a.image,substr(a.content,1,200) as content,DATE_FORMAT(a.date,'%d-%m-%Y') AS datum,b.naam as categorienaam,CONCAT(c.naam,'.',c.extentie) as media,c.naam as imagename,c.alt,(SELECT COUNT(*) as aantal from blog_reacties where blog=a.id and status='a') AS reacties from blog AS a LEFT JOIN categorie b ON b.id=a.category LEFT JOIN media c ON c.id=a.image WHERE a.publish='y' AND a.publishdate <= now() ORDER BY a.id desc limit 2");
-$sql->execute();
-$footer_blogs = $sql->fetchALL(PDO::FETCH_OBJ);
+if ($container->get('cache')->get($container->get('sitesettings')['sitename'].':blogs_footer:'.$container->get('locale'))) {
+      $footer_blogs = json_decode($container->get('cache')->get($container->get('sitesettings')['sitename'].':blogs_footer:'.$container->get('locale'),true));
+      } else {
+      $sql = $container->get('db')->prepare("SELECT a.id,a.title,a.user,a.image,substr(a.content,1,200) as content,DATE_FORMAT(a.date,'%d-%m-%Y') AS datum,b.naam as categorienaam,CONCAT(c.naam,'.',c.extentie) as media,c.naam as imagename,c.alt,(SELECT COUNT(*) as aantal from blog_reacties where blog=a.id and status='a') AS reacties from blog AS a LEFT JOIN categorie b ON b.id=a.category LEFT JOIN media c ON c.id=a.image WHERE a.publish='y' AND a.language=:locale AND a.publishdate <= now() ORDER BY a.id desc limit 2");
+      $sql->bindparam(":locale", $container->get('locale'),PDO::PARAM_STR,2);
+      $sql->execute();
+      $footer_blogs = $sql->fetchALL(PDO::FETCH_OBJ);
+      $container->get('cache')->put($container->get('sitesettings')['sitename'].':blogs_footer:'.$container->get('locale'),json_encode($footer_blogs),3600);
+}
 
 /*
 * menu for header and footer
 */
-$sql = $container->get('db')->prepare("SELECT a.name,a.title,a.url,b.naam FROM links AS a LEFT JOIN categorie AS b ON b.id=a.category");
-$sql->execute();
-$linksobj = $sql->fetchALL(PDO::FETCH_OBJ);
+if ($container->get('cache')->get($container->get('sitesettings')['sitename'].':linksobj:'.$container->get('locale'))) {
+      $linksobj = json_decode($container->get('cache')->get($container->get('sitesettings')['sitename'].':linksobj:'.$container->get('locale'),true));
+      } else {
+      $sql = $container->get('db')->prepare("SELECT a.name,a.title,a.url,b.naam FROM links AS a LEFT JOIN categorie AS b ON b.id=a.category WHERE b.language=:locale");
+      $sql->bindparam(":locale", $container->get('locale'),PDO::PARAM_STR,2);
+      $sql->execute();
+      $linksobj = $sql->fetchALL(PDO::FETCH_OBJ);
+      $container->get('cache')->put($container->get('sitesettings')['sitename'].':linksobj:'.$container->get('locale'),json_encode($linksobj),3600);
+}
+
 $headerlinks = array();
 $footerlinks = array();
 
@@ -255,6 +282,20 @@ return new Category(
       );
 
 });
+
+$container->set(Chat::class, function($container) {
+      return new Chat(
+            $container->get('view'),
+            $container->get('db'),
+            $container->get('flash'),
+            $container->get('mail'),
+            $container->get('logger'),   
+            $container->get('sitesettings'),
+            $container->get('locale'),
+            $container->get('translator')  
+            );
+      
+      });
 
 $container->set(Templates::class, function($container) {
 return new Templates(
@@ -320,8 +361,10 @@ return new Blog(
       $container->get('flash'),
       $container->get('mail'),
       $container->get('logger'),   
-      $container->get('sitesettings')  
-      );
+      $container->get('sitesettings'),  
+      $container->get('locale'),
+      $container->get('translator')    
+);
 
 });
 

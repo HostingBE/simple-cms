@@ -19,7 +19,7 @@ $("input[name='q']").keyup(function() {
 // get your select element and listen for a change event on it
 $("select#category").change(function() {
   // set the window's location property to the value of the option the user has selected
-  window.location = "/seo-blog/"+$(this).val()+"-"+$('#category option:selected').text().replace(/\s+/g, '-').toLowerCase() +"/";
+  window.location = "/blog/"+$(this).val()+"-"+$('#category option:selected').text().replace(/\s+/g, '-').toLowerCase() +"/";
   });
 
 $("select#sortby").change(function() {

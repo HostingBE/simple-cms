@@ -1,7 +1,7 @@
 {% include "frontend/header.twig" %}
 
 <div class="container">        
-        <h1 class="pt-4 pb-4">Manager bekijk logging</h1>
+        <h1 class="pt-4 pb-4">{{ trans('manager.logging.overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 
@@ -16,7 +16,7 @@
             <div class="card-body">
 <div class="row mb-4"> 
 <div class="col-md-4"></div>
-<div class="col-md-4"><label>Bekijk logging van een dag:</label></div>
+<div class="col-md-4"><label>{{ trans('manager.logging.view_logging') | capitalize }}</label></div>
 <div class="col-md-4">
 <select name="log" class="form-control">
 		{% for file in files %}

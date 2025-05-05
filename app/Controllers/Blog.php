@@ -1,9 +1,21 @@
 <?php
 
 /**
- * @author Constan van Suchtelen van de Haere <constan@hostingbe.com>
- * @copyright 2023 HostingBE
- */
+* @author Constan van Suchtelen van de Haere <constan.vansuchtelenvandehaere@hostingbe.com>
+* @copyright 2024 - 2025 HostingBE
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+* files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy,
+* modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software
+* is furnished to do so, subject to the following conditions:
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+* BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+* OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*
+*/
 
 namespace App\Controllers;
 
@@ -26,14 +38,18 @@ protected $flash;
 protected $logger;
 protected $mail;
 protected $settings;
+protected $locale;
+protected $translator;
 
-public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings) {
+public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator) {
 $this->view = $view;
 $this->db = $db; 
 $this->flash = $flash;
 $this->mail = $mail;       
 $this->logger = $logger;
 $this->settings = $settings;
+$this->locale = $locale;
+$this->translator = $translator;
 }
 
 public function post_comment(Request $request,Response $response) {
@@ -277,7 +293,8 @@ $id = $request->getAttribute('id');
 $category_name = $request->getAttribute('category');
 $soort = "w";
 
-$sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soort");
+$sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soort AND language=:locale");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->bindparam(":soort",$soort,PDO::PARAM_STR,1);
 $sql->execute();
 $categorieen = $sql->fetchALL(PDO::FETCH_OBJ);
@@ -292,7 +309,7 @@ $meta['title']="View all blogs in " .$category_name .  " on seosite";
 $meta['description']="Read all SEO articles in the category " . $category_name . ". We have " . count($blogs) . " articles for you in this category";
 $meta['keywords']="articles, blog, Seo, onpage, html, basic,seosite";
 
-return $this->view->render($response,'frontend/category-blog.twig',['huidig' => 'category-blog','meta' => $meta,'blogs' => $blogs,'categorieen' => $categorieen,'category' => $id,'category_name' => $category_name, 'url' => $this->settings['url']]);
+return $this->view->render($response,'frontend/category-blog.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'category-blog','meta' => $meta,'blogs' => $blogs,'categorieen' => $categorieen,'category' => $id,'category_name' => $category_name, 'url' => $this->settings['url']]);
 }   
    
 
@@ -304,8 +321,9 @@ $meta = array();
 $id = $request->getAttribute('id');
 $soort = "w";
 
-$sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soort");
+$sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soort AND language=:locale");
 $sql->bindparam(":soort",$soort,PDO::PARAM_STR,1);
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $categorieen = $sql->fetchALL(PDO::FETCH_OBJ);
 
@@ -326,8 +344,9 @@ $sql->bindparam(":blog",$id,PDO::PARAM_INT);
 $sql->execute();
 $berichten = $sql->fetchALL(PDO::FETCH_OBJ);
 
-$sql = $this->db->prepare("SELECT a.id,a.title,DATE_FORMAT(a.date,'%d %M %y') as date FROM blog AS a WHERE a.publish='y' AND a.publishdate <= now() AND a.id !=:blog ORDER BY rand() LIMIT 3");
+$sql = $this->db->prepare("SELECT a.id,a.title,DATE_FORMAT(a.date,'%d %M %y') as date FROM blog AS a WHERE a.publish='y' AND a.language=:locale AND a.publishdate <= now() AND a.id !=:blog ORDER BY rand() LIMIT 3");
 $sql->bindparam(":blog",$id,PDO::PARAM_INT);
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $randomblogs = $sql->fetchALL(PDO::FETCH_OBJ);
 
@@ -347,7 +366,7 @@ $_SESSION['captcha'] = $code;
 
 $image = $captcha->base_encode();
 
-return $this->view->render($response,'frontend/view-blog.twig',['huidig' => 'bekijk-blog','meta' => $meta,'weblog' => $weblog,'categorieen' => $categorieen, 'aantal_berichten' => count($berichten), 'berichten' => $berichten, 'url' => $this->settings['url'],'randomblogs' => $randomblogs,'captcha' => $image, 'path' => '/blog-'.$weblog->id.'-'.strtolower(str_replace(' ','-',$weblog->title)).'/']);
+return $this->view->render($response,'frontend/view-blog.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'bekijk-blog','meta' => $meta,'weblog' => $weblog,'categorieen' => $categorieen, 'aantal_berichten' => count($berichten), 'berichten' => $berichten, 'url' => $this->settings['url'],'randomblogs' => $randomblogs,'captcha' => $image, 'path' => '/blog-'.$weblog->id.'-'.strtolower(str_replace(' ','-',$weblog->title)).'/']);
 }	
    
 
@@ -405,28 +424,30 @@ $meta['title']="Overview to improve SEO rankings and optimize our pages with onp
 $meta['description']="SeoSite articles about SEO tips on how to make your website better found by search engines. How to get higher in the results of the search engines.";
 $meta['keywords']="blog,SEO,improve SEO, optmize SEO, SEO rankings,onpage SEO, link building";
 
-return $this->view->render($response,'frontend/blog-search.twig',['huidig' => 'blog-search','meta' => $meta, 'blogs' => $blogs,'categorieen' => $categorieen, 'query' => $data['q'] ]);
+return $this->view->render($response,'frontend/blog-search.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'blog-search','meta' => $meta, 'blogs' => $blogs,'categorieen' => $categorieen, 'query' => $data['q'] ]);
 }
 
 public function overview(Request $request,Response $response) {
 
 $soort = "w";
 
-$sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soort");
+$sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soort AND language=:locale");
 $sql->bindparam(":soort",$soort,PDO::PARAM_STR,1);
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $categorieen = $sql->fetchALL(PDO::FETCH_OBJ);
 
-$sql = $this->db->prepare("SELECT a.id,a.title,a.tags,a.image,b.first_name,b.last_name,b.icon,c.naam,a.user,a.publish,DATE_FORMAT(a.date,'%d %M %y') as date,substr(content,1,150) as content,CONCAT(d.naam,'.',d.extentie) AS media,d.naam AS imagename,d.alt,d.width,d.height,(SELECT COUNT(*) as aantal from blog_reacties where blog=a.id and status='a') AS reacties FROM blog AS a LEFT JOIN users AS b ON b.id=a.user LEFT JOIN categorie AS c ON c.id=a.category LEFT JOIN media d ON d.id=a.image WHERE a.publish='y' AND a.publishdate <= now() ORDER BY a.id DESC");
+$sql = $this->db->prepare("SELECT a.id,a.title,a.tags,a.image,b.first_name,b.last_name,b.icon,c.naam,a.user,a.publish,DATE_FORMAT(a.date,'%d %M %y') as date,substr(content,1,150) as content,CONCAT(d.naam,'.',d.extentie) AS media,d.naam AS imagename,d.alt,d.width,d.height,(SELECT COUNT(*) as aantal from blog_reacties where blog=a.id and status='a') AS reacties FROM blog AS a LEFT JOIN users AS b ON b.id=a.user LEFT JOIN categorie AS c ON c.id=a.category LEFT JOIN media d ON d.id=a.image WHERE a.publish='y' AND a.language=:locale AND a.publishdate <= now() ORDER BY a.id DESC");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $blogs = $sql->fetchALL(PDO::FETCH_OBJ);
 
 
-$meta['title']="Overview to improve SEO rankings and optimize our pages with onpage SEO";
-$meta['description']="SeoSite articles about SEO tips on how to make your website better found by search engines. How to get higher in the results of the search engines.";
-$meta['keywords']="blog,SEO,improve SEO, optmize SEO, SEO rankings,onpage SEO, link building";
+$meta['title']=$this->translator->get('meta.blog-overview.title');
+$meta['description']=$this->translator->get('meta.blog-overview.description');
+$meta['keywords']=$this->translator->get('meta.blog-overview.keywords');
 
-return $this->view->render($response,'frontend/blog-overview.twig',['huidig' => 'blog','meta' => $meta, 'blogs' => $blogs,'categorieen' => $categorieen ]);
+return $this->view->render($response,'frontend/blog-overview.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'blog','meta' => $meta, 'blogs' => $blogs,'categorieen' => $categorieen ]);
 
 }
 }
