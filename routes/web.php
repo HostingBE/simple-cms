@@ -5,7 +5,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 
 use App\Controllers\Account;
-use App\Controllers\Advertenties;
+use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
 use App\Controllers\Category;
 use App\Controllers\Contact;
@@ -52,7 +52,7 @@ $csrfroute->get('/bevestig-wachtwoord/{gebruiker}/{email}/{code}',Account::class
 $csrfroute->get('/delete-user/{code}/{email}/', Account::class . ':delete')->setName('account.delete');
 $csrfroute->get('/blog-{id:[0-9]+}-{title:[^\/]+}/', Blog::class . ':view')->setName('blog.view');
 $csrfroute->get('/blog/{id:[0-9]+}-{category:[^\/]+}/', Blog::class . ':category')->setName('blog.category');
-$csrfroute->get('/advertentie', Advertenties::class . ':advertentie')->setName('advertenties.advertentie');
+$csrfroute->get('/advertisements', Advertisements::class . ':advertisements')->setName('advertisements.advertisements');
 $csrfroute->get('/outgoing-link/{id:[0-9]+}/{code:[a-zA-Z0-9]+}/', Advertenties::class . ':outgoing')->setName('advertenties.outgoing');
 
 $csrfroute->get('/search/{q:[a-zA-Z0-9\-]+}/', Search::class . ':search')->setName('search.search');

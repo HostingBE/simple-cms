@@ -16,12 +16,12 @@
  </div>
 
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-6 col-sm-12">
 
 <div class="card mb-3">
 	<div class="card-body">
 
-<form name="advertentie" action="{{url}}/manager/advertentie-bewerken/{{advertentie.id}}/" method="POST" id="ajax-form">
+<form name="advertentie" action="{{url}}/manager/edit-advertisement/{{advertentie.id}}/" method="POST" id="ajax-form">
  {{ csrf() | raw  }}
 
 <div class="row form-group p-2">
@@ -69,6 +69,17 @@
   </select>
 </div>
 </div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisement.language') | capitalize }}</label>
+   <div class="col-md-9">
+ <select class="form-control" name="language">
+ {% for language in languages %}
+   <option value="{{language}}"{% if advertentie.language == language %} selected{% endif %}>{{ language | upper }}</option>
+ {% endfor  %}
+ </select>
+ </div>
+ </div>
 
 <div class="row form-group p-2">
   <label class="form-label col-md-3">Aktief</label>

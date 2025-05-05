@@ -43,7 +43,7 @@
 <td class="text-center"><span class="badge bg-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta description" data-bs-content="{{pagina.description}}">{{pagina.description|length}}</span></td>
 <td class="text-center"><span class="badge bg-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta keywords" data-bs-content="{{pagina.keywords}}">{{pagina.keywords|length}}</span></td>
 <td>{{pagina.datum}}</td>
-<td class="text-center"><a href="/manager/bewerken-pagina/{{pagina.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="/manager/verwijder-pagina/{{pagina.id}}/" class="btn btn-danger btn-sm" data-url="/manager/verwijder-pagina/{{pagina.id}}/">verwijder</a></td>
+<td class="text-center"><a href="{{url}}/manager/edit-page/{{pagina.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="{{url}}/manager/delete-pages/{{pagina.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-page/{{pagina.id}}/">{{ trans('manager.page.delete')}}</a></td>
 
 </tr>
 

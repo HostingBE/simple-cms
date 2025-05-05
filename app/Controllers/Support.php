@@ -107,7 +107,7 @@ return $response;
 }   
 
     
-public function verwijder(Request $request,Response $response) {
+public function delete(Request $request,Response $response) {
 
         $id = $request->getAttribute('id');
         
@@ -263,7 +263,7 @@ public function post_toevoegen(Request $request,Response $response) {
     return $response;
     }
 
-public function toevoegen(Request $request,Response $response) {
+public function add(Request $request,Response $response) {
 
 $soort = "h";
 
@@ -272,13 +272,13 @@ $sql->bindparam(":soort",$soort,PDO::PARAM_STR);
 $sql->execute();
 $categories = $sql->fetchALL(PDO::FETCH_OBJ);
 
- return $this->view->render($response,"manager/support-toevoegen.twig",['huidig' => 'manager-support-toevoegen','categories' => $categories ]);
+ return $this->view->render($response,"manager/support-add.twig",['huidig' => 'manager-support-toevoegen','categories' => $categories ]);
     	
 }
 
 
 
-public function bewerken(Request $request,Response $response) {
+public function edit(Request $request,Response $response) {
 
 $id = $request->getAttribute('id');
 
@@ -299,7 +299,7 @@ $meta['title'] = "bewerken " . $artikel->titel;
 $meta['description'] = "bewerken " . $artikel->description;
 $meta['keywords'] = $artikel->keywords;
 
-return $this->view->render($response,"manager/support-bewerken.twig",['huidig' => 'manager-support-bewerken','meta' => $meta, 'artikel' => $artikel,'categories' => $categories ]);
+return $this->view->render($response,"manager/support-edit.twig",['huidig' => 'manager-support-bewerken','meta' => $meta, 'artikel' => $artikel,'categories' => $categories ]);
 }
 
 public function view(Request $request,Response $response) {
@@ -358,7 +358,7 @@ $sql = $this->db->prepare("SELECT a.id,a.categorie,b.naam,a.titel,a.description,
 $sql->execute();
 $artikelen = $sql->fetchALL(PDO::FETCH_OBJ);
 
-  return $this->view->render($response,"manager/manager-support-overview.twig",['huidig' => 'manager-support-overzicht','artikelen' => $artikelen ,'categories' => $categories ]);
+  return $this->view->render($response,"manager/support-overview.twig",['huidig' => 'manager-support-overzicht','artikelen' => $artikelen ,'categories' => $categories ]);
     	
 }
 

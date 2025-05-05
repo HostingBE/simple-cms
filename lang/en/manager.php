@@ -34,11 +34,30 @@ return [
     'menu' => [ 
         'view_logging' => 'view logging',
         'dashboard' => 'dashboard',
-        'overview' => 'manager overview',
         'chat_overview' => 'chat overview',
         'media' => 'media',
         'overview' => 'overview',
-         'manager_overview' => 'manager overview',
+        'manager_overview' => 'manager overview',
+        'pages' => 'pages',
+        'add_page' => 'add page',
+        'todo' => 'todo',
+        'support' => 'support',
+        'add_support' => 'add support aticle',
+        'links' => 'links',
+        'settings' => 'settings',
+        'advertisements' => 'advertisements',
+        'add_advertisement' => 'add advertisement',
+        'users' => 'users',
+        'pages' => 'pages',
+        'add_page' => 'add page',
+        'category' => 'category',
+        'templates' => 'templates',
+        'blog' => 'blogs',
+        'add_blog' => 'add a blog',
+
+
+
+
     ],
     'category' => [
      'delete' => 'delete',
@@ -50,7 +69,10 @@ return [
      'overview' => 'category overview',
      'manager_overview' => 'manager category overview',
     ],
+  'advertisement' => [
+  'language' => 'language',
 
+  ],
     'media' => [
         'delete' => 'delete',
         'no_media' => 'no media available, upload media!',

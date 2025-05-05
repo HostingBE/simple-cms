@@ -17,7 +17,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Views\Extensions\CsrfExtension;
 
 use App\Controllers\Account;
-use App\Controllers\Advertenties;
+use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
 use App\Controllers\Manager\Category;
 use App\Controllers\Chat;
@@ -27,7 +27,7 @@ use App\Controllers\Email;
 use App\Controllers\Forum;
 use App\Controllers\Google2FA;
 use App\Controllers\Manager\Links;
-use App\Controllers\Manager;
+use App\Controllers\Manager\Manager;
 use App\Controllers\Manager\Media;
 use App\Controllers\Page;
 use App\Controllers\Pages;
@@ -552,8 +552,8 @@ return new Email(
       );
 
 });
-$container->set(Advertenties::class, function($container) {
-return new Advertenties(
+$container->set(Advertisements::class, function($container) {
+return new Advertisements(
       $container->get('view'),
       $container->get('db'),
       $container->get('flash'),
@@ -561,7 +561,8 @@ return new Advertenties(
       $container->get('logger'),   
       $container->get('sitesettings'),
       $container->get('locale'),
-      $container->get('translator') 
+      $container->get('translator'),
+      $container->get('settings')['translations']['languages']     
       );
 
 });

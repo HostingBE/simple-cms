@@ -5,7 +5,7 @@
  * @copyright 2023 HostingBE
  */
 
-namespace App\Controllers;
+namespace App\Controllers\Manager;
 
 use PDO;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -22,7 +22,7 @@ class Manager  {
 	protected $logger;
 	protected $settings;
 
-	public function __construct(Twig $view, $db, $flash,$mail,$logger,$settings,$languages) {
+	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $languages) {
 
 	$this->view = $view;
 	$this->db = $db;
@@ -34,7 +34,7 @@ class Manager  {
 	}
 
 
-public function verwijder_pagina(Request $request,Response $response) {
+public function delete(Request $request,Response $response) {
 
          $pagina = $request->getAttribute('pagina');
           $user = Sentinel::getUser();
@@ -47,7 +47,7 @@ $response->getBody()->write("verwijderd!");
 return $response;
 }  
 
-public function post_pagina_bewerken(Request $request,Response $response) {
+public function post_edit(Request $request,Response $response) {
 	
      $pagina = $request->getAttribute('pagina');
 	  $data = $request->getParsedBody();
@@ -93,14 +93,14 @@ $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keyw
         return  $response; 
         }		
 
-public function toevoegen(Request $request,Response $response) {
+public function add(Request $request,Response $response) {
 	
-  return $this->view->render($response,"manager/manager-pagina-toevoegen.twig",['success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+  return $this->view->render($response,"manager/page-add.twig",['huidig' => 'manager-pagina-toevoegen', 'languages' => array_column($this->languages,'language'),'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
     	
 }
 
 
-public function post_pagina_toevoegen(Request $request,Response $response) {
+public function post_add(Request $request,Response $response) {
 	
 $data = $request->getParsedBody();
 	 
@@ -147,7 +147,7 @@ $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keyw
     return  $response; 
     }	
 
-public function pagina_bewerken(Request $request,Response $response) {
+public function edit(Request $request,Response $response) {
 $pagina = $request->getAttribute('pagina');
 	
 	
@@ -156,22 +156,13 @@ $sql->bindparam(":pagina",$pagina,PDO::PARAM_INT);
 $sql->execute();
 $pagina = $sql->fetch(PDO::FETCH_OBJ);
 
-$templates =   $files = array_diff(scandir(__DIR__."/../../templates/frontend/"), array('.', '..'));
+$templates =   $files = array_diff(scandir(__DIR__."/../../../templates/frontend/"), array('.', '..'));
 
-  return $this->view->render($response,"manager/manager-pagina-bewerken.twig",['huidig' => 'manager-pagina-bewerken','pagina' => $pagina,'languages' => $this->languages, 'templates' => $templates,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+  return $this->view->render($response,"manager/page-edit.twig",['huidig' => 'manager-pagina-bewerken','pagina' => $pagina,'languages' => array_column($this->languages,'language'), 'templates' => $templates,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
     	
 }
 
-
-  public function pagina_toevoegen(Request $request,Response $response) {	
-
-
-   $templates =   $files = array_diff(scandir(__DIR__."/../../templates/frontend/"), array('.', '..'));
-
-    return $this->view->render($response,'manager/manager-pagina-toevoegen.twig',['huidig' => 'manager-pagina-toevoegen','templates' => $templates, 'languages' => $this->languages]);
-      }
-
-public function manager_overview(Request $request,Response $response) {
+public function overview(Request $request,Response $response) {
 	
 	
 $sql = $this->db->prepare("SELECT id,name,titel,description,keywords,language,DATE_FORMAT(datum,'%d-%m-%Y') as datum FROM `pages` ORDER BY id DESC LIMIT 50");
@@ -179,7 +170,7 @@ $sql->execute();
 $paginas = $sql->fetchALL(PDO::FETCH_OBJ);
 	
 	
-  return $this->view->render($response,"manager/manager-pagina-overview.twig",['paginas' => $paginas, 'huidig' => 'manager-pagina-overzicht','success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+  return $this->view->render($response,"manager/pages-overview.twig",['paginas' => $paginas, 'huidig' => 'manager-pagina-overzicht','success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
     	
      }
 }
