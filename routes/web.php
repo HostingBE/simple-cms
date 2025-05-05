@@ -12,6 +12,7 @@ use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
 use App\Controllers\Forum;
+use App\Controllers\Google2FA;
 use App\Controllers\Manager;
 use App\Controllers\Media;
 use App\Controllers\Page;
@@ -25,7 +26,17 @@ use App\Controllers\Login;
 use App\Controllers\Logging;
 use App\Controllers\Users;
 
+$checkUser = new \App\Middleware\CheckUser();
+$check2Factor = new \App\Middleware\check2Factor();
 
+/*
+* Urls after login but no 2FA authentication
+*/
+
+$app->group('', function($route) {
+    $route->get('/2factor-auth', Google2FA::class . ':login')->setName('google2fa.login');
+    $route->post('/verify-code', Google2FA::class . ':verify_code');
+    })->add($checkUser);
 
 $app->group('', function($csrfroute) {
 $csrfroute->get('/status', Page::class . ':status')->setName('page.status');
@@ -53,6 +64,7 @@ $csrfroute->get('/view-email/{code:[^\/]{32}}/{hash:[a-z0-9]{64}}/',Email::class
 
 $csrfroute->get('/apisearch', Search::class . ':apisearch')->setName('search.apisearch');
 
+$csrfroute->get('/activate-2fa',Google2FA::class . ':overview')->setName('google2fa.overview');
 
 $csrfroute->post('/support-like', Support::class . ':post_like');
 

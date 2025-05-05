@@ -114,6 +114,15 @@ $sql->bindparam(":useragent",$_SESSION['info']->useragent,PDO::PARAM_STR);
 $sql->execute();
 
     $this->logger->warning(get_class() . " gebruiker succesvol ingelogd in het systeem ",['IP-address' => $_SESSION['info']->ip,'user' => $user->email]);
+    
+/**
+* Does the user user 2FA
+*/
+if ($user->twofactor == 'y') {
+  return $response->withHeader('Location','/2factor-auth')->withStatus(302);
+  }    
+    
+    
     if ($this->settings['redirect']) {
     return $response->withHeader('Location',$this->settings['redirect'])->withStatus(302); 
     } else {

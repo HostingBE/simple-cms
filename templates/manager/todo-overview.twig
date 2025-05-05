@@ -1,7 +1,7 @@
 {% include "frontend/header.twig" %}
 
       <div class="container">
-<h1 class="pt-4 pb-4">Todo website overview</h1>
+<h1 class="pt-4 pb-4">{{ trans('manager.todo.overview') | capitalize }}</h1>
 
 
 {% include "manager/manager-menu.twig" %} 
@@ -9,10 +9,10 @@
 
        {% include "backend/alert.twig" %} 
         
-<form name="todo" action="/manage/toevoegen-todo" method="POST">
+<form name="todo" action="{{url}}/manage/toevoegen-todo" method="POST">
 {{ csrf() | raw }}
-<div class="row mb-2">
-<div class="col">Voeg een todo toe</div>
+<div class="row mb-2 bg-secondary bg-opacity-50 rounded rounded-3 p-2">
+<div class="col">{{ trans('manager.todo.add_todo') | capitalize }}</div>
 <div class="col"><input type="text" name="ap-todo" class="form-control" value=""></div>
 <div class="col"><select name="ap-categorie" class="form-control">
    {% for cat in categorie %}
@@ -23,7 +23,7 @@
 <option value="o">open</option>
 <option value="c">closed</option>
 </select></div>
-<div class="col"><button class="btn btn-success" type="submit">toevoegen</button></div>
+<div class="col"><button class="btn btn-success" type="submit">{{ trans('manager.todo.add') }}</button></div>
 </div>
 
 </form>
@@ -35,11 +35,11 @@
 <table class="table dark">
 <tr>
 <th>#</th>
-<th class="text-center">categorie</th>
-<th>todo</th>
-<th>status</th>
-<th>datum</th>
-<th class="text-center">beheer</th>
+<th class="text-center">{{ trans('manager.todo.category') | capitalize }}</th>
+<th>{{ trans('manager.todo.todo') | capitalize }}</th>
+<th>{{ trans('manager.todo.status') | capitalize }}</th>
+<th>{{ trans('manager.todo.date') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.todo.manage') | capitalize }}</th>
 </tr>
 
 {% if todos|length < 1 %}
@@ -56,7 +56,7 @@
 <td>{{todo.todo|capitalize}}</td>
 <td>{% if todo.status == "o" %}open{% endif %}{% if todo.status == "c" %}closed{% endif %}</td>
 <td>{{todo.datum}}</td>
-<td class="text-center"><a href="/manager/todo-bewerken/{{todo.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="/verwijder-manager-todo/{{todo.id}}/" data-url="/verwijder-manager-todo/{{todo.id}}/" class="btn btn-danger btn-sm">verwijder</a></td>
+<td class="text-center"><a href="{{url}}/manager/todo-edit/{{todo.id}}/" class="btn btn-dark btn-sm">{{ trans('manager.todo.edit') }}</a> <a href="{{url}}/manager/delete-todo/{{todo.id}}/" data-url="{{url}}/manager/delete-todo/{{todo.id}}/" class="btn btn-danger btn-sm">{{ trans('manager.todo.delete') }}</a></td>
 
 </tr>
 

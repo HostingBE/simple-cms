@@ -31,8 +31,9 @@ return [
 'loggedout' => 'you are succesfully logged off, your session is terminated!',
 'invalid' => 'username or password are incorrect, try again!',
 'not_activated' => 'your account is not active, click on the activation link first in the e-mail',
+'2falogin' => 'two factor authentication',
+'2fa_message' => 'enter the code from your authenticator app'
 ];
-
 
 
 

@@ -23,7 +23,10 @@
         "illuminate/translation": "^9.50",
         "illuminate/events": "^9.50",
         "symfony/var-dumper": "^7.2",
-        "predis/predis": "^3.0"
+        "predis/predis": "^3.0",
+        "pragmarx/google2fa": "^8.0",
+        "pragmarx/google2fa-qrcode": "^3.0",
+        "bacon/bacon-qr-code": "^3.0"
     },
  "autoload": {
     "psr-4": {

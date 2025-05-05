@@ -1,0 +1,72 @@
+{% include "frontend/header.twig" %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">2 Factor Authentication</h1>
+        <p>strengthen your account with an extra security measure</p>
+    </div>
+
+<div class="row">
+
+
+{% if twofa == 'y' %}
+<div class="col-md-6 col-sm-12">
+
+<div class="card mb-3">
+<div class="card-body">
+
+<p>Your account is already secured by 2 Factor Authentication. Well done!</p>
+<a href="{{url}}/delete-2fa">delete 2fa</a>
+</div>
+</div>
+</div>
+
+{% endif %}
+
+{% if twofa == 'n' %}
+<div class="col-md-6 col-sm-12">
+
+<div class="card mb-3">
+<div class="card-body">
+{{image_url | raw }}
+
+<p>Scan the code above with your authenticator app</p>
+</div>
+
+</div>
+
+</div>
+<div class="col-md-6 col-sm-12">
+
+    {% include "alert.twig" %}
+        
+<div class="card mb-3">
+	<div class="card-body">
+
+
+
+
+<p>Verify your 2FA setup by entering a code here.</p>
+<form name="activate2fa" action="{{url}}/verify" method="POST" id="ajax-form">
+
+<div class="input-group">
+<input type="text" class="form-control" name="code2fa" value="" placeholder="enter your code..">
+<input type="submit" class="btn btn-primary" id="submit-ajax" value="Verify">
+</div>
+
+</form>
+
+</div>
+  </div>
+ </div>
+{% endif %}
+
+ </div>
+
+</main>
+
+
+
+{% include "frontend/footer.twig" %}

@@ -19,6 +19,18 @@
 
 
 return [
+    'todo' => [
+     'category' => 'category',
+     'edit' => 'edit',
+     'delete' => 'delete',
+     'todo' => 'todo',
+     'status' => 'status',
+     'date' => 'date',
+     'manage' => 'manage', 
+     'add' => 'add',
+     'add_todo' => 'add your todo',
+     'overview' => 'manager todo overview',
+    ],
     'menu' => [ 
         'view_logging' => 'view logging',
         'dashboard' => 'dashboard',

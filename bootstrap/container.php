@@ -25,6 +25,7 @@ use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
 use App\Controllers\Forum;
+use App\Controllers\Google2FA;
 use App\Controllers\Manager\Links;
 use App\Controllers\Manager;
 use App\Controllers\Manager\Media;
@@ -431,6 +432,21 @@ return new Dashboard(
       );
 
 });
+
+$container->set(Google2FA::class, function($container) {
+      return new Google2FA(
+            $container->get('view'),
+            $container->get('db'),
+            $container->get('flash'),
+            $container->get('logger'),   
+            $container->get('sitesettings'),
+            $container->get('locale'),
+            $container->get('translator')    
+            );
+      
+      });
+
+
 $container->set(Partner::class, function($container) {
 return new Partner(
       $container->get('view'),
