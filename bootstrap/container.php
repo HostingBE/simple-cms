@@ -87,20 +87,11 @@ $capsule->addConnection([
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-
 $container->set('locale', function($container) use ($app) {
+      return (new \App\Language\LanguageByDomain($container->get('settings')['translations']))->getDomain();
+ 
+});
 
-$currentlang = substr($_SERVER['REQUEST_URI'],0,4);
-
-if ((strpos($currentlang,"/") == 0) && (strrpos($currentlang,"/") == 3)) {
-$currentlang = str_replace('/','',$currentlang);
-} 
-if (in_array($currentlang, $container->get('settings')['translations']['languages'])) {
-return $currentlang;
-          }  
-$_SESSION['locale'] = $currentlang;
-return "";
- });
 
 $container->set('translator', function ($container) use ($app) {
 $loader = new Illuminate\Translation\FileLoader(
@@ -171,16 +162,17 @@ return $results;
 });
 
 
-if ($container->get('locale')) {
-$container->get("view")->getEnvironment()->addGlobal('locale_url', $container->get('sitesettings')['url']."/".$container->get('locale')); 
-} else {
-$container->get("view")->getEnvironment()->addGlobal('locale_url', $container->get('sitesettings')['url']);     
-}
-$container->get("view")->getEnvironment()->addGlobal('url', $container->get('sitesettings')['url']);   
+/**
+ * Determine the currrent url
+ */
+$key = array_search($container->get('locale'), array_column($container->get('settings')['translations']['languages'], 'language'));
+$url = $container->get('settings')['translations']['languages'][$key]['url'];
+
+$container->get("view")->getEnvironment()->addGlobal('url', 'https://'.$url);   
 $container->get("view")->getEnvironment()->addGlobal('sitename',$container->get('sitesettings')['sitename']);
 $container->get("view")->getEnvironment()->addGlobal('version',$container->get('settings')['version']);
 $container->get("view")->getEnvironment()->addGlobal('advertenties',$container->get('sitesettings')['advertenties']);
-$container->get("view")->getEnvironment()->addGlobal('locale',$container->get('locale'));
+$container->get("view")->getEnvironment()->addGlobal('languages',$container->get('settings')['translations']['languages']);
 $container->get("view")->getEnvironment()->addGlobal('multilanguage',$container->get('sitesettings')['multilanguage']);
 $container->get("view")->getEnvironment()->addGlobal('htmleditor',$container->get('sitesettings')['htmleditor']);
 $container->get("view")->getEnvironment()->addGlobal('disableforum',$container->get('sitesettings')['disableforum']);

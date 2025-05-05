@@ -40,9 +40,5 @@ $response = new Response();
 return $container->get('view')->render($response->withStatus(500), 'errors/500.twig',['message' => $exception->getMessage(),'line' => $exception->getLine(),'code' => $exception->getCode(), 'file' => $exception->getFile()]); 
 });
 
-if ($container->get('settings')['translations']['enabled'] === true) {
-$app->add(new LanguageLocal($app, $container->get('settings')['translations']['enabled'], $container->get('settings')['translations']['languages']));
-}
-
 $app->add($errorMiddleware);
 ?>

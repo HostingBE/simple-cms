@@ -26,7 +26,7 @@ public function __construct($db, $settings, $logger) {
 
 public function process(Request $request, RequestHandler $handler): Response {
 
-if (($request->getQueryParams()['utm_campaign'] == $this->settings['sitename']) && (strlen($request->getQueryParams()['utm_source']) == 32)) {
+if ((isset($request->getQueryParams()['utm_campaign'])) && ($request->getQueryParams()['utm_campaign'] == $this->settings['sitename']) && (strlen($request->getQueryParams()['utm_source']) == 32)) {
 
 $sql = $this->db->prepare("SELECT user_id FROM activations WHERE code=:code LIMIT 1");
 $sql->bindparam(":code",$request->getQueryParams()['utm_source'],PDO::PARAM_STR);

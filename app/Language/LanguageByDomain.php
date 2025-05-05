@@ -17,25 +17,29 @@
 *
 */
 
-return [
+namespace App\Language;
 
-'forum' => [
-    'forum_overview' => 'forum overview',
-    'select_category' => 'select category',
-    'filter_by' => 'filter by',
-    'latest_contributions' => 'Latest contributions',
-    'ask_question' => 'ask question',
-    'top_contributors' => 'top contributors',
-    'votes' => 'votes',
-    'replies' => 'replies',
-    'views' => 'views',
-    'by' => 'by',
-    'total_posts' => 'total posts',
-    'search' => 'search',
-    'more' => 'more',
-    'no_topics' => 'No topics available yet in this category!',
-    'no_contributors' => 'no contributors yet',
-],
-]
+class LanguageByDomain {
+
+protected $translations;
+
+public function __construct($translations) {
+    $this->translations = $translations;
+    }
+
+
+public function getDomain() {
+
+$domain = $_SERVER['HTTP_HOST'];
+
+if ($this->translations['enabled'] === true) {
+        $key = array_search($domain, array_column($this->translations['languages'], 'url'));
+
+        return $this->translations['languages'][$key]['language'];
+        } else {
+        return $this->translations['fallback'];
+        }
+    }
+}
 
 ?>

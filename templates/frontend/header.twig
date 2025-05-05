@@ -12,16 +12,6 @@
        url('{{url}}/fonts/oswald-v49-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
        url('{{url}}/fonts/oswald-v49-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
-/* roboto-regular - latin */
-@font-face {
-  font-family: 'Roboto Condensed';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: local(''),
-       url('{{url}}/fonts/roboto-condensed-v25-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('{{url}}/fonts/roboto-condensed-v25-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
 </style>
 
 <meta charset="utf-8">
@@ -43,16 +33,14 @@
 {% endif %}
 
 <link rel="preload" href="{{url}}/fonts/oswald-v49-latin-regular.woff2" as="font" type="font/woff2"  crossorigin />
-<link rel="preload" href="{{url}}/fonts/roboto-condensed-v25-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="{{url}}/fonts/oswald-v49-latin-regular.woff" as="font" type="font/woff"  crossorigin />
-<link rel="preload" href="{{url}}/fonts/roboto-condensed-v25-latin-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="{{url}}/custom/css/bootstrap.css" as="style" />
+<link rel="preload" href="{{url}}/cms/css/bootstrap.css" as="style" />
 
 {%if huidig in ['bekijk-blog'] %}
 <link rel="preload" href="{{url}}/uploads/{{weblog.imagename}}-800.webp" as="image" />
 {%endif%}
 
-<link rel="stylesheet" href="{{url}}/custom/css/bootstrap.css"> 
+<link rel="stylesheet" href="{{url}}/cms/css/bootstrap.css"> 
 </head>
 <body>
 <div>
