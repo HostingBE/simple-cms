@@ -13,6 +13,7 @@ logs/
 .composer/
 .local/
 .config/
+.dotnet/
 sess_*
 .cache/
 .npm/
