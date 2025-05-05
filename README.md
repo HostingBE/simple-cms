@@ -1,8 +1,18 @@
 # Simple CMS #
 
-Simple CMS written in PHP with the use of slim 4 framework, needs PHP 8.1 or higher and composer installed.
+Are you tired of complex __content management systems__ that require endless hours of training and a hefty budget? Look no further! Introducing Simple CMS – the intuitive, open-source content management system crafted in PHP, designed with simplicity and efficiency at its core.\n\nWith Simple CMS, you can easily create, edit, and manage your website content without the need for advanced technical skills. Whether you're a small business owner, a blogger, or a web developer, our platform empowers you to take full control of your digital presence.\n\nHere’s why Simple CMS stands out:
 
-![Screenshot Simple CMS](images/screenshot-simple-cms.png)
+1. **User-Friendly Interface**: Our streamlined dashboard makes navigating your content a breeze. You can quickly publish new articles, upload images, and manage your pages with just a few clicks.
+
+![Screenshot Simple CMS](images/simple-cms-frontend.jpg)
+
+2. **Lightweight and Fast**: Built on PHP, Simple CMS is optimized for performance. Say goodbye to slow-loading pages and hello to a seamless browsing experience for your visitors.
+
+3. **Fully Customizable**: With open-source flexibility, you can tailor Simple CMS to meet your specific needs. Add features, modify templates, and create a unique website that reflects your brand’s identity.
+
+4. **Robust Community Support**: Join a growing community of developers and users who are passionate about open-source solutions. With a wealth of resources, forums, and documentation at your fingertips, help is always available when you need it.\n\n
+
+![Screenshot Simple CMS](images/simple-cms-backend.jpg)
 
 ## Howto get started ##
 * Clone the repository or download the zip file
