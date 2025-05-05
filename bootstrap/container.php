@@ -19,7 +19,7 @@ use App\Views\Extensions\CsrfExtension;
 use App\Controllers\Account;
 use App\Controllers\Advertenties;
 use App\Controllers\Blog;
-use App\Controllers\Category;
+use App\Controllers\Manager\Category;
 use App\Controllers\Chat;
 use App\Controllers\Contact;
 use App\Controllers\Dashboard;
@@ -278,7 +278,10 @@ return new Pages(
 $container->set(Category::class, function($container) {
 return new Category(
       $container->get('view'),
-      $container->get('db')
+      $container->get('db'),
+      $container->get('locale'),
+      $container->get('translator'),  
+      $container->get('settings')['translations']['languages']
       );
 
 });

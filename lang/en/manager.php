@@ -28,6 +28,17 @@ return [
         'overview' => 'overview',
          'manager_overview' => 'manager overview',
     ],
+    'category' => [
+     'delete' => 'delete',
+     'manage' => 'manage',
+     'kind' => 'kind',
+     'language' => 'language',
+     'name' => 'name',
+     'add_category' => 'add category',
+     'overview' => 'category overview',
+     'manager_overview' => 'manager category overview',
+    ],
+
     'media' => [
         'delete' => 'delete',
         'no_media' => 'no media available, upload media!',

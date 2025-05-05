@@ -4,7 +4,7 @@
 use App\Controllers\Account;
 use App\Controllers\Advertenties;
 use App\Controllers\Blog;
-use App\Controllers\Category;
+use App\Controllers\Manager\Category;
 use App\Controllers\Chat;
 use App\Controllers\Dashboard;
 use App\Controllers\Forum;
@@ -32,7 +32,7 @@ $route->get('/manager/verwijder-pagina/{pagina:[0-9]+}/', Manager::class . ':ver
 $route->get('/manager/blog-toevoegen', Blog::class . ':blog_toevoegen')->setName('blog.blog_toevoegen');
 $route->get('/manager/blog-overzicht', Blog::class . ':manager_overview')->setName('blog.manager_overview');
 $route->get('/manager/links-overview', Links::class . ':overview')->setName('links.overview');
-$route->get('/manager/categorie-overzicht', Category::class . ':manager_overview')->setName('category.manager_overview');
+$route->get('/manager/category-overview', Category::class . ':overview')->setName('category.overview');
 $route->get('/manager/blog-bewerken/{id:[0-9]+}/', Blog::class . ':bewerken')->setName('blog.bewerken');
 $route->get('/manager/verwijder-blog/{id:[0-9]+}/', Blog::class . ':verwijder')->setName('blog.verwijder');
 $route->get('/manager/todo-overview', Todo::class . ':overview');
@@ -51,7 +51,7 @@ $route->get('/manager/verwijder-support/{id:[0-9]+}/', Support::class . ':verwij
 $route->get('/manager/gebruikers-overzicht', Users::class . ':manager_overview')->setName('users.manager_overview');
 $route->get('/manager/verwijder-gebruiker/{id:[0-9]+}/', Users::class . ':manager_verwijder');
 $route->get('/manager/bekijk-gebruiker/{id:[0-9]+}/', Users::class . ':manager_view');
-$route->get('/manager/verwijder-categorie/{id:[0-9]+}/', Category::class . ':manager_verwijder');
+$route->get('/manager/delete-category/{id:[0-9]+}/', Category::class . ':delete');
 $route->get('/manager/settings-overview', ManagerSettings::class . ':overview');
 $route->get('/manager/advertenties-overview', Advertenties::class . ':overview');
 $route->get('/manager/advertentie-toevoegen', Advertenties::class . ':toevoegen');
@@ -63,7 +63,7 @@ $route->get('/manager/view-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::clas
 $route->post('/manager/advertentie-toevoegen', Advertenties::class . ':post_toevoegen');
 $route->post('/manager/advertentie-bewerken/{id:[0-9]+}/', Advertenties::class . ':post_bewerken');
 $route->post('/manager/upload-image', Upload::class . ':tinymceImage');
-$route->post('/manager/categorie-toevoegen', Category::class . ':post_toevoegen');
+$route->post('/manager/category-add', Category::class . ':post_add');
 $route->post('/manager/support-toevoegen', Support::class . ':post_toevoegen');
 $route->post('/manager/support-bewerken/{id:[0-9]+}/', Support::class . ':post_bewerken');
 $route->post('/manager/pagina-toevoegen', Manager::class . ':post_pagina_toevoegen');
