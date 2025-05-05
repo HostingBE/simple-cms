@@ -22,6 +22,7 @@ cache/
 composer.lock
 backup/
 tmp/
+templates/design/.sass-cache/
 public_sql/
 config/config.php
 public_html/node_modules/
