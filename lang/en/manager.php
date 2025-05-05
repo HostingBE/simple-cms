@@ -54,9 +54,9 @@ return [
         'templates' => 'templates',
         'blog' => 'blogs',
         'add_blog' => 'add a blog',
-
-
-
+    ],
+    'support' => [
+    'save_article' => 'save article',
 
     ],
     'category' => [

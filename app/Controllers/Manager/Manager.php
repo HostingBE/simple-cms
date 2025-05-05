@@ -95,7 +95,9 @@ $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keyw
 
 public function add(Request $request,Response $response) {
 	
-  return $this->view->render($response,"manager/page-add.twig",['huidig' => 'manager-pagina-toevoegen', 'languages' => array_column($this->languages,'language'),'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+	$templates =   $files = array_diff(scandir(__DIR__."/../../../templates/frontend/"), array('.', '..'));
+
+  return $this->view->render($response,"manager/page-add.twig",['huidig' => 'manager-pagina-toevoegen', 'templates' => $templates,'languages' => array_column($this->languages,'language'),'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
     	
 }
 

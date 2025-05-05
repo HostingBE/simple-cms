@@ -14,7 +14,7 @@
 
 <div class="card-body">
 
- <form class="flex" id="ajax-form" action="{{url}}/manager/support-toevoegen" method="POST" data-reload="false">
+ <form class="flex" id="ajax-form" action="{{url}}/manager/support-add" method="POST" data-reload="false">
 {{ csrf() | raw }}
                                     <div class="form-group">
                                         <label class="form-label" for="title">Title:</label>
@@ -32,31 +32,48 @@
                                     </div>                                    
 
                                     <div class="form-group">
-                                        <label class="form-label" for="keywords">Categorie:</label>
-                                        <select name="categorie"  class="form-control">
+                                       <div class="row">
+                                        <div class="col">
+                                        <label class="form-label" for="category">Categorie:</label>
+                                      <select name="categorie"  class="form-control">
                                          {% for categorie in categories %}
                                          <option value="{{categorie.id}}">{{categorie.naam|capitalize}}</option>
                                          {% endfor %}
                                         </select>
+                                </div>
+                               
+                       
+                                <div class="col">
+                                              <label for="language" class="form-label">Language</label>
+           
+                                              <select name="language" class="form-control">
+                                              {% for language in languages %}
+                                              <option value="{{language}}">{{language}}</option>
+                                              {% endfor %}
+                                              </select>
+                                            </div>
+                                        </div>                   
                                     </div>
-                                 <div class="row pt-4 pb-4">
-                              
+                                
+                                    <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
                                         <label class="form-label col-1" for="tags">Tags:</label>
-                                        <div class="col-5">
+                                    
                                         <input type="text" name="tags" class="form-control" value="" placeholder="tags  comma seperated ..">
                                         </div>
+                                        <div class="col">
                                         <label class="form-label col-1" for="tags">Likes:</label>
-                                        <div class="col-5">
                                         <input type="text" name="likes" class="form-control" value="" placeholder="total likes ..">
-                                        </div>
-                                                  </div>    
-
+                                      </div>    
+                                    </div>
+                                </div>
                                   <div class="form-group">
                                         <label class="form-label" for="keywords">Artikel:</label>
                                                 <textarea name="artikel" class="form-control" rows="15" cols="70" id="textarea-input"></textarea>
                                     </div>
 
-                                     <button type="submit" class="btn btn-primary" id="submit-ajax">save article</button>
+                                     <button type="submit" class="btn btn-primary m-2" id="submit-ajax">{{ trans('manager.support.save_article') }}</button>
 </form>
 	</div>
 </div>

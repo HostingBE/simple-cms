@@ -280,7 +280,7 @@ $sql->execute();
 $media = $sql->fetchALL(PDO::FETCH_OBJ); 
 
 
-return $this->view->render($response,'manager/manager-blog-bewerken.twig',['huidig' => 'manager-blog-bewerken','blog' => $blog ,'users' => $users , 'medias' => $media,'categories' => $categories,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+return $this->view->render($response,'manager/blog-edit.twig',['huidig' => 'manager-blog-bewerken','blog' => $blog ,'users' => $users , 'medias' => $media,'categories' => $categories,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
 
 }
 
@@ -325,7 +325,7 @@ $sql = $this->db->prepare("SELECT id,naam,soort FROM categorie WHERE soort=:soor
 $sql->bindparam(":soort",$soort,PDO::PARAM_STR,1);
 $sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
-$categorieen = $sql->fetchALL(PDO::FETCH_OBJ);
+$categories = $sql->fetchALL(PDO::FETCH_OBJ);
 
 $sql = $this->db->prepare("SELECT a.id,a.naam,a.title,a.description,a.keywords,a.tags,a.image,b.first_name,b.last_name,b.icon,c.naam,a.user,a.publish,DATE_FORMAT(a.date,'%Y-%m-%dT%H:%m:%s') as date,a.content,a.tags,a.category,CONCAT(d.naam,'.',d.extentie) AS media,d.naam AS imagename,d.width,d.height,d.alt FROM blog AS a LEFT JOIN users AS b ON b.id=a.user LEFT JOIN categorie AS c ON c.id=a.category LEFT JOIN media d ON d.id=a.image WHERE a.id=:id");
 $sql->bindparam(":id",$id,PDO::PARAM_INT);
@@ -335,6 +335,8 @@ $weblog = $sql->fetch(PDO::FETCH_OBJ);
 if (!$weblog) {
  throw new HttpNotFoundException($request);
  }
+
+$dimensions = (new \App\Content\ResizeImage($weblog->width, $weblog->height, $this->settings['image_size']))->crop();
 
 $weblog->content = str_replace('<h2 ','<h2 itemprop="articleSection"',$weblog->content);
 $weblog->content = str_replace('</h2>','</h2><span itemprop="articleBody">',$weblog->content);
@@ -366,7 +368,7 @@ $_SESSION['captcha'] = $code;
 
 $image = $captcha->base_encode();
 
-return $this->view->render($response,'frontend/view-blog.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'bekijk-blog','meta' => $meta,'weblog' => $weblog,'categorieen' => $categorieen, 'aantal_berichten' => count($berichten), 'berichten' => $berichten, 'url' => $this->settings['url'],'randomblogs' => $randomblogs,'captcha' => $image, 'path' => '/blog-'.$weblog->id.'-'.strtolower(str_replace(' ','-',$weblog->title)).'/']);
+return $this->view->render($response,'frontend/view-blog.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'bekijk-blog','meta' => $meta,'weblog' => $weblog,'categories' => $categories, 'aantal_berichten' => count($berichten), 'berichten' => $berichten, 'dimensions' => $dimensions,'randomblogs' => $randomblogs,'captcha' => $image, 'path' => '/blog-'.$weblog->id.'-'.strtolower(str_replace(' ','-',$weblog->title)).'/']);
 }	
    
 
@@ -383,7 +385,7 @@ $sql = $this->db->prepare("SELECT a.id,a.title,a.tags,b.naam as categorie_naam,a
 $sql->execute();
 $blogs = $sql->fetchALL(PDO::FETCH_OBJ);
 
-return $this->view->render($response,'manager/manager-blog-overview.twig',['huidig' => 'manager-blog-overzicht','blogs' => $blogs,'categorieen' => $categorieen ]);
+return $this->view->render($response,'manager/blogs-overview.twig',['huidig' => 'manager-blog-overzicht','blogs' => $blogs,'categorieen' => $categorieen ]);
 }    
 
   public function blog_toevoegen(Request $request,Response $response) { 

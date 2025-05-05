@@ -18,9 +18,7 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 require(dirname(__FILE__) .'/Captcha.class.php');
 
-require(__DIR__. "/DBhelpers.php");
-
-use App\Controllers\DBHelpers;
+use App\Controllers\DBhelpers;
 
 class Support {
 	
@@ -32,9 +30,11 @@ protected $logger;
 protected $settings;
 protected $directory = __DIR__ . '/../../public_html/uploads/';
 protected $resize = "1024";
+protected $translator;
+protected $languages;
 
   
-public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings,$locale) {
+public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator, $languages) {
 $this->view = $view;
 $this->db = $db;
 $this->flash = $flash;
@@ -42,6 +42,8 @@ $this->mail = $mail;
 $this->logger = $logger;
 $this->settings = $settings;
 $this->locale = $locale;
+$this->translator = $translator;
+$this->languages = $languages;
 }
 
 
@@ -209,7 +211,7 @@ if (!$v->validate()) {
     return $response;
     }
 
-public function post_toevoegen(Request $request,Response $response) {
+public function post_add(Request $request,Response $response) {
   $files = array();
   $id = $request->getAttribute('id');
 
@@ -225,6 +227,7 @@ public function post_toevoegen(Request $request,Response $response) {
   $v->rule('required','keywords');
   $v->rule('required','artikel');
   $v->rule('length','artikel',12,4096);
+  $v->rule('required','language');
 
 	 if (!$v->validate()) {
         $errormessage = current((Array)$v->errors())[0];
@@ -237,7 +240,7 @@ public function post_toevoegen(Request $request,Response $response) {
 
     $likes = $data['likes'] ?: 0;
 
-     $sql = $this->db->prepare("INSERT INTO artikelen (user,categorie,titel,description,keywords,artikel,tags,likes,datum) VALUES(:user,:categorie,:titel,:omschrijving,:keywords,:artikel,:tags,:likes,now())");
+     $sql = $this->db->prepare("INSERT INTO artikelen (user,categorie,titel,description,keywords,artikel,tags,likes,language,datum) VALUES(:user,:categorie,:titel,:omschrijving,:keywords,:artikel,:tags,:likes,:language,now())");
      $sql->bindparam(":user", $user->id, PDO::PARAM_INT);
      $sql->bindparam(":titel", $data['title'], PDO::PARAM_STR);   
      $sql->bindparam(":omschrijving", $data['description'], PDO::PARAM_STR);
@@ -246,6 +249,7 @@ public function post_toevoegen(Request $request,Response $response) {
      $sql->bindparam(":tags", $data['tags'], PDO::PARAM_STR);
      $sql->bindparam(":likes", $likes, PDO::PARAM_INT);
      $sql->bindparam(":categorie", $data['categorie'], PDO::PARAM_INT);
+     $sql->bindparam(":language", $data['language'], PDO::PARAM_STR,2);
      $sql->execute();
 
     $artikel_id = $this->db->lastinsertid();
@@ -272,7 +276,9 @@ $sql->bindparam(":soort",$soort,PDO::PARAM_STR);
 $sql->execute();
 $categories = $sql->fetchALL(PDO::FETCH_OBJ);
 
- return $this->view->render($response,"manager/support-add.twig",['huidig' => 'manager-support-toevoegen','categories' => $categories ]);
+
+
+ return $this->view->render($response,"manager/support-add.twig",['huidig' => 'manager-support-toevoegen','categories' => $categories,'languages' => array_column($this->languages,'language')]);
     	
 }
 
@@ -306,7 +312,7 @@ public function view(Request $request,Response $response) {
 
 $id = $request->getAttribute('id');
 
- $dbhelpers = new DBHelpers($this->db);
+ $dbhelpers = new DBHelpers($this->db, $this->locale);
  $categories = $dbhelpers->get_support_categories();
 
 $sql = $this->db->prepare("SELECT id,titel,description,keywords,artikel,likes,tags FROM artikelen WHERE id=:id");
@@ -354,7 +360,7 @@ $sql->bindparam(":soort",$soort,PDO::PARAM_STR);
 $sql->execute();
 $categories = $sql->fetchALL(PDO::FETCH_OBJ);
 
-$sql = $this->db->prepare("SELECT a.id,a.categorie,b.naam,a.titel,a.description,a.keywords,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum FROM artikelen  AS a LEFT JOIN categorie  AS b ON b.id=a.categorie ORDER BY a.id DESC");
+$sql = $this->db->prepare("SELECT a.id,a.categorie,b.naam,a.titel,a.description,a.keywords,a.language,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum FROM artikelen  AS a LEFT JOIN categorie  AS b ON b.id=a.categorie ORDER BY a.id DESC");
 $sql->execute();
 $artikelen = $sql->fetchALL(PDO::FETCH_OBJ);
 
@@ -367,7 +373,7 @@ public function view_category(Request $request,Response $response) {
 $id = $request->getAttribute('id');
 $name = $request->getAttribute('name');
 
- $dbhelpers = new DBHelpers($this->db);
+ $dbhelpers = new DBHelpers($this->db, $this->locale);
  $categories = $dbhelpers->get_support_categories();
 
 $a = array_search($id, array_column($categories, 'id'));
@@ -387,7 +393,7 @@ $meta['title']="SeoSite: overview category " . $currentcategory . " of our SEO s
 $meta['description']="Learn more about " . $currentcategory  . ", by viewing the articles..";
 $meta['keywords']="html, basics, keyword, tool, backlink, terminology,seosite";
 
-  return $this->view->render($response,"frontend/seo-support-category.twig",['huidig' => 'support-category','categories' => $categories,'articles' => $articles,'meta' => $meta,'latest' => $latest,'currentcategory' => $currentcategory]);
+  return $this->view->render($response,"frontend/support-category.twig",['huidig' => 'support-category','categories' => $categories,'articles' => $articles,'meta' => $meta,'latest' => $latest,'currentcategory' => $currentcategory]);
 }      
 
 public function search(Request $request,Response $response) {
@@ -405,7 +411,7 @@ if (!$v->validate()) {
         $response->getBody()->write(json_encode(array('status' => 'error','message' => $errormessage))); 
         return  $response;
         }   
- $dbhelpers = new DBHelpers($this->db);
+ $dbhelpers = new DBHelpers($this->db, $this->locale);
  $categories = $dbhelpers->get_support_categories();
 
 
@@ -413,7 +419,7 @@ $sql = $this->db->prepare("SELECT a.id,a.titel,CONCAT(SUBSTRING_INDEX(a.artikel,
 $sql->execute();
 $articles =  $sql->fetchALL(PDO::FETCH_OBJ);
 
-  return $this->view->render($response,"frontend/seo-support-search.twig",['huidig' => 'support-search','articles' => $articles, 'categories' => $categories, 'q' => $data['q']]);
+  return $this->view->render($response,"frontend/support-search.twig",['huidig' => 'support-search','articles' => $articles, 'categories' => $categories, 'q' => $data['q']]);
       
 }
 
@@ -422,23 +428,25 @@ public function overview(Request $request,Response $response) {
 $soort = "h";
 $articlesnew = $articlesread = array();
 
- $dbhelpers = new DBHelpers($this->db);
- $categories = $dbhelpers->get_support_categories();
+$dbhelpers = new DBHelpers($this->db, $this->locale);
+$categories = $dbhelpers->get_support_categories();
 
-$sql = $this->db->prepare("SELECT a.id,a.titel,a.artikel,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum,a.likes,b.naam AS categorienaam FROM artikelen AS a LEFT JOIN categorie AS b ON b.id=a.categorie ORDER BY a.id DESC LIMIT 10");
+$sql = $this->db->prepare("SELECT a.id,a.titel,a.artikel,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum,a.likes,b.naam AS categorienaam FROM artikelen AS a LEFT JOIN categorie AS b ON b.id=a.categorie WHERE a.language=:locale ORDER BY a.id DESC LIMIT 10");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $articlesnew =  $sql->fetchALL(PDO::FETCH_OBJ);
 
-$sql = $this->db->prepare("SELECT a.id,a.titel,a.artikel,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum,a.likes,b.naam AS categorienaam FROM artikelen AS a LEFT JOIN categorie AS b ON b.id=a.categorie ORDER BY a.likes DESC LIMIT 10");
+$sql = $this->db->prepare("SELECT a.id,a.titel,a.artikel,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum,a.likes,b.naam AS categorienaam FROM artikelen AS a LEFT JOIN categorie AS b ON b.id=a.categorie WHERE a.language=:locale ORDER BY a.likes DESC LIMIT 10");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $articlesread =  $sql->fetchALL(PDO::FETCH_OBJ);
 
 
-$meta['title']="SeoSite: overview of our SEO support articles shown per category";
-$meta['description']="Learn more about HTML basic, onpage SEO, Keyword tool, Backlink tool and more..";
-$meta['keywords']="html, basics, keyword, tool, backlink, terminology,seosite";
+$meta['title']=$this->translator->get('meta.support-overview.title');
+$meta['description']=$this->translator->get('meta.support-overview.description');
+$meta['keywords']=$this->translator->get('meta.support-overview.keywords');
 
-  return $this->view->render($response,"frontend/seo-support-overview.twig",['huidig' => 'support-overview','categories' => $categories,'articlesnew' => $articlesnew,'articlesread' => $articlesread,'meta' => $meta]);
+  return $this->view->render($response,"frontend/support-overview.twig",['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'support-overview','categories' => $categories,'articlesnew' => $articlesnew,'articlesread' => $articlesread,'meta' => $meta]);
     	
 }
      }

@@ -512,7 +512,9 @@ return new Support(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),  
-      $container->get('locale')  
+      $container->get('locale'),
+      $container->get('translator'),
+      $container->get('settings')['translations']['languages']
       );
 
 });

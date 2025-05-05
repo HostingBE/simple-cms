@@ -18,6 +18,7 @@
 <tr>
 <th>#</th>
 <th>naam</th>
+<th class="text-center">language</th>
 <th>titel</th>
 <th>meta description</th>
 <th>meta keywords</th>
@@ -27,7 +28,7 @@
 
 {% if artikelen|length < 1 %}
 <tr>
-		<td colspan="7" class="text-center">Er zijn nog geen support pagina's beschikbaar</td>
+		<td colspan="8" class="text-center">Er zijn nog geen support pagina's beschikbaar</td>
 </tr>
 {% endif %}
 
@@ -36,6 +37,7 @@
 <tr>
 <td>..</td>
 <td>{{artikel.naam}}</td>
+<td class="text-center"><img src="{{url}}/images/{{artikel.language}}.jpg" class="rounded"></td>
 <td>{{artikel.titel}}</td>
 <td class="text-center"><span class="badge bg-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta description" data-bs-content="{{artikel.description}}">{{artikel.description|length}}</span></td>
 <td class="text-center"><span class="badge bg-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta keywords" data-bs-content="{{artikel.keywords}}">{{artikel.keywords|length}}</span></td>

@@ -4,34 +4,14 @@
 {% include "frontend/svg/fa-heart.twig" %}
 {% include "frontend/svg/fa-comment.twig" %}
 
+<div class="container">
 
-<div class="container-fluid bg-altdarkorange bg-opacity-50 pb-4">
-<h1 class="d-flex justify-content-center pt-4 pb-4 text-white">Hi, how can we help?</h1>
+<h1 class="py-4">{{currentcategory|capitalize}} seo support</h1>
 
-<div class="row d-flex justify-content-center">
-    <div class="col-md-8 col-sm-12">
-                <p>If you have any question you can ask below or enter what you are looking for!</p>
-    <form name="search" method="POST" action="{{url}}/support-search">
-        {{ csrf() | raw }}
-            <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="type your search term .." value="{{q}}"><button type="submit" class="btn btn-primary btn-lg" type="submit">search</button>
-            </div>
-            </form>
-       </div>
-    </div>
-</div>
 
-<div class="container pt-4">
 <div class="row">
-<div class="col-md-8">
+<div class="col-md-8 col-sm-12">
 
-{% if articles|length == 0 %}
-<p>Sorry, no support items found with query <strong>{{q}}</strong></p>
-
-{% endif %}
-
-
-{% if articles|length != 0 %}
 {% for article in articles %}
 <article>
 <h3><i class="fas fa-pen-to-square text-info"></i> {{article.titel|capitalize}}</h3>
@@ -41,9 +21,9 @@
        <div class="row">
 
                                                                         <span class="col-3">{{article.datum}}</span>
-                                                                        <span class="col-3"><a href="{{url}}/seo-support/{{article.categoryid}}/{{article.categorienaam|replace({' ':'-'})}}/" data-bs-toggle="tooltip" title="View all posts in {{article.categorienaam}}">{{article.categorienaam|capitalize}}</a></span>
+                                                                        <span class="col-3"><a href="/seo-support/{{article.categoryid}}/{{article.categorienaam|replace({' ':'-'})}}/" data-bs-toggle="tooltip" title="View all posts in {{article.categorienaam}}">{{article.categorienaam|capitalize}}</a></span>
                                                                         <span class="col-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="24" height="24" class="bi text-primary" fill="currentColor"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg> <a href="/support/{{article.id}}-{{article.titel|replace({' ':'-','?':''})}}/" class="link-secondary">read article</a></span>
-                                                                        <span class="col-1 text-end"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-success" fill="currentColor"><use href="#fa-comment"></svg> {{article.comments}}</span>
+                                                                        <span class="col-1 text-end"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-success" fill="currentColor"><use href="#fa-comment"></svg> {{article.comments}}</span>
                                                                         <span class="col-1 text-end"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-danger" fill="currentColor"><use href="#fa-heart"></svg> {{article.likes}}</span>
                     </div>
             </div>
@@ -52,7 +32,8 @@
 
 
 {% endfor %}
-{% endif %}
+
+
 </div>
 <div class="col-md-4 col-sm-12">
 
@@ -69,7 +50,7 @@
 <ul class="list-unstyled">
 
 {% for categorie in categories %}
-<li class="p-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-muted" fill="currentColor"><use href="#angle-right"></svg> <a href="{{url}}/seo-support/{{categorie.id}}/{{categorie.naam|replace({' ':'-'})}}/">{{categorie.naam|capitalize}}</a></li>
+<li class="p-1"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-primary" fill="currentColor"><use href="#angle-right"></svg> <a href="{{url}}/seo-support/{{categorie.id}}/{{categorie.naam|replace({' ':'-'})}}/">{{categorie.naam|capitalize}}</a></li>
 {% endfor %}
 
 </ul>
@@ -89,9 +70,15 @@
 
 </div>
 
-</div>
+
+
+
 </div>
 
+
+</div>
 
 
 {% include "frontend/footer.twig" %}
+
+

@@ -16,7 +16,7 @@ return [
                'url' => '',
                ],
 'support-overview' => [
-               'title' =>  '',
+               'title' =>  'support overview',
                'description' => '',
                'keywords' => '',
                'url' => '',
