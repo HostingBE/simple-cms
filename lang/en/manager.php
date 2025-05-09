@@ -105,6 +105,7 @@ return [
       'management_ipaddress' => 'management ipaddress',
       'mollie' => 'mollie',
       'save_settings' => 'save settings',
+      'markdown' => 'markdown',
      ],
     'todo' => [
      'category' => 'category',

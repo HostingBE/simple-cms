@@ -79,14 +79,19 @@
 <div class="form-check form-switch">
    <input class="form-check-input" name="disablesupport" type="checkbox" id="disablesupport"{% if settings.disablesupport.value == "on" %}  checked{% endif %}></div>
     </div>
-
 </div>
+
 
 <div class="row mb-3">
   <label class="col-md-3 form-check-label" for="disableforum">{{ trans('manager.settings.disable_forum') | capitalize }}</label>
- <div class="col-md-9">
+ <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="disableforum" type="checkbox" id="disableforum"{% if settings.disableforum.value == "on" %}  checked{% endif %}></div>
+    </div>
+  <label class="col-md-3 form-check-label" for="markdown">{{ trans('manager.settings.markdown') | capitalize }}</label>
+ <div class="col-md-3">
+<div class="form-check form-switch">
+   <input class="form-check-input" name="markdown" type="checkbox" id="markdown"{% if settings.markdown.value == "on" %}  checked{% endif %}></div>
     </div>
 </div>
 
