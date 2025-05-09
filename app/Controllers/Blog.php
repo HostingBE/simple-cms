@@ -40,8 +40,9 @@ protected $mail;
 protected $settings;
 protected $locale;
 protected $translator;
+protected $languages;
 
-public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator) {
+public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator, $languages)  {
 $this->view = $view;
 $this->db = $db; 
 $this->flash = $flash;
@@ -50,6 +51,7 @@ $this->logger = $logger;
 $this->settings = $settings;
 $this->locale = $locale;
 $this->translator = $translator;
+$this->languages = $languages;
 }
 
 public function post_comment(Request $request,Response $response) {
@@ -127,7 +129,7 @@ $response->getBody()->write($xml);
 return $response->withHeader('Content-Type', 'application/xml');
 }  
 
-public function verwijder(Request $request,Response $response) {
+public function delete(Request $request,Response $response) {
 
 
 $id = $request->getAttribute('id');
@@ -140,7 +142,7 @@ $response->getBody()->write("verwijderd!");
 return $response;
 }		
 
-public function post_bewerken(Request $request,Response $response) {
+public function post_edit(Request $request,Response $response) {
 $id = $request->getAttribute('id');
 $data =  $request->getParsedBody();   
 
@@ -197,11 +199,11 @@ $sql->bindParam(':image',$data['blog-image'],PDO::PARAM_STR);
 $sql->bindParam(':category',$data['blog-categorie'],PDO::PARAM_INT);  
 $sql->execute();		
 
-$response->getBody()->write(json_encode(array('status' => 'success','message' => 'blog item succesvol bijgewerkt van de website!'))); 
+$response->getBody()->write(json_encode(array('status' => 'success','message' => $this->translator->get('manager.blog.edit_success') . '!'))); 
 return  $response;
 }
 
-public function post_toevoegen(Request $request,Response $response) {
+public function post_add(Request $request,Response $response) {
 $data =  $request->getParsedBody();
 $user = Sentinel::getUser();
 
@@ -226,6 +228,10 @@ $v->rule('required','blog-publish-date');
 
 if ($data['blog-publish'] == "") { $data['blog-publish'] = "n"; }
 
+if ($data['blog-markdown'] == "y") {
+	$data['blog-content'] = (new \App\Content\MarkDownContent())->convert($data['blog-content']);
+}
+
 if ($data['blog-links'] == "y") {
 $sql = $this->db->prepare("SELECT CONCAT('/blog-',id,'-',lower(replace(title,' ', '-')),'/') as link,tags FROM blog LIMIT 100");
 $sql->execute();
@@ -234,7 +240,7 @@ $keywords = $sql->fetchALL(PDO::FETCH_OBJ);
 $data['blog-content'] = (new \App\Content\InternalLinks($data['blog-content'], $keywords))->generateLinks();
 }
 
-$sql = $this->db->prepare("INSERT INTO blog (naam,title,description,keywords,user,tags,category,content,publish,image,publishdate,date) values(:naam,:title,:description,:keywords,:user,:tags,:category,:content,:publish,:image,:publishdate,now())");
+$sql = $this->db->prepare("INSERT INTO blog (naam,title,description,keywords,user,tags,category,content,publish,image,publishdate, language, date) values(:naam,:title,:description,:keywords,:user,:tags,:category,:content,:publish,:image,:publishdate,:language,now())");
 $sql->bindparam(":naam",$data['blog-naam'],PDO::PARAM_STR);
 $sql->bindparam(":title",$data['blog-title'],PDO::PARAM_STR);
 $sql->bindparam(":description",$data['blog-description'],PDO::PARAM_STR);
@@ -245,15 +251,16 @@ $sql->bindparam(":category",$data['blog-categorie'],PDO::PARAM_INT);
 $sql->bindparam(":content",$data['blog-content'],PDO::PARAM_STR); 	   	   	  
 $sql->bindparam(":publish",$data['blog-publish'],PDO::PARAM_STR); 	 
 $sql->bindparam(":image",$data['blog-image'],PDO::PARAM_STR); 	 
-$sql->bindparam(":publishdate",$data['blog-publish-date'],PDO::PARAM_STR); 
+$sql->bindparam(":publishdate",$data['blog-publish-date'],PDO::PARAM_STR);
+$sql->bindparam(":language",$data['blog-language'],PDO::PARAM_STR,2); 
 $sql->execute();
 
 
-$response->getBody()->write(json_encode(array('status' => 'success','message' => 'blog item toegevoegd aan de website!'))); 
+$response->getBody()->write(json_encode(array('status' => 'success','message' => $this->translator->get('manager.blog.add_success') . '!'))); 
 return  $response;
 }
 
-public function bewerken(Request $request,Response $response) {
+public function edit(Request $request,Response $response) {
 
 $id = $request->getAttribute('id');
 
@@ -280,7 +287,7 @@ $sql->execute();
 $media = $sql->fetchALL(PDO::FETCH_OBJ); 
 
 
-return $this->view->render($response,'manager/blog-edit.twig',['huidig' => 'manager-blog-bewerken','blog' => $blog ,'users' => $users , 'medias' => $media,'categories' => $categories,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+return $this->view->render($response,'manager/blog-edit.twig',['huidig' => 'manager-blog-bewerken','blog' => $blog ,'languages' => array_column($this->languages,'language'),'users' => $users , 'medias' => $media,'categories' => $categories,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
 
 }
 
@@ -388,7 +395,7 @@ $blogs = $sql->fetchALL(PDO::FETCH_OBJ);
 return $this->view->render($response,'manager/blogs-overview.twig',['huidig' => 'manager-blog-overzicht','blogs' => $blogs,'categorieen' => $categorieen ]);
 }    
 
-  public function blog_toevoegen(Request $request,Response $response) { 
+  public function add(Request $request,Response $response) { 
    
    $sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort='w'");
    $sql->execute();
@@ -402,7 +409,7 @@ return $this->view->render($response,'manager/blogs-overview.twig',['huidig' => 
    $sql->execute();
    $media = $sql->fetchALL(PDO::FETCH_OBJ); 
 
-     return $this->view->render($response,'manager/manager-blog-toevoegen.twig',['huidig' => 'manager-blog-toevoegen','categories' => $categories,'users' => $users,'medias' => $media]);
+     return $this->view->render($response,'manager/blog-add.twig',['huidig' => 'manager-blog-toevoegen','categories' => $categories,'languages' => array_column($this->languages,'language'),'users' => $users,'medias' => $media]);
       }
 
 
@@ -422,9 +429,9 @@ $sql = $this->db->prepare("SELECT a.id,a.title,a.tags,a.image,b.first_name,b.las
 $sql->execute();
 $blogs = $sql->fetchALL(PDO::FETCH_OBJ);
 
-$meta['title']="Overview to improve SEO rankings and optimize our pages with onpage SEO";
-$meta['description']="SeoSite articles about SEO tips on how to make your website better found by search engines. How to get higher in the results of the search engines.";
-$meta['keywords']="blog,SEO,improve SEO, optmize SEO, SEO rankings,onpage SEO, link building";
+$meta['title']=$this->translator->get('meta.blog-search.title');
+$meta['description']=$this->translator->get('meta.blog-search.description');
+$meta['keywords']=$this->translator->get('meta.blog-search.keywords');
 
 return $this->view->render($response,'frontend/blog-search.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'blog-search','meta' => $meta, 'blogs' => $blogs,'categorieen' => $categorieen, 'query' => $data['q'] ]);
 }

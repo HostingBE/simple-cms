@@ -21,8 +21,10 @@ class Manager  {
 	protected $flash;
 	protected $logger;
 	protected $settings;
+	protected $languages;
+	protected $translator;
 
-	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $languages) {
+	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $languages, $translator) {
 
 	$this->view = $view;
 	$this->db = $db;
@@ -31,6 +33,7 @@ class Manager  {
 	$this->logger = $logger;	
 	$this->settings = $settings;	
 	$this->languages = $languages;
+	$this->translator = $translator;
 	}
 
 
@@ -71,7 +74,7 @@ public function post_edit(Request $request,Response $response) {
 	    $publish = $data['ap-page-publish'] ?: "n";
 
 if ($data['ap-page-links'] == "y") {
-$keywords =(new \App\Content\KeyWords($this->db))->getKeyWords();
+$keywords =(new \App\Content\Keywords($this->db))->getKeyWords();
 $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keywords))->generateLinks();
 }
 
@@ -89,7 +92,7 @@ $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keyw
 	  $sql->bindparam(":pagina",$pagina,PDO::PARAM_INT);
 	  $sql->execute();
 	
-	        $response->getBody()->write(json_encode(array('status' => 'success','message' => "website pagina succesvol bijgewerkt!"))); 
+	        $response->getBody()->write(json_encode(array('status' => 'success','message' => $this->translator->get('manager.page.edit_success') . "!"))); 
         return  $response; 
         }		
 
@@ -126,9 +129,12 @@ $user = Sentinel::getUser();
     
 $publish = $data['ap-page-publish'] ?: "n";
 
+if ($data['ap-page-markdown'] == "y") {
+	$data['ap-content'] = (new \App\Content\MarkDownContent())->convert($data['ap-content']);
+}
 
 if ($data['ap-page-links'] == "y") {
-$keywords =(new \App\Content\KeyWords($this->db))->getKeyWords();
+$keywords =(new \App\Content\Keywords($this->db))->getKeyWords();
 $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keywords))->generateLinks();
 }
 

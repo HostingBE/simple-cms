@@ -2,7 +2,7 @@
 
       <div class="container">
         
-        <h1 class="pt-4 pb-4">Manager edit template</h1>
+        <h1 class="pt-4 pb-4">{{ trans('manager.templates.overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 
@@ -17,7 +17,7 @@
 <div class="col">
 <div class="card mb-3">
     <div class="card-body">
- <form name="edit-template" action="/manager/edit-template/{{name}}/" method="POST" id="ajax-form" data-reload="true">      
+ <form name="edit-template" action="{{url}}/manager/edit-template/{{name}}/" method="POST" id="ajax-form" data-reload="true">      
  {{ csrf() | raw }} 
  <div class="mb-3">
  <input type="text" name="name" class="form-control" value="{{name}}">
@@ -26,7 +26,7 @@
 <textarea name="template" class="form-control" cols="70" rows="15">{{template}}</textarea>
 </div>
 <div class="mb-3">
-  <button class="btn btn-primary" type="submit" id="submit-ajax">save template</button>
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.templates.save') | capitalize }}</button>
 </div>
 </div>
 

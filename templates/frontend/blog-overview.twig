@@ -30,10 +30,10 @@
               <div class="col-6 d-flex flex-sm-row flex-column align-items-sm-center">
                 <label class="d-inline-block me-sm-2 mb-sm-0 mb-2 text-nowrap" for="sortby"><i class="fa fa-arrows-sort mt-n1 me-2 align-middle opacity-70"></i>{{trans('blog.sort_on')}}:</label>
                 <select class="form-select" id="sortby">
-                  <option value="newest">Newest</option>
-                  <option value="oldest">Oldest</option>
-                  <option value="populair">Populair</option>
-                  <option value="sponsored">Sponsored</option>
+                  <option value="newest">{{ trans('frontend.common.newest') | capitalize }}</option>
+                  <option value="oldest">{{ trans('frontend.common.oldest') | capitalize }}</option>
+                  <option value="populair">{{ trans('frontend.common.populair') | capitalize }}</option>
+                  <option value="sponsored">{{ trans('frontend.common.sponsored') | capitalize }}</option>
                 </select>
               </div>
             </div>

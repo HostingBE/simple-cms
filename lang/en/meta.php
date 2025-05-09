@@ -9,6 +9,13 @@ return [
                'url' => '',
                ],
 
+'ask-question' => [
+               'title' =>  'ask a question on our forum',
+               'description' => 'forum overview english',
+               'keywords' => '',
+               'url' => '',
+               ],
+
 'forum-overview' => [
                'title' =>  'forum overview english',
                'description' => 'forum overview english',

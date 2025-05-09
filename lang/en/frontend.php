@@ -18,7 +18,37 @@
 */
 
 return [
+  'common' => [
+   'support' => 'support',
+   'tags' => 'tags',
+   'categories' => 'categories',
+   'latest_contributions' => 'latest contributions',
+   'share' => 'share',
+   'newest' => 'newest',
+   'oldest' => 'oldest',
+   'populair' => 'most populair',
+   'sponsored' => 'sponsored',
+   'title'=> 'title',
+   'category' => 'category',
+   'message' => 'message',
+   'solve_the_sum' => 'solve the sum',
+   'name' => 'name',
+   'email' => 'e-mail',
+   'title' => 'title',
+   'comment' => 'comment',
+   'support_message' => 'Need more SEO help? Search for answers to your questions in our articles, or ask us your question',
+  ],
+  'blog' => [ 
+    'add_comment' => 'add blog comment',
+    'name' => 'name',
+    'email' => 'e-mail',
+    'title' =>  'title',
+    'comment' => 'comment',
+  ],
+'support' => [
+'post_comment' => 'post comment',
 
+],
 'forum' => [
     'forum_overview' => 'forum overview',
     'select_category' => 'select category',
@@ -35,7 +65,15 @@ return [
     'more' => 'more',
     'no_topics' => 'No topics available yet in this category!',
     'no_contributors' => 'no contributors yet',
-],
+    'post_message' => 'post message',
+    'add_comment' => 'add comment',
+    'message' => 'When posting a new topic, our terms and conditions apply, we may choose not to post topics if they are against the rules. Stick to the net etiquette. For example, do not write in capital letters. Respect everyone on the forum, we\'ve all been beginners! Thank you for using the :sitename forum.'
+    ],
+    'chat' => [
+      'message_added' => 'message added',
+  
+
+    ],
 ]
 
 ?>

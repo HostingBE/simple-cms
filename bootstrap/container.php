@@ -41,7 +41,7 @@ use App\Controllers\Manager\Todo;
 use App\Controllers\Login;
 use App\Controllers\Manager\Logging;
 use App\Controllers\Manager\Upload;
-use App\Controllers\Users;
+use App\Controllers\Manager\Users;
 
 
 $containerBuilder = new ContainerBuilder();
@@ -367,7 +367,8 @@ return new Blog(
       $container->get('logger'),   
       $container->get('sitesettings'),  
       $container->get('locale'),
-      $container->get('translator')    
+      $container->get('translator'),
+      $container->get('settings')['translations']['languages']    
 );
 
 });
@@ -466,7 +467,8 @@ return new Manager(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),
-      $container->get('settings')['translations']['languages']      
+      $container->get('settings')['translations']['languages'],
+      $container->get('translator')       
       );
 
 });
@@ -500,7 +502,8 @@ return new Forum(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),
-      $container->get('locale')     
+      $container->get('locale'),
+      $container->get('translator')   
       );
 
 });

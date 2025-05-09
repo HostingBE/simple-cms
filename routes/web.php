@@ -8,6 +8,7 @@ use App\Controllers\Account;
 use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
 use App\Controllers\Category;
+use App\Controllers\Chat;
 use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
@@ -55,6 +56,9 @@ $csrfroute->get('/blog/{id:[0-9]+}-{category:[^\/]+}/', Blog::class . ':category
 $csrfroute->get('/advertisements', Advertisements::class . ':advertisements')->setName('advertisements.advertisements');
 $csrfroute->get('/outgoing-link/{id:[0-9]+}/{code:[a-zA-Z0-9]+}/', Advertenties::class . ':outgoing')->setName('advertenties.outgoing');
 
+$csrfroute->get('/chat-check-login', Chat::class . ':chat_check_login')->setName('chat.chat_check_login');
+$csrfroute->get('/chat-overview', Chat::class . ':chat_overview')->setName('chat.chat_overview');
+
 $csrfroute->get('/search/{q:[a-zA-Z0-9\-]+}/', Search::class . ':search')->setName('search.search');
 
 $csrfroute->get('/support', Support::class . ':overview')->setName('support.overview');
@@ -72,6 +76,9 @@ $csrfroute->post('/ask-question', Forum::class . ':postask');
 $csrfroute->post('/topic-reply', Forum::class . ':postreply');
 $csrfroute->post('/topic-upload',Forum::class . ':topic_upload');
 $csrfroute->post('/forum-like', Forum::class . ':post_like');
+
+$csrfroute->post('/chat-signin', Chat::class . ':post_signin');
+$csrfroute->post('/add-chat-message', Chat::class . ':post_add');
 
 $csrfroute->post('/create-account', Account::class . ':post_create_account');
 $csrfroute->post('/login', Login::class . ':post_login')->setName('login.post_login');

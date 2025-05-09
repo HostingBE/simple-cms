@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Manager;
 
 use PDO;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -36,15 +36,15 @@ public function __construct(Twig $view,$db,$flash,$mail,$logger,$settings) {
     Validator::lang('en');  
     }
 
-public function manager_view(Request $request,Response $response) {
+public function view(Request $request,Response $response) {
 
 $user = Sentinel::findById($request->getattribute('id'));
 
 
-return $this->view->render($response,"manager/bekijk-gebruiker.twig",['meta' => $meta, 'huidig' => 'manager-gebruikers-bekijken','user' => $user]);
+return $this->view->render($response,"manager/view-user.twig",['meta' => $meta, 'huidig' => 'manager-gebruikers-bekijken','user' => $user]);
 }
 
-public function manager_verwijder(Request $request,Response $response) {    
+public function delete(Request $request,Response $response) {    
 
 /*
 * delete user settings and user from database
@@ -67,7 +67,7 @@ return $response;
 
 
 
-public function manager_overview(Request $request,Response $response) {
+public function overview(Request $request,Response $response) {
 
 $page = "1";
 $start = "1";
@@ -102,7 +102,7 @@ $sql->bindparam(":records",$this->settings['records'],PDO::PARAM_INT);
 $sql->execute();
 $users = $sql->fetchALL(PDO::FETCH_OBJ);
 
-  return $this->view->render($response,"manager/manager-gebruikers-overzicht.twig",['meta' => $meta, 'huidig' => 'manager-gebruikers-overzicht','users' => $users,'paginator' => $pagelinks]);
+  return $this->view->render($response,"manager/users-overview.twig",['meta' => $meta, 'huidig' => 'manager-gebruikers-overzicht','users' => $users,'paginator' => $pagelinks]);
   }
 }
 

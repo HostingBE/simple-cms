@@ -12,9 +12,9 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{url}}">home</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="/forum">forum</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{{url}}/forum">forum</a></li>
     {% if category|length == 2 %}
-    <li class="breadcrumb-item" aria-current="page"><a href="/forum/{{category.name|replace({' ':'-'})}}/{{category.id}}/">{{category.name|lower}}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{{url}}/forum/{{category.name|replace({' ':'-'})}}/{{category.id}}/">{{category.name|lower}}</a></li>
     {% endif %}
   </ol>
 </nav>
@@ -60,14 +60,14 @@
           <div class="card py-3 px-3 mb-3 border-warning border-top-0 border-right-0 border-bottom-0 rounded-0">
             <div class="row text-left">
               <div class="col-md-8 mb-3 mb-sm-0 position-relative">
-                <a href="/{{topic.title|replace({' ':'-'})|lower|url_encode(true)}}/topic-{{topic.id}}/"><h3 class="d-inline-block">{{topic.title|capitalize}}</h3></a>{% if topic.days < 2 %} <span class="badge bg-success position-absolute top-0 m-2">{{trans('forum.new')|capitalize}}</span>{% endif %} 
+                <a href="{{url}}/{{topic.title|replace({' ':'-'})|lower|url_encode(true)}}/topic-{{topic.id}}/"><h3 class="d-inline-block">{{topic.title|capitalize}}</h3></a>{% if topic.days < 2 %} <span class="badge bg-success position-absolute top-0 m-2">{{trans('forum.new')|capitalize}}</span>{% endif %} 
 
                 
 
                 <p class="small"><span>{{trans('forum.posted')|capitalize}}</span> <u>{{topic.date}}</u> <span>ago by</span> <i>{% if topic.forum_name %}{{topic.forum_name}}{%else%}{{topic.name}}{%endif%}</i></p>
                 <div class="small">search tags
 {% for tag in topic.tags|split(',') %}
-<a href="/search/{{tag|replace({' ':'-'})}}/" class="text-black mr-2">#{{tag}}</a>
+<a href="{{url}}/search/{{tag|replace({' ':'-'})}}/" class="text-black mr-2">#{{tag}}</a>
 {% endfor %}
               </div>
             </div>
@@ -83,7 +83,7 @@
           <!-- /End of post 1 -->
           {% endfor %}
           {% endif %}
-          <span class="row text-end"><a href="/forum/{{categorie.naam|replace({' ':'-'})|lower}}/{{categorie.id}}/" class="link-secondary mb-3" title="read more in {{categorie.naam}}">{{trans('forum.more')|capitalize}} {{categorie.naam|lower}}</a></span>
+          <span class="row text-end"><a href="{{url}}/forum/{{categorie.naam|replace({' ':'-'})|lower}}/{{categorie.id}}/" class="link-secondary mb-3" title="read more in {{categorie.naam}}">{{trans('forum.more')|capitalize}} {{categorie.naam|lower}}</a></span>
 {% endfor %}
 </div>
 </div>
@@ -91,12 +91,12 @@
 <div class="col-md-3 col-sm-12">
 
 <div class="card mb-3">
-  <a href="/ask-question" class="btn btn-success btn-lg" data-bs-toggle="tooltip" title="ask a question">{{trans('forum.ask_question')|capitalize}}</a>
+  <a href="{{url}}/ask-question" class="btn btn-success btn-lg" data-bs-toggle="tooltip" title="ask a question">{{trans('forum.ask_question')|capitalize}}</a>
 </div>
 
 
 <div class="card mb-3">
-<div class="card-body"><h3 class="card-title">{{trans('forum.latest_contributions')|capitalize}}</h3>
+<div class="card-body"><h3 class="card-title">{{trans('frontend.common.latest_contributions')|capitalize}}</h3>
 {% for late in latest %}
 <span class="row d-flex"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-primary d-inline" fill="currentColor"><use href="#angle-right"></svg>  <a href="/{{late.title|replace({' ':'-','?':''})|lower|url_encode(true)}}/topic-{{late.id}}/" data-bs-toggle="tooltip" title="{{late.title}}">{{late.title|capitalize}}</a></span>
 <span class="row p-1"><small>by {{late.name}} in <i>{{late.categorie}}</i></small></span>

@@ -54,9 +54,14 @@ public function delete(Request $request,Response $response) {
 $id = $request->getattribute('id');
 $session = $request->getattribute('session');
 
-$sql = $this->db->prepare("DELETE FROM chat_messages AS a LEFT JOIN chat AS b ON b.id=a.chat WHERE b.session=:session AND a.chat=:id");
+$sql = $this->db->prepare("SELECT id FROM chat WHERE session=:session AND id=:id");
 $sql->bindparam(":session", $session, PDO::PARAM_STR);
 $sql->bindparam(":id", $id, PDO::PARAM_INT);
+$sql->execute();
+$chat = $sql->fetch(PDO::FETCH_OBJ);
+
+$sql = $this->db->prepare("DELETE FROM chat_messages WHERE chat=:id");
+$sql->bindparam(":id", $chat->id, PDO::PARAM_INT);
 $sql->execute();
 
 $sql = $this->db->prepare("DELETE FROM chat WHERE id=:id AND session=:session"); 
@@ -105,7 +110,7 @@ $sql->bindparam(":id", $id, PDO::PARAM_STR);
 $sql->execute();
 $chat = $sql->fetch(PDO::FETCH_OBJ);
 
-$sql = $this->db->prepare("SELECT a.id,a.owner,a.message,DATE_FORMAT(a.date,'%H:%i') AS tijd FROM chat_messages AS a LEFT JOIN chat  AS b ON b.id=a.chat WHERE a.chat=:chat AND b.session=:session");
+$sql = $this->db->prepare("SELECT a.id,a.owner,a.message,DATE_FORMAT(a.date,'%H:%i') AS tijd FROM chat_messages AS a LEFT JOIN chat  AS b ON b.id=a.chat WHERE a.chat=:chat AND b.session=:session ORDER BY a.id DESC");
 $sql->bindparam(":chat", $id, PDO::PARAM_INT);
 $sql->bindparam(":session", $session, PDO::PARAM_STR);
 $sql->execute(); 
@@ -116,43 +121,44 @@ return $this->view->render($response,'manager/view-chat.twig',['huidig' => 'mana
 }    
 
 
-public function post_manager_chat_bericht(Request $request,Response $response) {
+public function post_manager_chat_message(Request $request,Response $response) {
 
     $data = $request->getParsedBody();
 	
 	$v = new Validator($data); 
-    $v->rule('required','bericht');
+    $v->rule('required','message');
     $v->rule('required','id');
     $v->rule('required','session');
     
 
 	 if (!$v->validate()) {
         $this->flash->addMessage('errors',$v->errors());
-        return $response->withHeader('Location','/manager/bekijk-chat/'.$data['id'].'/'.$data['session'].'/');    
+        return $response->withHeader('Location','/manager/view-chat/'.$data['id'].'/'.$data['session'].'/');    
         }
 
-    $eigenaar = "beheerder";
+    $owner = "beheerder";
 
-    $sql = $this->db->prepare("INSERT INTO `chat_messages` (id,eigenaar,ipaddress,chat,bericht,datum) VALUES('',:eigenaar,:ipaddress,:chat,:bericht,now())");
+    $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $data['id'],PDO::PARAM_INT);
-    $sql->bindparam(":eigenaar", $eigenaar,PDO::PARAM_STR);    	
+    $sql->bindparam(":owner", $owner,PDO::PARAM_STR);    	
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":bericht",$data['bericht'],PDO::PARAM_STR);
+    $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
     $sql->execute();
 
     $this->flash->addMessage('success','het bericht is geplaatst op de chat!');	
-    return $response->withHeader('Location','/manager/bekijk-chat/'.$data['id'].'/'.$data['session'].'/'); 
+    $response = $response->withHeader('Location','/manager/view-chat/'.$data['id'].'/'.$data['session'].'/')->withStatus(302); 
+    return $response;
 }
 
 
 
-public function post_plaatsen(Request $request,Response $response) {	
+public function post_add(Request $request,Response $response) {	
     $chat = array();
 
     $data = $request->getParsedBody();
 	
 	$v = new Validator($data); 
-    $v->rule('required','bericht');
+    $v->rule('required','message');
 
 	 if (!$v->validate()) {
         $errormessage = current((Array)$v->errors())[0];
@@ -160,23 +166,22 @@ public function post_plaatsen(Request $request,Response $response) {
         return  $response;
         }	
 
-    // bepalen of er al een chat sessie is opgestart voor deze gebruiker
     $sql = $this->db->prepare("SELECT id FROM chat WHERE ipaddress=:ipaddress AND session=:session");
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
     $sql->execute();
     $chat = $sql->fetch(PDO::FETCH_OBJ);
     
-    $eigenaar = "bezoeker";
+    $owner = "visitor";
 
-    $sql = $this->db->prepare("INSERT INTO `chat_messages` (id,eigenaar,ipaddress,chat,bericht,datum) VALUES('',:eigenaar,:ipaddress,:chat,:bericht,now())");
+    $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $chat->id,PDO::PARAM_INT);	
-    $sql->bindparam(":eigenaar", $eigenaar, PDO::PARAM_STR);
+    $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":bericht",$data['bericht'],PDO::PARAM_STR);
+    $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
     $sql->execute();
 
-	$response->getBody()->write(json_encode(array('status' => 'success','message' => 'chat berichten is geplaatst!')));	
+	$response->getBody()->write(json_encode(array('status' => 'success','message' => $this->translator->get('frontend.chat.message_added') . '!')));	
 	return  $response;	
     }	
 
@@ -196,19 +201,20 @@ public function overview(Request $request,Response $response) {
     $chats = $sql->fetchALL(PDO::FETCH_OBJ);
 
 
-return $this->view->render($response,'manager/chat-overview.twig',['huidig' => 'manager-chat-overzicht','chats' => $chats, 'manager_heading' => $manager_heading,'berichten' => $berichten, 'id' => $id,'session' => $session, 'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'info' => $this->flash->getFirstMessage('info')]);
+return $this->view->render($response,'manager/chat-overview.twig',['huidig' => 'manager-chat-overview','chats' => $chats, 'manager_heading' => $manager_heading,'berichten' => $berichten, 'id' => $id,'session' => $session, 'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'info' => $this->flash->getFirstMessage('info')]);
 }    
 
 
 
-public function post_aanmelden(Request $request,Response $response) {    
+public function post_signin(Request $request,Response $response) {    
     $chat =  array();
     $data = $request->getParsedBody();
     
     $v = new Validator($data); 
-    $v->rule('required','naam');
-    $v->rule('required','email');    
-    $v->rule('required','bericht');
+    $v->rule('required','name');
+    $v->rule('required','email');
+    $v->rule('email','email');    
+    $v->rule('required','message');
     $v->rule('required','antispam');
 
      if (!$v->validate()) {
@@ -226,8 +232,8 @@ public function post_aanmelden(Request $request,Response $response) {
       } 
 
     $status = 'a';
-    $eigenaar = "bezoeker";
-    $avatar = '/uploads/ab64463f00071673.png';
+    $eigenaar = "visitor";
+    $avatar = '/images/default-icon.jpg';
 
     // bepalen of er al een chat sessie is opgestart voor deze gebruiker
     $sql = $this->db->prepare("SELECT id FROM chat WHERE ipaddress=:ipaddress AND session=:session");
@@ -237,9 +243,9 @@ public function post_aanmelden(Request $request,Response $response) {
     $chat = $sql->fetch();
     
     if (!isset($chat['id'])) {
-    $sql = $this->db->prepare("INSERT INTO chat (id,session,ipaddress,naam,email,status,avatar,datum) VALUES('',:session,:ipaddress,:naam,:email,:status,:avatar,now())");
+    $sql = $this->db->prepare("INSERT INTO chat (session,ipaddress,name,email,status,avatar,date) VALUES(:session,:ipaddress,:name,:email,:status,:avatar,now())");
     $sql->bindparam(":session", session_id(),PDO::PARAM_STR);
-    $sql->bindparam(":naam", $data['naam'],PDO::PARAM_STR);
+    $sql->bindparam(":name", $data['name'],PDO::PARAM_STR);
     $sql->bindparam(":email", $data['email'],PDO::PARAM_STR);   
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
     $sql->bindparam(":status", $status,PDO::PARAM_STR);
@@ -248,11 +254,11 @@ public function post_aanmelden(Request $request,Response $response) {
     $chat['id'] = $this->db->lastinsertid();
     } 
 
-    $sql = $this->db->prepare("INSERT INTO `chat_messages` (id,eigenaar,ipaddress,chat,bericht,datum) VALUES('',:eigenaar,:ipaddress,:chat,:bericht,now())");
+    $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $chat['id'],PDO::PARAM_INT); 
-    $sql->bindparam(":eigenaar", $eigenaar, PDO::PARAM_STR);
+    $sql->bindparam(":owner", $eigenaar, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":bericht",$data['bericht'],PDO::PARAM_STR);
+    $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
     $sql->execute();
 
 
@@ -269,20 +275,15 @@ public function post_aanmelden(Request $request,Response $response) {
     $eigenaar = "beheerder";
     $buitenkantoortijden = "Momenteel zijn we niet aanwezig, we zijn bereikbaar op werkdagen van 09:00 tot 18:00. Je chat wordt wel gelezen tijdens kantoortijden en beantwoord via email!";
     $this->logger->warning("Chat aanvraag automatisch beantwoord we zijn buiten kantoor tijden!");
-    $sql = $this->db->prepare("INSERT INTO `chat_messages` (id,eigenaar,ipaddress,chat,bericht,datum) VALUES('',:eigenaar,:ipaddress,:chat,:bericht,now())");
+    $sql = $this->db->prepare("INSERT INTO `chat_messages` (id,eigenaar,ipaddress,chat,message,date) VALUES('',:eigenaar,:ipaddress,:chat,:message,now())");
 
 
     $sql->bindparam(":chat", $chat['id'],PDO::PARAM_INT); 
-    $sql->bindparam(":eigenaar", $eigenaar, PDO::PARAM_STR);
+    $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":bericht",$buitenkantoortijden,PDO::PARAM_STR);
+    $sql->bindparam(":message",$buitenkantoortijden,PDO::PARAM_STR);
     $sql->execute();
-
-
-
     }
-    
-
 
     $response->getBody()->write(json_encode(array('status' => 'success','message' => 'chat user succesfully signed-in!'))); 
     return  $response;  
@@ -291,43 +292,43 @@ public function post_aanmelden(Request $request,Response $response) {
 public function chat_overview(Request $request,Response $response) {	
 
 
-    $sql = $this->db->prepare("SELECT id,naam,avatar FROM chat WHERE ipaddress=:ipaddress AND session=:session");
+    $sql = $this->db->prepare("SELECT id,name,avatar FROM chat WHERE ipaddress=:ipaddress AND session=:session");
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
     $sql->execute();
     $chat = $sql->fetch(PDO::FETCH_OBJ); 
 
     if (!is_numeric($chat->id)) {
-	$response->getBody()->write(json_encode(array('status' => 'error','message' => 'Welcome to SeoSite, how can i help you?')));	
+	$response->getBody()->write(json_encode(array('status' => 'error','message' => 'Welcome to '. $this->settings['sitename'] .', how can i help you?')));	
 	return  $response;	
     }
 
-    $sql = $this->db->prepare("SELECT id, eigenaar, bericht,DATE_FORMAT(datum,'%H:%i') AS tijd FROM chat_messages WHERE chat=:chat AND ipaddress=:ipaddress");
+    $sql = $this->db->prepare("SELECT id, owner, message,DATE_FORMAT(date,'%H:%i') AS time FROM chat_messages WHERE chat=:chat AND ipaddress=:ipaddress");
     $sql->bindparam(":chat", $chat->id, PDO::PARAM_INT);
     $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
     $sql->execute(); 
-    $berichten = $sql->fetchALL(PDO::FETCH_OBJ);
+    $messages = $sql->fetchALL(PDO::FETCH_OBJ);
     
-    for ($i = 0;$i < count($berichten);$i++) {
+    for ($i = 0;$i < count($messages);$i++) {
         
-        if ($berichten[$i]->eigenaar == "beheerder") {
-        $berichten[$i]->naam = "Team SeoSite";
-        $berichten[$i]->avatar = "/uploads/0d98e8d85695a1a5.png";
-        $berichten[$i]->align = "right";
-        $berichten[$i]->text = "light";   
-        $berichten[$i]->background = "secondary";    
+        if ($messages[$i]->owner == "beheerder") {
+        $messages[$i]->name = "Team SeoSite";
+        $messages[$i]->avatar = "/images/default-icon.jpg";
+        $messages[$i]->align = "right";
+        $messages[$i]->text = "light";   
+        $messages[$i]->background = "secondary";    
         }
 
-        if ($berichten[$i]->eigenaar == "bezoeker") {
-        $berichten[$i]->naam = ucfirst($chat->naam);
-        $berichten[$i]->avatar = $chat->avatar;
-        $berichten[$i]->align = "left";       
-        $berichten[$i]->text = "light";   
-        $berichten[$i]->background = "primary";           
+        if ($messages[$i]->owner == "visitor") {
+        $messages[$i]->name = ucfirst($chat->name);
+        $messages[$i]->avatar = $chat->avatar;
+        $messages[$i]->align = "left";       
+        $messages[$i]->text = "light";   
+        $messages[$i]->background = "primary";           
         }   
     }
 
-    $response->getBody()->write(json_encode(array('status' => 'success','message' => 'chat berichten opgehaald!', 'chat' => $chat,'berichten' => $berichten)));	
+    $response->getBody()->write(json_encode(array('status' => 'success','message' => 'chat berichten opgehaald!', 'chat' => $chat,'messages' => $messages)));	
 	return  $response;	
 }
 

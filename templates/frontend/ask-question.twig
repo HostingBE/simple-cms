@@ -1,7 +1,7 @@
 {% include "frontend/header.twig" %}
 
 <div class="container">
-<h1 class="pt-4 pb-4">Ask question</h1>
+<h1 class="py-4">{{ trans('forum.ask_question') | capitalize }}</h1>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -22,18 +22,18 @@
 {{ csrf() | raw }}
 
 <div class="alert alert-primary">
-When posting a new topic, our terms and conditions apply, we may choose not to post topics if they are against the rules. Stick to the net etiquette. For example, do not write in capital letters. Respect everyone on the forum, we've all been beginners! Thank you for using the SeoSite forum.
+{{ trans('frontend.forum.message',['sitename',sitename]) | capitalize }}
 </div>
 
 <div class="mb-3">
-  <label for="title" class="form-label" for="title">Title</label>
+  <label for="title" class="form-label" for="title">{{ trans('frontend.common.title') | capitalize }}</label>
   <input type="text" name="title" class="form-control" id="title" placeholder="title of your post ..">
 </div>
 
 <div class="mb-3">
-	  <label for="category" class="form-label" id="category">Category</label>
+	  <label for="category" class="form-label" id="category">{{ trans('frontend.common.category') | capitalize }}</label>
 <select class="form-select" name="category"  aria-label="category">
-  <option selected>Open this select menu</option>
+  <option value="" selected>Open this select menu</option>
   {% for categorie in categories %}
   <option value="{{categorie.id}}">{{categorie.naam|capitalize}}</option>
   {% endfor %}
@@ -41,12 +41,12 @@ When posting a new topic, our terms and conditions apply, we may choose not to p
 </div>
 
 <div class="mb-3">
-  <label for="message" class="form-label" for="message">Message</label>
+  <label for="message" class="form-label" for="message">{{ trans('frontend.common.message') | capitalize }}</label>
   <textarea class="form-control" name="message"  id="message" rows="10" placeholder="put the text of your post here .."></textarea>
 </div>
 
 <div class="mb-3">
-  <label for="tags" class="form-label" for="tags">Tags</label>
+  <label for="tags" class="form-label" for="tags">{{ trans('frontend.common.tags') | capitalize }}</label>
   <input type="text" name="tags" class="form-control" id="tags" placeholder="tags of post ..">
 </div>
 
@@ -79,11 +79,11 @@ When posting a new topic, our terms and conditions apply, we may choose not to p
                                         <img src="{{captcha|raw}}" class="rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{trans('account.solve_sum_message')|capitalize}}!" width="168" height="37">
                                     </div>
                                     <div class="col-lg-6 col-6">
-                                        <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('account.solve_sum')|capitalize}}..">
+                                        <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('frontend.common.solve_the_sum')|capitalize}}..">
                                     </div>
                                 </div>
 
-<button class="btn btn-primary" type="submit" id="submit-ajax">post message</button>
+<button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('frontend.forum.post_message') }}</button>
 
 </form>
 

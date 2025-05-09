@@ -2,7 +2,7 @@
 
 <div class="container">
 
-<h1 class="pt-4 pb-4">Todo bewerken</h1>
+<h1 class="pt-4 pb-4">{{ trans('manager.todo.edit_todo') | capitalize }}</h1>
 
 
 {% include "manager/manager-menu.twig" %} 
@@ -15,17 +15,17 @@
 <div class="card mb-3">
 <div class="card-body">
 
-<form name="todo" action="/manager/todo-bewerken/{{todo.id}}/" method="POST">
+<form name="todo" action="{{url}}/manager/todo-bewerken/{{todo.id}}/" method="POST">
   {{ csrf() | raw }}
 <!-- Text input -->
 <div class="mb-3">
-  <label for="text-input" class="form-label">Todo</label>
+  <label for="text-input" class="form-label">{{ trans('manager.todo.todo') | capitalize }}:</label>
   <input class="form-control" type="text" name="ap-todo" value="{{todo.todo}}" placeholder="vul het todo item in!">
 </div>
 
 <!-- Select -->
 <div class="mb-3">
-  <label for="select-input" class="form-label">Categorie</label>
+  <label for="select-input" class="form-label">{{ trans('manager.todo.category') | capitalize }}:</label>
   <select class="form-select" id="select-input" name="ap-categorie">
    {% for cat in categorie %}
     <option value="{{cat.id}}"{% if todo.categorie == cat.id %} selected{% endif %}>{{cat.naam}}</option>
@@ -35,14 +35,14 @@
 
 <!-- status area -->
 <div class="mb-3">
-  <label for="select-input" class="form-label">Status</label>
+  <label for="select-input" class="form-label">{{ trans('manager.todo.status') | capitalize }}:</label>
   <select class="form-select" id="select-input" name="ap-status">
-    <option value="o"{% if todo.status == "o" %} selected{% endif %}>Open</option>
-    <option value="c"{% if todo.status == "c" %} selected{% endif %}>Gesloten</option>
+    <option value="o"{% if todo.status == "o" %} selected{% endif %}>{{ trans('manager.todo.open') | capitalize }}</option>
+    <option value="c"{% if todo.status == "c" %} selected{% endif %}>{{ trans('manager.todo.closed') | capitalize }}</option>
   </select>
 </div>
 
-  <button class="btn btn-primary" type="submit">Wijziging opslaan</button>
+  <button class="btn btn-primary" type="submit">{{ trans('manager.todo.save_changes') | capitalize }}</button>
 </form>
 </div>
 </div>

@@ -11,8 +11,10 @@
 {% include "manager/manager-menu.twig" %}         
 </div>
 
+{% include "backend/alert.twig" %}
+
 <div class="row">
-       {% include "backend/alert.twig" %} 
+  
 
 <div class="card mb-3">
 <div class="card-body">
@@ -30,15 +32,21 @@
      </thead>
 
      <tbody>
+     {% if chats | length < 1 %}
+     <tr>
+       <td colspan="7" class="text-center">{{ trans('manager.chat.no_chats') | capitalize }}</td>
+     </tr>
+     {% endif %}
+
      {% for chat in chats %}
      <tr>
      <td>..</td>
-     <td>{{chat.ipadres}}</td>
-     <td>{{chat.naam}}</td>
+     <td>{{chat.ipaddress}}</td>
+     <td>{{chat.name}}</td>
      <td>{{chat.avatar}}</td> 
      <td class="fw-bold text-center">({{chat.berichten}})</td>
      <td>{{chat.datum}}</td>
-     <td class="text-right"><a href="{{url}}/manager/view-chat/{{chat.id}}/{{chat.session}}/" class="btn btn-primary btn-sm">{{ trans('manager.chat.view') }}</a> <a href="{{url}}/delete-chat/{{chat.id}}/{{chat.session}}/" class="btn btn-danger btn-sm" data-url="{{url}}/delete-chat/{{chat.id}}/{{chat.session}}/">{{ trans('manager.chat.delete') }}</a></td>
+     <td class="text-right"><a href="{{url}}/manager/view-chat/{{chat.id}}/{{chat.session}}/" class="btn btn-primary btn-sm">{{ trans('manager.chat.view') }}</a> <a href="{{url}}/manager/delete-chat/{{chat.id}}/{{chat.session}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-chat/{{chat.id}}/{{chat.session}}/" data-reload="true">{{ trans('manager.chat.delete') }}</a></td>
      </tr>
      {% endfor %}
      </tbody>

@@ -26,7 +26,8 @@
         "predis/predis": "^3.0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-qrcode": "^3.0",
-        "bacon/bacon-qr-code": "^3.0"
+        "bacon/bacon-qr-code": "^3.0",
+        "league/commonmark": "^2.7"
     },
  "autoload": {
     "psr-4": {

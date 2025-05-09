@@ -2,7 +2,7 @@
 
       <div class="container">
         
-        <h1 class="mt-4 pb-4">Manager gebruikers overzicht</h1>
+        <h1 class="mt-4 pb-4">{{ trans('manager.users.overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 
@@ -22,13 +22,13 @@
      <thead>
      <tr>
             <th>#</th>
-            <th>icon</th>
-            <th>e-mail</th>            
-            <th>voornaam</th>
-            <th>achternaam</th> 
-            <th>profiel <i class="h5 fi-alert-triange text-info" data-bs-toggle="tooltip" title="(user_data, ingelogd)"></i></th>  
-            <th>datum</th>
-            <th>beheer</th>  
+            <th>{{ trans('manager.users.icon') | capitalize }}</th>
+            <th>{{ trans('manager.users.email') | capitalize }}</th>            
+            <th>{{ trans('manager.users.firstname') | capitalize }}</th>
+            <th>{{ trans('manager.users.lastname') | capitalize }}</th> 
+            <th>{{ trans('manager.users.profile') | capitalize }} <i class="h5 fi-alert-triange text-info" data-bs-toggle="tooltip" title="(user_data, ingelogd)"></i></th>  
+            <th>{{ trans('manager.users.date') | capitalize }}</th>
+            <th>{{ trans('manager.users.manage') | capitalize }}</th>  
      </tr>
      </thead>
 
@@ -42,7 +42,7 @@
      <td>{{user.last_name}}</td> 
      <td class="fw-bold text-center">({{user.settings}}, {{user.aantaldagen}})</td>
      <td>{{user.datum}}</td>
-     <td class="text-right"><a href="/manager/bekijk-gebruiker/{{user.id}}/" class="btn btn-secondary btn-sm">bekijk</a> <a href="/manager/verwijder-gebruiker/{{user.id}}/" class="btn btn-danger btn-sm" data-url="/manager/verwijder-gebruiker/{{user.id}}/">delete</a></td>
+     <td class="text-right"><a href="{{url}}/manager/view-user/{{user.id}}/" class="btn btn-secondary btn-sm">{{ trans('manager.users.view') }}</a> <a href="{{url}}/manager/delete-user/{{user.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-user/{{user.id}}/">{{ trans('manager.users.delete')  }}</a></td>
      </tr>
      {% endfor %}
      </tbody>

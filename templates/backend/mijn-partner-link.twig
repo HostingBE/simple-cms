@@ -1,9 +1,10 @@
 {% include "frontend/header.twig" %}
 
-<div class="container">
-    <h1 class="pt-4 pb-4">{{trans('backend.affiliate.affiliate_overview')|capitalize}}</h1>
 
-     
+<div class="container">
+    <h1 class="py-4">{{trans('backend.affiliate.affiliate_overview')|capitalize}}</h1>
+    {% include "frontend/svg/fa-whatsapp.twig" %}
+    {% include "frontend/svg/fa-copy.twig" %}
 {% include "backend/alert.twig" %}
 
 
@@ -15,7 +16,7 @@
 
             <div class="input-group mb-4">
              <input type="text" class="form-control" name="partner-link" value="{{url}}/?utm_source={{code.code}}&utm_medium=partner-link&utm_campaign={{sitename|replace({' ':'_'})}}" readonly>
-            <button class="btn btn-icon"><i class="fas fa-copy fa-lg" data-bs-toggle="tooltip" title="copy this link to your clipboard?"></i></button><button class="btn btn-icon"><a href="https://wa.me?text=Earn%20money%20with%20SEO,%20sign-up%20today%20!%20Let%20us%20know%20what%20you%20think%20of%20our%20partner%20program?{{url}}%2F%3Futm_source%3D{{code.code}}%26utm_medium%3Dpartner-link%26utm_campaign%3D{{sitename|replace({' ':'_'})}}"><i class="fab fa-whatsapp fa-lg text-success"></i></a></button></div>
+             <button class="btn btn-default copy" data-bs-toggle="tooltip" title="copy this link to your clipboard?"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30" height="30" class="text-success" fill="currentColor"><use href="#fa-copy"></svg></button><button class="btn btn-default"><a href="https://wa.me?text=Earn%20money%20with%20SEO,%20sign-up%20today%20!%20Let%20us%20know%20what%20you%20think%20of%20our%20partner%20program?{{url}}%2F%3Futm_source%3D{{code.code}}%26utm_medium%3Dpartner-link%26utm_campaign%3D{{sitename|replace({' ':'_'})}}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30" height="30" class="text-success" fill="currentColor"><use href="#fa-whatsapp"></svg></a></button></div>
  
             <h6>{{trans('backend.affiliate.below_statistics')|capitalize}}</h6>
             <div class="row">

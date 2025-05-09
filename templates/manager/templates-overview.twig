@@ -2,26 +2,26 @@
 
       <div class="container">
         
-        <h1 class="pt-4 pb-4">Manager template overzicht</h1>
+        <h1 class="py-4"> {{ trans('manager.templates.overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 
 {% include "manager/manager-menu.twig" %}
-
+   
 </div>
-
+{% include "backend/alert.twig" %} 
 <div class="row">
-       {% include "backend/alert.twig" %} 
+
 <div class="col">
 <div class="card mb-3">
     <div class="card-body">
 
 <table class="table table-hover">
 <tr>
-<th>name</th>
-<th class="text-end">size</th>
-<th>date</th>
-<th class="text-center">manage</th>
+<th>{{ trans('manager.templates.name') | capitalize }}</th>
+<th class="text-end">{{ trans('manager.templates.size') | capitalize }}</th>
+<th>{{ trans('manager.templates.date') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.templates.manage') | capitalize }}</th>
 </tr>
 
 {% for template in templates %}
@@ -30,7 +30,7 @@
         <td>{{template.file}}</td>
         <td class="text-end">{{template.size}} bytes</td>
         <td>{{template.date}}</td>
-        <td class="text-center"><a href="/manager/edit-template/{{template.file}}/" class="btn btn-primary btn-sm">edit template</a></td>
+        <td class="text-center"><a href="{{url}}/manager/edit-template/{{template.file}}/" class="btn btn-primary btn-sm">{{ trans('manager.templates.edit') }}</a></td>
 </tr>
 
 {% endfor %}    

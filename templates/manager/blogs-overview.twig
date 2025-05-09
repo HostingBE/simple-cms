@@ -2,7 +2,7 @@
 
       <div class="container">
         
-        <h1 class="pt-4 pb-4">Manager blog overzicht</h1>
+        <h1 class="py-4">{{ trans('manager.blog.overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 
@@ -21,18 +21,18 @@
 <table class="table dark">
 <tr>
 <th>#</th>
-<th class="text-center">categorie</th>
-<th>titel</th>
-<th>tags</th>
-<th class="text-center">publish</th>
-<th class="text-center">reacties</th>
-<th>datum</th>
-<th class="text-center">beheer</th>
+<th class="text-center">{{ trans('manager.blog.category') | capitalize }}</th>
+<th>{{ trans('manager.blog.title') | capitalize }}</th>
+<th>{{ trans('manager.blog.tags') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.blog.publish') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.blog.comments') | capitalize }}</th>
+<th>{{ trans('manager.blog.date') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.blog.manage') | capitalize }}</th>
 </tr>
 
 {% if blogs|length < 1 %}
 <tr>
-		<td colspan="6" class="text-center">Er zijn nog geen blogs beschikbaar</td>
+		<td colspan="8" class="text-center">{{ trans('manager.blog.no_blogs') | capitalize }}r</td>
 </tr>
 {% endif %}
 
@@ -46,7 +46,7 @@
 <td class="text-center">{{blog.publish}}</td>
 <td class="text-center">{{blog.reacties}}</td>
 <td>{{blog.date}}</td>
-<td class="text-center"><a href="{{url}}/manager/blog-edit/{{blog.id}}/" class="btn btn-dark btn-sm">bewerken</a> <a href="{{url}}/manager/delete-blog/{{blog.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-blog/{{blog.id}}/">verwijder</a></td>
+<td class="text-center"><a href="{{url}}/manager/blog-edit/{{blog.id}}/" class="btn btn-dark btn-sm">{{ trans('manager.blog.edit') }}</a> <a href="{{url}}/manager/delete-blog/{{blog.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-blog/{{blog.id}}/" data-reload="true">{{ trans('manager.blog.delete') }}</a></td>
 
 </tr>
 
