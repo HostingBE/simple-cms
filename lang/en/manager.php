@@ -106,6 +106,7 @@ return [
       'mollie' => 'mollie',
       'save_settings' => 'save settings',
       'markdown' => 'markdown',
+      'mollie_text' => 'mollie API key payments',
      ],
     'todo' => [
      'category' => 'category',
