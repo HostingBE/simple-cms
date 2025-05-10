@@ -65,7 +65,13 @@ return [
      'again' => 'again',
      'current_password_text' => 'your current password', 
      'password_text' => 'your new password',
-                 ],
+     '2factor_authentication' => '2 factor authentication',
+     'message1' => 'Secure your account with an <u>extra security step</u>, when you have logged in with a correct username and password, there will be an extra step in which you must enter a code. You can obtain this code via the free authenticator app. This code is only valid for 30 seconds',
+     'message2' => '<strong>Secure your account today with an extra step, activate 2 factor authentication.</strong>',
+     'activate-2fa' => 'activate 2FA',
+     'generate_password' => 'generate a save random password',
+     'view_password' => 'view your password',
+   ],
 
 'search' => [
 'search_results_for' => 'search results for',

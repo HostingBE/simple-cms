@@ -149,4 +149,7 @@ tinymce.init({
 {% if advertenties == "on" %}
 <script defer src="{{url}}/cms/js/ads.min.js"></script>
 {% endif %}
+{% if huidig in ['change-password'] %}
+<script defer src="{{url}}/cms/js/string-generator.js"></script>
+{% endif %}
 <script defer src="{{url}}/cms/js/website-chat.js"></script>

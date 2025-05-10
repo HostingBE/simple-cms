@@ -11,11 +11,8 @@ return [
 'support'  => 'helpdesk',
 'support_message' => 'Meer website-hulp nodig? Zoek naar antwoorden op jouw vragen in onze artikelen, of stel jouw vraag aan ons',
 'categories' => 'categorieen',
-
-
-
-
-
+'no_articles_new' => 'geen nieuwe artikelen beschikbaar',
+'no_articles_read' => 'geen meest gelezen artikelen beschikbaar',
 ];
 
 

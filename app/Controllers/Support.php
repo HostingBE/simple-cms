@@ -398,7 +398,8 @@ $sql->bindparam(":categorie",$id,PDO::PARAM_INT);
 $sql->execute();
 $articles =  $sql->fetchALL(PDO::FETCH_OBJ);
 
-$sql = $this->db->prepare("SELECT b.id,a.naam,lower(a.titel) as titel,a.datum,lower(b.titel) AS artikel FROM artikel_reacties AS a LEFT JOIN artikelen AS b ON b.id=a.article WHERE a.status='a' ORDER BY a.id DESC LIMIT 5");
+$sql = $this->db->prepare("SELECT b.id,a.naam,lower(a.titel) as titel,a.datum,lower(b.titel) AS artikel FROM artikel_reacties AS a LEFT JOIN artikelen AS b ON b.id=a.article WHERE b.language=:locale AND a.status='a' ORDER BY a.id DESC LIMIT 5");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $latest = $sql->fetchALL(PDO::FETCH_OBJ);
 
@@ -428,7 +429,8 @@ if (!$v->validate()) {
  $categories = $dbhelpers->get_support_categories();
 
 
-$sql = $this->db->prepare("SELECT a.id,a.titel,CONCAT(SUBSTRING_INDEX(a.artikel, '.', 3), '.') AS artikel,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum,a.likes,b.id as categoryid,b.naam AS categorienaam,(SELECT count(id) AS total FROM artikel_reacties WHERE article=a.id) AS comments FROM artikelen AS a LEFT JOIN categorie AS b ON b.id=a.categorie WHERE (a.titel LIKE '%".$data['q']."%' OR a.artikel LIKE '%". $data['q'] ."%') ORDER BY a.id DESC");
+$sql = $this->db->prepare("SELECT a.id,a.titel,CONCAT(SUBSTRING_INDEX(a.artikel, '.', 3), '.') AS artikel,DATE_FORMAT(a.datum,'%d-%m-%Y') AS datum,a.likes,b.id as categoryid,b.naam AS categorienaam,(SELECT count(id) AS total FROM artikel_reacties WHERE article=a.id) AS comments FROM artikelen AS a LEFT JOIN categorie AS b ON b.id=a.categorie WHERE (a.titel LIKE '%".$data['q']."%' OR a.artikel LIKE '%". $data['q'] ."%') AND b.language=:locale ORDER BY a.id DESC");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $articles =  $sql->fetchALL(PDO::FETCH_OBJ);
 

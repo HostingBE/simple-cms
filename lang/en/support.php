@@ -11,6 +11,8 @@ return [
 'support'  => 'helpdesk',
 'support_message' => 'Need more SEO help? Search for answers to your questions in our articles, or ask us your question',
 'categories' => 'categorieen',
+'no_articles_new' => 'no new articles',
+'no_articles_read' => 'no most read articles',
 
 
 

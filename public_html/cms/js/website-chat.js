@@ -18,6 +18,8 @@ $(document).ready(function(e) {
   
   function checkLogin() {
    
+   var url = window.location;
+
    $.ajax({
       type: 'GET',
       datatype: 'json',
@@ -25,7 +27,7 @@ $(document).ready(function(e) {
       success: function(data) {
       var json = JSON.parse(data);
       if (json.status == "success") {
-            $("#form-chat").attr('action',"/add-chat-message");
+            $("#form-chat").attr('action', 'https://' + new URL(url).host + '/add-chat-message');
             $('.modal-footer').html(`<div class="input-group"><input type="text" name="message" class="form-control" placeholder="type your message .."><button type="submit" id="submit-chat" class="btn btn-info">send</button></div>`);
             getMessages();
             } else {
@@ -108,6 +110,7 @@ $(document).ready(function(e) {
               } 
 
               if (obj.status == "success") {
+                   console.log(url);
                   if (new URL(url).pathname == "/chat-signin") { 
                    $('.modal-body.chat-messages').html("Your chat request is generated and the messages are loaded!");
                    $("#form-chat").attr('action','https://' + new URL(url).host + '/add-chat-message');

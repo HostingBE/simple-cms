@@ -123,7 +123,8 @@ return [
      'open' => 'open',
      'closed' => 'closed',
      'save_changes' => 'save changes', 
-
+     'no_todo' => 'their are no todo\'s available',
+  
     ],
     'links' => [
        'name' => 'name',

@@ -207,6 +207,7 @@ return $this->view->render($response,'manager/chat-overview.twig',['huidig' => '
 
 
 public function post_signin(Request $request,Response $response) {    
+    
     $chat =  array();
     $data = $request->getParsedBody();
     

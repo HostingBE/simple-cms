@@ -29,6 +29,8 @@ return [
 'loggedout' => 'Je bent succesvol uitgelogd, je sessie is beëindigd!',
 'invalid' => 'gebruikersnaam of wachtwoord zijn onjuist, probeer het opnieuw!',
 'not_activated' => 'jouw account is niet actief, klik eerst op de activeringslink in de e-mail',
+'2falogin' => 'two factor authenticatie',
+'2fa_message' => 'vul de 6 cijferige code van de authenticator app'
 ];
 
 

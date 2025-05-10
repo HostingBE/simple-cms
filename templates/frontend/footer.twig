@@ -1,5 +1,5 @@
 
-
+{% include "frontend/svg/menu-vertical.twig" %}
         <div class="container-fluid bg-primary h-100 p-2">
         <div class="container-xl text-light">
            <div class="row">
@@ -89,23 +89,36 @@
 
          {{ csrf() | raw }}
 
-        <div class="modal-header">Live Chat</div>
-
+        <div class="modal-header">
+            <div class="row">
+            <div class="col-6">Live Chat</div>
+            <div class="col-6">
+                <div class="dropdown">
+  <button class="btn btn-default btn-sm border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" class="text-dark" fill="currentColor"><use href="#menu-vertical"></svg>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">close</a></li>
+    <li><a class="dropdown-item" href="#">delete</a></li>
+  </ul>
+</div></div>
+       </div>
+</div>
         <div class="modal-body chat-messages overflow-auto" style="height: 350px;">
 
         <div class="form-group py-2">
-              <input type="text" class="form-control" name="name" placeholder=".e.g. your name">
+              <input type="text" class="form-control" name="name" placeholder=".e.g. {{ trans('frontend.chat.yourname') | capitalize }}">
         </div>
         <div class="form-group py-2">
-        <input type="text" class="form-control" name="email" placeholder=".e.g. your e-mail"> 
+        <input type="text" class="form-control" name="email" placeholder=".e.g. {{ trans('frontend.chat.youremail') | capitalize }}"> 
         </div>
         <div class="form-group py-2">
-            <textarea class="form-control" name="message" cols="30" rows="6" placeholder=".e.g. your message"></textarea>
+            <textarea class="form-control" name="message" cols="30" rows="6" placeholder=".e.g. {{ trans('frontend.chat.yourmessage') | capitalize }}"></textarea>
             </div>
         
        <div class="alert alert-danger d-none" id="chatmessage"></div>  
     </div>
-         <div class="modal-footer"><button class="btn btn-primary text-end" type="submit" id="submit-chat">Send</button></div>
+         <div class="modal-footer"><button class="btn btn-primary text-end" type="submit" id="submit-chat">{{ trans('frontend.chat.send') | capitalize }}</button></div>
 
         </div>
     </form>

@@ -45,7 +45,7 @@ $this->logger = $logger;
 $this->settings = $settings;
 }
 
-public function verwijder(Request $request,Response $response) {
+public function delete(Request $request,Response $response) {
 
          $id = $request->getAttribute('id');
           $user = Sentinel::getUser();
@@ -59,7 +59,7 @@ public function verwijder(Request $request,Response $response) {
         return $response->withHeader('Location','/manager/todo-overview')->withStatus(302);  
         }
 
-public function post_bewerken(Request $request,Response $response) {
+public function post_edit(Request $request,Response $response) {
 	      
      $id = $request->getAttribute('id');
 	  $data = $request->getParsedBody();
@@ -71,7 +71,7 @@ public function post_bewerken(Request $request,Response $response) {
 
 	 if (!$v->validate()) {
         $this->flash->addMessage('errors',$v->errors());
-        return $response->withHeader('Location','/manager/todo-bewerken/'.$id.'/')->withStatus(302);  
+        return $response->withHeader('Location','/manager/todo-edit/'.$id.'/')->withStatus(302);  
         }	
  
      	 $user = Sentinel::getUser(); 
@@ -85,10 +85,10 @@ public function post_bewerken(Request $request,Response $response) {
         $sql->execute();    	 
      	 
      	  $this->flash->addMessage('success',"todo succesvol bijgewerkt in de database!");
-        return $response->withHeader('Location','/manager/todo-bewerken/'.$id.'/')->withStatus(302);  
+        return $response->withHeader('Location','/manager/todo-edit/'.$id.'/')->withStatus(302);  
         }	
 
-public function post_toevoegen(Request $request,Response $response) {
+public function post_add(Request $request,Response $response) {
 	      
 
 	  $data = $request->getParsedBody();
@@ -118,7 +118,7 @@ public function post_toevoegen(Request $request,Response $response) {
         return $response->withHeader('Location','/manager/todo-overview')->withStatus(302);  
         }	
 
-public function bewerken(Request $request,Response $response) {
+public function edit(Request $request,Response $response) {
 	             
 	             $id = $request->getAttribute('id');
 	
@@ -149,7 +149,7 @@ public function overview(Request $request,Response $response) {
 	      $sql = $this->db->prepare("SELECT a.id,b.naam as categorie_naam,a.todo,a.status,a.datum FROM todo AS a LEFT JOIN categorie  AS b ON b.id=a.categorie WHERE a.status != 'c'");
 	      $sql->execute();
 	      $todos = $sql->fetchALL(PDO::FETCH_OBJ);
-	
+
 	      return $this->view->render($response,'manager/todo-overview.twig',['meta' =>  $meta,'huidig' => 'todo-overview','todos' => $todos,'categorie' => $categorie,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
       }
 }
