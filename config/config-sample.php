@@ -5,7 +5,7 @@ return [
                    'displayErrorDetails' => true,
                    'logErrorDetails' => true,
                    'debug' => true,
-                   'version' => '2.2.4',
+                   'version' => '3.0.0',
                    'logger' => [
                    'name' => '[logname]',
                    'path' => __DIR__ . '/../logs/'.date('d-m-Y').'-app.log',
@@ -13,7 +13,7 @@ return [
                         ],
                    'db'  => [
      
-     'host' => 'localhost',
+     'host' => '[host]',
      'username' => '[username]',
      'database' => '[database]',
      'password' => '[password]',
@@ -22,7 +22,10 @@ return [
      'translations' => [
             'path' => __DIR__."/../lang",
             'fallback' => 'en',
-            'languages' => array('nl','en','de'), 
+            'languages' => array(
+                           array('url' => 'simple-cms-nl.hostingbe.lan', 'language' => 'nl', 'spoken' => 'nederlands'),
+                           array('url' => 'simple-cms.hostingbe.lan', 'language' => 'en', 'spoken' => 'english'), 
+                           array('url' => 'simple-cms-de.hostingbe.lan', 'language' => 'de','spoken' => 'deutsch')), 
             'enabled' => true,
      ],
         ],
