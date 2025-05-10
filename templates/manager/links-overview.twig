@@ -3,7 +3,7 @@
 
 <div class="container">
 
-	<h1 class="pt-4 pb-4">Links overview</h1>
+	<h1 class="py-4">{{ trans('manager.links.manager_overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 {% include "manager/manager-menu.twig" %}
@@ -16,17 +16,17 @@
 
 <div class="card mb-3">
 <div class="card-body">
-<h2>Overview links</h2>
+<h2>{{ trans('manager.links.overview') | capitalize }}</h2>
 
-<form name="delete" action="/manager/delete-links" method="POST">
+<form name="delete" action="{{url}}/manager/delete-links" method="POST">
 	{{ csrf()|raw }}
 <table class="table table-hover">
 <thead>
    <tr>
    	    <th>#</th>
-        <th>title</th>
-        <th>url</th>
-        <th>menu</th>
+        <th>{{ trans('manager.links.title') | capitalize }}</th>
+        <th>{{ trans('manager.links.url') | capitalize }}</th>
+        <th>{{ trans('manager.links.menu') | capitalize }}</th>
    </tr>     
 </thead>
 <tbody>
@@ -44,7 +44,7 @@
 
 </tbody>
 </table>
-<button class="btn btn-success btn-sm">delete links</button>
+<button class="btn btn-success btn-sm">{{ trans('manager.links.delete') | capitalize }}</button>
 </form>
 </div>
 
@@ -58,23 +58,23 @@
 <div class="card mb-3">
 <div class="card-body">
 
-<form name="add_link" action="/manager/add-link" method="POST" id="ajax-form" data-reload="true">
+<form name="add_link" action="{{url}}/manager/add-link" method="POST" id="ajax-form" data-reload="true">
   {{ csrf() | raw }}
 
 <div class="mb-3">
-  <label for="text-input" class="form-label">Naam</label>
+  <label for="text-input" class="form-label">{{ trans('manager.links.name') | capitalize }}:</label>
   <input class="form-control" type="text" name="name" value="" placeholder="name of link ..">
 </div>
 <div class="mb-3">
-  <label for="text-input" class="form-label">Title</label>
+  <label for="text-input" class="form-label">{{ trans('manager.links.title') | capitalize }}:</label>
   <input class="form-control" type="text" name="title" value="" placeholder="title of link ..">
 </div>
 <div class="mb-3">
-  <label for="text-input" class="form-label">URL</label>
+  <label for="text-input" class="form-label">{{ trans('manager.links.url') | capitalize }}</label>
   <input class="form-control" type="text" name="url" value="" placeholder="URL of link ..">
 </div>
 <div class="mb-3">
-  <label for="text-input" class="form-label">Menu place</label>
+  <label for="text-input" class="form-label">{{ trans('manager.links.menu_place') | capitalize }}</label>
 <select class="form-control" name="category">
 {% for categorie in categories %}
 <option value="{{categorie.id}}">{{categorie.naam}}</option>
@@ -82,7 +82,7 @@
 </select>
 </div>
 
-  <button class="btn btn-primary" type="submit" id="submit-ajax">ADD link</button>
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.links.add') | capitalize }}</button>
 </form>
 
 </div>

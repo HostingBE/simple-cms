@@ -1,0 +1,96 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="py-4">{{ trans('manager.category.manager_overview') | capitalize }}</h1>
+
+
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+{% include "backend/alert.twig" %} 
+
+<div class="row">
+
+
+<div class="col">
+<h4>{{ trans('manager.category.overview') | capitalize }}</h4>
+<div class="card mb-3">
+      <div class="card-body">
+<table class="table table-hover">
+<thead>
+ <tr>
+      <th>#</th>
+      <th>{{ trans('manager.category.name')}}</th>
+      <th>{{ trans('manager.category.language')}}</th>
+      <th>{{ trans('manager.category.kind')}}</th>
+      <th class="text-center">{{ trans('manager.category.manage')}}</th>
+</tr>   
+</thead>  
+<tbody>
+
+{% for categorie in categories %}
+
+ <tr>
+      <td>{{categorie.id}}</td>
+      <td class="text-center"><img src="{{url}}/images/{{categorie.language}}.jpg" class="rounded"></td>
+      <td>{{categorie.naam}}</td>
+      <td>{% if categorie.soort == "h" %}support/helpdesk{% endif %}{% if categorie.soort == "t" %}todo manager{% endif %}{% if categorie.soort == "f" %}forum{% endif %}{% if categorie.soort == "w" %}weblog{% endif %}{% if categorie.soort == "m" %}Menu{% endif %}</td>
+      <td class="text-center"><a href="{{url}}/manager/delete-category/{{categorie.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-category/{{categorie.id}}/" data-reload="true">{{ trans('manager.category.delete')}}</a></td>
+</tr>  
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="col">
+
+<h4>{{ trans('manager.category.add_category') | capitalize }}</h4>
+<div class="card mb-3">
+<div class="card-body">
+
+<form name="todo" action="{{url}}/manager/category-add" method="POST" id="ajax-form" data-reload="true">
+  {{ csrf() | raw }}
+<!-- Text input -->
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.category.name')}}</label>
+  <input class="form-control" type="text" name="naam" value="" placeholder="name of categorie ..">
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.category.kind')}}</label>
+<select class="form-control" name="soort">
+<option value="f">Forum</option>
+<option value="m">Menu</option>
+<option value="h">Support/Helpdesk</option>
+<option value="t">Todo manager</option>
+<option value="w">Weblog</option>
+</select>
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.category.language')}}</label>
+<select class="form-control" name="language">
+{% for language in languages %}
+  <option value="{{language}}">{{ language | upper }}</option>
+{% endfor  %}
+</select>
+</div>
+
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.category.add_category')}}</button>
+</form>
+</div>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

@@ -1,0 +1,85 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+<h1 class="pt-4 pb-4">{{ trans('manager.support.add_support') | capitalize }}</h1>
+
+
+{% include "manager/manager-menu.twig" %} 
+
+<div class="row">
+
+{% include "backend/alert.twig" %}
+
+<div class="card mb-3">
+
+<div class="card-body">
+
+ <form class="flex" id="ajax-form" action="{{url}}/manager/support-add" method="POST" data-reload="false">
+{{ csrf() | raw }}
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">{{ trans('manager.support.title') | capitalize }}:</label>
+                                        <input type="text" name="title" class="form-control" value="" placeholder="titel artikel ..">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">{{ trans('manager.support.description') | capitalize }}:</label>
+                                        <input type="text" name="description" class="form-control" value="" placeholder="meta description ..">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="keywords">{{ trans('manager.support.keywords') | capitalize }}:</label>
+                                        <input type="text" name="keywords" class="form-control" value="" placeholder="meta keywords ..">
+                                    </div>                                    
+
+                                    <div class="form-group">
+                                       <div class="row">
+                                        <div class="col">
+                                        <label class="form-label" for="category">{{ trans('manager.support.category') | capitalize }}:</label>
+                                      <select name="categorie"  class="form-control">
+                                         {% for categorie in categories %}
+                                         <option value="{{categorie.id}}">{{categorie.naam|capitalize}}</option>
+                                         {% endfor %}
+                                        </select>
+                                </div>
+                               
+                       
+                                <div class="col">
+                                              <label for="language" class="form-label">{{ trans('manager.support.language') | capitalize }}</label>
+           
+                                              <select name="language" class="form-control">
+                                              {% for language in languages %}
+                                              <option value="{{language}}">{{language}}</option>
+                                              {% endfor %}
+                                              </select>
+                                            </div>
+                                        </div>                   
+                                    </div>
+                                
+                                    <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                        <label class="form-label col-1" for="tags">{{ trans('manager.support.tags') | capitalize }}:</label>
+                                    
+                                        <input type="text" name="tags" class="form-control" value="" placeholder="tags  comma seperated ..">
+                                        </div>
+                                        <div class="col">
+                                        <label class="form-label col-1" for="tags">{{ trans('manager.support.likes') | capitalize }}:</label>
+                                        <input type="text" name="likes" class="form-control" value="" placeholder="total likes ..">
+                                      </div>    
+                                    </div>
+                                </div>
+                                  <div class="form-group">
+                                        <label class="form-label" for="keywords">{{ trans('manager.support.content') | capitalize }}:</label>
+                                                <textarea name="artikel" class="form-control" rows="15" cols="70" id="textarea-input"></textarea>
+                                    </div>
+
+                                     <button type="submit" class="btn btn-primary m-2" id="submit-ajax">{{ trans('manager.support.save_article') }}</button>
+</form>
+	</div>
+</div>
+</div>
+
+</div>
+
+
+{% include "frontend/footer.twig" %}

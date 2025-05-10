@@ -1,0 +1,60 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="mt-4 pb-4">{{ trans('manager.users.overview') | capitalize }}</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+
+
+       {% include "backend/alert.twig" %} 
+ 
+ <div class="card mb-3 bg-altlightorange">
+ <div class="card-body bg-altlightorange">
+
+     <table class="table table-hover">
+     <thead>
+     <tr>
+            <th>#</th>
+            <th>{{ trans('manager.users.icon') | capitalize }}</th>
+            <th>{{ trans('manager.users.email') | capitalize }}</th>            
+            <th>{{ trans('manager.users.firstname') | capitalize }}</th>
+            <th>{{ trans('manager.users.lastname') | capitalize }}</th> 
+            <th>{{ trans('manager.users.profile') | capitalize }} <i class="h5 fi-alert-triange text-info" data-bs-toggle="tooltip" title="(user_data, ingelogd)"></i></th>  
+            <th>{{ trans('manager.users.date') | capitalize }}</th>
+            <th>{{ trans('manager.users.manage') | capitalize }}</th>  
+     </tr>
+     </thead>
+
+     <tbody>
+     {% for user in users %}
+     <tr>
+     <td>..</td>
+     <td class="text-center"><img src="{% if user.icon %}/images/users/{{user.id}}/{{user.icon}}{% else %}/images/default-icon.jpg{% endif %}" class="img-thumbnail" style="width: 50px; height: 50px;" data-bs-toggle="tooltip" title="{{user.first_name}} {{user.last_name}}"></td>
+     <td>{{user.email}}</td>    
+     <td>{{user.first_name}}</td>
+     <td>{{user.last_name}}</td> 
+     <td class="fw-bold text-center">({{user.settings}}, {{user.aantaldagen}})</td>
+     <td>{{user.datum}}</td>
+     <td class="text-right"><a href="{{url}}/manager/view-user/{{user.id}}/" class="btn btn-secondary btn-sm">{{ trans('manager.users.view') }}</a> <a href="{{url}}/manager/delete-user/{{user.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-user/{{user.id}}/">{{ trans('manager.users.delete')  }}</a></td>
+     </tr>
+     {% endfor %}
+     </tbody>
+     </table>
+     </div>
+     </div>
+</div><!-- /. row -->
+
+{% include "backend/pagelinks.twig" %} 
+      </div>
+      </div>
+
+
+
+{% include "frontend/footer.twig" %}       

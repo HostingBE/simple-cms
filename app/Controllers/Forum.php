@@ -23,7 +23,7 @@ class Forum {
 protected $directory = __DIR__ . '/../../public_html/uploads';
 
 
-	public function __construct(Twig $view,$db,$flash,$mail,$logger,$settings,$locale) {
+	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator) {
     $this->view = $view;
     $this->db = $db;
     $this->flash = $flash;
@@ -31,6 +31,8 @@ protected $directory = __DIR__ . '/../../public_html/uploads';
     $this->logger = $logger;
     $this->settings = $settings;
     $this->locale = $locale;
+    $this->translator = $translator;
+
     Validator::langDir(__DIR__ . '/../../vendor/vlucas/valitron/lang/');
     Validator::lang($this->locale);
     }
@@ -297,7 +299,7 @@ if($uitkomst != $data['captcha']) {
 $user = Sentinel::getUser();
 
 if (!$user->id) {
-     $response->getBody()->write(json_encode(array('status' => 'error','message' => 'You need to login to post a message on the SEO forum!')));  
+     $response->getBody()->write(json_encode(array('status' => 'error','message' => 'You need to login to post a message on the forum!')));  
       return $response; 
       } 
 $sql = $this->db->prepare("SELECT forum_name FROM settings WHERE user=:user");
@@ -314,7 +316,7 @@ $settings = $sql->fetch(PDO::FETCH_OBJ);
  $data['title'] = str_replace("/","-",$data['title']);
 
  
- $sql = $this->db->prepare("INSERT INTO forum (user,name,email,category,title,message,notify,views,tags,date) VALUES(:user,:name,:email,:category,:title,:message,:notify,:views,:tags,now())");
+ $sql = $this->db->prepare("INSERT INTO forum (user,name,email,category,title,message,notify,views,tags,language,date) VALUES(:user,:name,:email,:category,:title,:message,:notify,:views,:tags,:language, now())");
  $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
  $sql->bindparam(":name",$name,PDO::PARAM_STR);
  $sql->bindparam(":email",$user->email,PDO::PARAM_STR); 
@@ -324,6 +326,7 @@ $settings = $sql->fetch(PDO::FETCH_OBJ);
  $sql->bindparam(":notify",$data['notify'],PDO::PARAM_STR);
  $sql->bindparam(":views",$views,PDO::PARAM_INT); 
  $sql->bindparam(":tags",$data['tags'],PDO::PARAM_STR); 
+ $sql->bindparam(":language",$this->locale,PDO::PARAM_STR,2); 
  $sql->execute();
 
 $topic = $this->db->lastinsertid();
@@ -426,14 +429,15 @@ public function ask(Request $request, Response $response) {
 
 
 
-$sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort='f' ORDER BY naam ASC");
+$sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort='f' AND language=:locale ORDER BY naam ASC");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $categories = $sql->fetchALL(PDO::FETCH_OBJ);
 
 
-$meta['title'] = $this->settings['sitename'] . ": post your question free on the SEO forum";
-$meta['description'] = "visit the SEO forum about local seo, technical seo, off page seo, onpage seo and lastly tips and tricks";
-$meta['keywords'] = "question,seo,forum,post";
+$meta['title'] = $this->translator->get('meta.ask-question.title');
+$meta['description'] = $this->translator->get('meta.ask-question.description');
+$meta['keywords'] = $this->translator->get('meta.ask-question.keywords');
 $meta['url'] = parse_url($request->getUri())['path'];
 
 
@@ -495,7 +499,8 @@ public function overview(Request $request, Response $response) {
          throw new HttpNotFoundException($request);
          }
 
-$sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort='f' ORDER BY naam ASC");
+$sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort='f' AND language=:locale ORDER BY naam ASC");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $categories = $sql->fetchALL(PDO::FETCH_OBJ);
 
@@ -507,7 +512,8 @@ for ($i = 0; $i < count($categories);$i++) {
       }
 
 
-$sql = $this->db->prepare("SELECT a.id,a.title,a.name,a.date,b.naam AS categorie FROM forum AS a LEFT JOIN categorie AS b ON a.category=b.id ORDER BY date DESC LIMIT 5");
+$sql = $this->db->prepare("SELECT a.id,a.title,a.name,a.date,b.naam AS categorie FROM forum AS a LEFT JOIN categorie AS b ON a.category=b.id WHERE a.language=:locale ORDER BY date DESC LIMIT 5");
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $latest = $sql->fetchALL(PDO::FETCH_OBJ);
 
@@ -518,9 +524,9 @@ $contributors = $sql->fetchALL(PDO::FETCH_OBJ);
 $arr = getMetaData('forum-overview',$this->locale);
 
 
-$meta['title'] = $categories->naam . $arr['title'];
-$meta['description'] = "Need help about " . $categories->naam . " SEO on your website, help about optimizing your ebsite. Read through all topics or start a new topic";
-$meta['keywords'] = $categories->naam.",seo,forum,control,panel,topic,off-page,on-page";
+$meta['title'] = $this->translator->get('meta.forum-overview.title');
+$meta['description'] = $this->translator->get('meta.forum-overview.description');
+$meta['keywords'] = $this->translator->get('meta.forum-overview.keywords');
 $meta['url'] = parse_url($request->getUri())['path'];
 
 

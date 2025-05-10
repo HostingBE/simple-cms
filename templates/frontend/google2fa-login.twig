@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="{{locale|default('en')}}">
+<head>
+<style>
+/* oswald-regular - latin */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;  
+  src: local(''),
+       url('{{url}}/fonts/oswald-v49-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('{{url}}/fonts/oswald-v49-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{sitename}}: {{trans('login.title')}}</title>
+    <meta name="description" content="{{trans('login.description')}}">
+    <meta name="keywords" content="{{trans('login.keywords')}}">
+    <link rel="shortcut icon" href="{{url}}/images/icon-hostingbe.png" type="image/x-icon">
+    <link rel="icon" href="{{url}}/images/icon-hostingbe.png" type="image/x-icon">
+<link rel="preload" href="{{url}}/fonts/oswald-v49-latin-regular.woff2" as="font" type="font/woff2"  crossorigin />
+<link rel="preload" href="{{url}}/fonts/oswald-v49-latin-regular.woff" as="font" type="font/woff"  crossorigin />
+<link rel="preload" href="{{url}}/cms/css/bootstrap.css" as="style" />
+
+<link rel="stylesheet" href="{{url}}/cms/css/bootstrap.css">
+<link rel="stylesheet" href="{{url}}/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="{{url}}/cms/css/pages/login.css">
+</head>
+<body>
+
+    {% include "frontend/svg/fa-user.twig" %}
+    {% include "frontend/svg/fa-lock.twig" %}    
+
+<div id="login_screen" class="container-fluid d-flex">
+    <div class="row flex-fill">
+        <div class="col-lg-5 col-12 h-100">
+            <div class="row h-100 bg-white">
+                <div class="col-sm-12">
+                    <div class="row h-40 w-100 p-5">
+                        <a href="{{url}}/" class="navbar-brand">
+                            <i class="fas fa-blog fa-3x text-danger"></i>
+                            <span class="display-5">{{sitename}}</span>
+                                         </a>
+                     </div>
+                     <div class="h-70 w-60 p-4">
+                         
+<h1 class="text-primary display-1">{{ trans('login.2falogin')|capitalize }}</h1>
+            <p class="text-muted">{{ trans('login.2fa_message')| capitalize }}</p>
+   
+   {% include "backend/alert.twig" %}
+
+<form name="verify-code" action="{{url}}/verify-code" method="POST">
+
+<div class="input-group mb-3">
+<input type="text" class="form-control form-control-lg" name="code2fa" value="" placeholder="Enter code from APP ">
+<input type="submit" class="btn bnt-lg btn-primary" value="Verify and Login">
+    </div>
+</form>
+
+
+            <div class="text-center mt-5 fs-4">
+                <p><a class="fw-bolder" href="{{url}}/request-password">{{trans('login.forget_password')|capitalize}}?</a>.</p>
+                <p><a href="{{url}}/request-activation-code">{{trans('login.request_code')|capitalize}}</a>.</p>
+            </div>
+
+                     </div>
+
+     
+
+                </div>
+            </div>
+
+        </div>
+       <div class="col-lg-7 d-none d-lg-block bg-hb-blue-dark">  </div>
+                     
+    </div>
+</div>
+</body>
+</html>

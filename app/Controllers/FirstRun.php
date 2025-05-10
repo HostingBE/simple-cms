@@ -65,7 +65,6 @@ $settings = array('sitename' => 'CMS HostingBE',
                 'records' => '10',
                 'html_email' => 'on',
                 'cache' => 'on',
-                'url' => 'https://'. $_SERVER['SERVER_NAME'],
                 'footer' => '',
                 'management_ip' => $_SERVER['REMOTE_ADDR'],
                 'email' => '',
@@ -73,7 +72,8 @@ $settings = array('sitename' => 'CMS HostingBE',
                 'multilanguage' => 'off',
                 'htmleditor' => 'on',
                 'disablesupport' => 'off',
-                'disableforum' => 'off'  
+                'disableforum' => 'off',
+                'markdown' => 'off',  
                 );
 
 $sql = $this->db->prepare("INSERT INTO website_settings(setting,value) VALUES(:setting,:value)");
@@ -87,6 +87,7 @@ $this->logger->warning(__CLASS__ . ": new website settings imported in the datab
 }
 
 private function createPage() {
+    
 $content = $this->view->fetch('frontend/main.twig');
 
 $page = (object) array(

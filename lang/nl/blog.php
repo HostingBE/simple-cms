@@ -25,6 +25,11 @@ return [
 'your_comment' => 'jouw reactie op dit artikel',
 'post_comment' => 'plaats reactie', 
 'no_comments' => 'er zijn nog geen reacties op dit artikel, of je reactie is nog niet goedgekeurd!',
+'newest' => 'nieuwste',
+'oldest' => 'oudste',
+'populair' => 'meest populair',
+'sponsored' => 'gesponsord',
+'no_results' => 'geen resultaten in artikelen met deze query',
 ];
 
 

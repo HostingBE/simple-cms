@@ -1,0 +1,63 @@
+{% include "frontend/header.twig" %}
+
+<!-- Page container-->
+<div class="container">
+
+        <h1 class="pt-4 pb-4">{{ trans('manager.page.manager_overview') | capitalize }} </h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %} 
+</div>
+        
+<div class="row">
+       {% include "backend/alert.twig" %} 
+
+<div class="card mb-3">
+<div class="card-body">
+<table class="table dark">
+<tr>
+<th>#</th>
+<th class="text-center">{{ trans('manager.page.language') | capitalize }}</th>
+<th>{{ trans('manager.page.name') | capitalize }}</th>
+<th>{{ trans('manager.page.title') | capitalize }}</th>
+<th>{{ trans('manager.page.description') | capitalize }}</th>
+<th>{{ trans('manager.page.keywords') | capitalize }}</th>
+<th>{{ trans('manager.page.date') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.page.manage') | capitalize }}</th>
+</tr>
+
+{% if paginas|length < 1 %}
+<tr>
+		<td colspan="7" class="text-center">{{ trans('manager.page.no_pages') | capitalize }}</td>
+</tr>
+{% endif %}
+
+{% if paginas|length > 0 %}
+{% for pagina in paginas %}
+<tr>
+<td>#</td>
+<td class="text-center"><img src="{{url}}/images/{{pagina.language}}.jpg" class="rounded"></td>
+<td>{{pagina.name}}</td>
+<td>{{pagina.titel}}</td>
+<td class="text-center"><span class="badge bg-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta description" data-bs-content="{{pagina.description}}">{{pagina.description|length}}</span></td>
+<td class="text-center"><span class="badge bg-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" title="meta keywords" data-bs-content="{{pagina.keywords}}">{{pagina.keywords|length}}</span></td>
+<td>{{pagina.datum}}</td>
+<td class="text-center"><a href="{{url}}/manager/edit-page/{{pagina.id}}/" class="btn btn-dark btn-sm">{{ trans('manager.page.edit') | capitalize }}</a> <a href="{{url}}/manager/delete-pages/{{pagina.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-page/{{pagina.id}}/">{{ trans('manager.page.delete') | capitalize }}</a></td>
+
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+      </div>
+
+
+{% include "frontend/footer.twig" %}

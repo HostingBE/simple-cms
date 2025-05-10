@@ -1,0 +1,64 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+
+<h1 class="py-4">{{ trans('manager.users.edit_user') | capitalize }} {{user.email}}</h1>
+
+
+{% include "manager/manager-menu.twig" %} 
+
+{% include "backend/alert.twig" %}
+
+<div class="row">
+
+<div class="col-lg-6 col-md-12">
+<div class="card mb-3">
+<div class="card-body">
+
+<form name="todo" action="{{url}}/manager/edit-user/{{user.id}}/" method="POST">
+  {{ csrf() | raw }}
+<!-- Text input -->
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.users.firstname') | capitalize }} </label>
+  <input class="form-control" type="text" name="first_name" value="{{user.first_name}}" placeholder="first name of user ..">
+</div>
+<!-- Text input -->
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.users.lastname') | capitalize }} </label>
+  <input class="form-control" type="text" name="last_name" value="{{user.last_name}}" placeholder="last name of user ..">
+</div>
+<!-- Text input -->
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.users.email') | capitalize }} </label>
+  <input class="form-control" type="text" name="email" value="{{user.email}}" placeholder="e-mail of user ..">
+</div>
+<!-- Text input -->
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.users.icon') | capitalize }} </label>
+  <input class="form-control" type="text" name="email" value="{{user.icon}}" placeholder="icon of user ..">
+</div>
+
+  <button class="btn btn-primary" type="submit">{{ trans('manager.users.save_changes') }} </button>
+</form>
+</div>
+</div>
+</div><!-- /.col -->
+<div class="col-lg-6 col-md-12">
+<div class="text-center">
+<figure class="figure">
+<img class="img-figure img-fluid rounded border" src="{% if user.icon %}/images/users/{{user.id}}/{{user.icon}}{%else%}/images/default-image.jpg{% endif %}" alt="{{user.first_name|capitalize}} {{user.last_name|capitalize}}">
+<figcaption class="figure-caption">{{user.first_name|capitalize}} {{user.last_name}}</figcaption>
+</figure>
+</div>
+</div>
+</div><!-- /. row -->
+</form>
+
+
+      </div>
+      </div>
+    </div>
+
+
+
+{% include "frontend/footer.twig" %}

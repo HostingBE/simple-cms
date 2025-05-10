@@ -21,7 +21,13 @@
         "guzzlehttp/guzzle": "^7.5",
         "illuminate/database": "^9.50",
         "illuminate/translation": "^9.50",
-        "illuminate/events": "^9.50"
+        "illuminate/events": "^9.50",
+        "symfony/var-dumper": "^7.2",
+        "predis/predis": "^3.0",
+        "pragmarx/google2fa": "^8.0",
+        "pragmarx/google2fa-qrcode": "^3.0",
+        "bacon/bacon-qr-code": "^3.0",
+        "league/commonmark": "^2.7"
     },
  "autoload": {
     "psr-4": {

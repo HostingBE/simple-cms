@@ -2,7 +2,7 @@ $(document).ready(function(e) {
         'use strict';
 
 
-$(document).on("click", ".fas.fa-copy.fa-lg", function(event) {
+$(document).on("click", ".btn.btn-default.copy", function(event) {
     event.preventDefault();
 
     $('input[name="partner-link"]').select();

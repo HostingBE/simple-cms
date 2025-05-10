@@ -20,7 +20,12 @@ return [
  'delete_account' => 'verwijder account',
  'upload_icon' => 'upload icon',
  'icon_message' => 'Je kunt jouw eigen pictogram uploaden dat zichtbaar is op jouw product!', 
-
+ 'login_data' => 'login data voor dit account',
+ 'device' => 'apparaat',
+ 'hostname' => 'hostnaam',
+ 'city' => 'plaats',
+ 'country' => 'land',
+ 'date' => 'datum', 
 
     ], 
 
@@ -53,6 +58,12 @@ return [
      'again' => 'nogmaals',
      'current_password_text' => 'jouw huidig wachtwoord', 
      'password_text' => 'jouw nieuw wachtwoord',
+     '2factor_authentication' => '2 factor authenticatie',
+     'message1' => 'Beveilig je account met een <u>extra beveiligingsstap</u>. Wanneer je bent ingelogd met een correcte gebruikersnaam en wachtwoord, is er een extra stap waarbij je een code moet invoeren. Je kunt deze code verkrijgen via de gratis authenticator-app. Deze code is slechts 30 seconden geldig.',
+     'message2' => '<strong>Beveilig uw account vandaag nog met een extra stap: activeer tweefactorauthenticatie.</strong>',
+     'activate-2fa' => 'activeer 2FA',
+     'generate_password' => 'genereer een veilig uniek wachtwoord',
+     'view_password' => 'bekijk je wachtwoord',
                  ],
 'search' => [
 'search_results_for' => 'zoek resultaten voor',

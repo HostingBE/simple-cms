@@ -1,0 +1,75 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+<h1 class="pt-4 pb-4">{{ trans('manager.todo.overview') | capitalize }}</h1>
+
+
+{% include "manager/manager-menu.twig" %} 
+
+
+       {% include "backend/alert.twig" %} 
+        
+<form name="todo" action="{{url}}/manage/add-todo" method="POST">
+{{ csrf() | raw }}
+<div class="row mb-2 bg-secondary bg-opacity-50 rounded rounded-3 p-2">
+<div class="col">{{ trans('manager.todo.add_todo') | capitalize }}</div>
+<div class="col"><input type="text" name="ap-todo" class="form-control" value=""></div>
+<div class="col"><select name="ap-categorie" class="form-control">
+   {% for cat in categorie %}
+    <option value="{{cat.id}}"{% if todo.categorie == cat.id %} selected{% endif %}>{{cat.naam}}</option>
+  {% endfor %}
+</select></div>
+<div class="col"><select name="ap-status" class="form-control">
+<option value="o">{{ trans('manager.todo.open') }}</option>
+<option value="c">{{ trans('manager.todo.closed') }}</option>
+</select></div>
+<div class="col"><button class="btn btn-success" type="submit">{{ trans('manager.todo.add') }}</button></div>
+</div>
+
+</form>
+
+
+<div class="row">
+<div class="card mb-3">
+<div class="card-body">
+<table class="table table-hover">
+<tr>
+<th>#</th>
+<th class="text-center">{{ trans('manager.todo.category') | capitalize }}</th>
+<th>{{ trans('manager.todo.todo') | capitalize }}</th>
+<th>{{ trans('manager.todo.status') | capitalize }}</th>
+<th>{{ trans('manager.todo.date') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.todo.manage') | capitalize }}</th>
+</tr>
+
+{% if todos|length < 1 %}
+<tr>
+		<td colspan="6" class="text-center">{{ trans('manager.common.no_todo') | capitalize }}</td>
+</tr>
+{% endif %}
+
+{% if todos|length > 0 %}
+{% for todo in todos %}
+<tr>
+<td>#</td>
+<td class="text-center"><h5><span class="badge bg-{% if todo.categorie_naam == "blog" %}primary{% endif %}{% if todo.categorie_naam == "features" %}warning{% endif %}{% if todo.categorie_naam == "bugs" %}danger{% endif %}">{{todo.categorie_naam}}</span></h5></td>
+<td>{{todo.todo|capitalize}}</td>
+<td>{% if todo.status == "o" %}{{ trans('manager.todo.open') | capitalize }}{% endif %}{% if todo.status == "c" %}{{ trans('manager.todo.closed') | capitalize }}{% endif %}</td>
+<td>{{todo.datum}}</td>
+<td class="text-center"><a href="{{url}}/manager/todo-edit/{{todo.id}}/" class="btn btn-dark btn-sm">{{ trans('manager.todo.edit') }}</a> <a href="{{url}}/manager/delete-todo/{{todo.id}}/" data-url="{{url}}/manager/delete-todo/{{todo.id}}/" class="btn btn-danger btn-sm">{{ trans('manager.todo.delete') }}</a></td>
+
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+
+
+{% include "frontend/footer.twig" %}

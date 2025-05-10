@@ -1,0 +1,69 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="pt-4 pb-4">{{ trans('manager.advertisements.overview') | capitalize }}</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+       {% include "backend/alert.twig" %} 
+
+ </div>
+
+<div class="col-sm-12">
+
+<div class="card mb-3">
+	<div class="card-body">
+<table class="table table-hover">
+<thead>
+<tr>
+  <th>#</th>
+  <th>{{ trans('manager.advertisements.name') | capitalize }}</th>
+  <th class="text-center">{{ trans('manager.advertisements.language') | capitalize }}</th>
+  <th>{{ trans('manager.advertisements.counter') | capitalize }}</th>
+  <th>{{ trans('manager.advertisements.title') | capitalize }}</th>
+  <th class="text-center">{{ trans('manager.advertisements.status') | capitalize }}</th>
+  <th>{{ trans('manager.advertisements.kind') | capitalize }}</th>     
+  <th>{{ trans('manager.advertisements.date') | capitalize }}</th>
+  <th class="text-end">{{ trans('manager.advertisements.manage') | capitalize }}</th>
+</tr>
+</thead>
+<tbody>
+{% if advertenties|length == 0 %}
+<tr>
+		<td colspan="8" class="text-center">Er zijn nog geen advertenties beschikbaar</td>
+</tr>
+{% endif %}
+
+
+{% if advertenties|length != 0 %}
+{% for advertentie in advertenties %}
+<tr>
+	 <td>{{advertentie.id}}</td>
+	 <td>{{advertentie.naam|capitalize}}</td>
+   <td class="text-center"><img src="{{url}}/images/{{advertentie.language}}.jpg" class="rounded"></td>
+   <td class="text-center"><span class="display-6">{{advertentie.teller}}</span></td>
+     <td>{{advertentie.titel|capitalize}}</td> 
+ 	 <td class="text-center"><span class="badge bg-{% if advertentie.status == "p" %}danger{%endif%}{% if advertentie.status == "a" %}success{%endif%}">{% if advertentie.status == "p" %}pending{%endif%}{% if advertentie.status == "a" %}active{%endif%}</span></td>	 
+ 	 <td>{{advertentie.soort}}</td>
+ 	 <td>{{advertentie.datum}}</td>
+     <td><div class="btn btn-group float-end"><a href="{{url}}/manager/edit-advertisement/{{advertentie.id}}/" class="btn btn-primary btn-sm">{{ trans('manager.advertisements.edit') }}</a><a href="{{url}}/manager/delete-advertisement/{{advertentie.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-advertisement/{{advertentie.id}}/" data-reload="true">{{ trans('manager.advertisements.delete') }}</a></div>
+</tr>
+{% endfor %}
+{% endif %}
+
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</div>
+
+
+{% include "frontend/footer.twig" %}

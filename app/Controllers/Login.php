@@ -51,11 +51,6 @@ class Login {
 	 public function post_login(Request $request,Response $response) {
 
     $data =  $request->getParsedBody();
-    $returnurl = $this->settings['url'] . "/";
-
-    if ($data['locale']) {
-     $returnurl = $returnurl . $data['locale']  . "/";   
-    }
 
     $v = new Validator($data);
     
@@ -64,7 +59,7 @@ class Login {
 
     if (!$v->validate()) {
     $this->flash->addMessage('errors',$v->errors());	
-    return $response->withHeader('Location',$returnurl . 'login')->withStatus(302);
+    return $response->withHeader('Location','/login')->withStatus(302);
     }
 
     $user = Sentinel::findByCredentials(['login' => $data['email']]);
@@ -96,7 +91,7 @@ class Login {
     $this->logger->warning('ongeldige inlog gegevens ' . $data['email']);
     
     $this->flash->addMessage('errors',$this->translator->get('login.invalid'));	
-    return $response->withHeader('Location',$returnurl . 'login')->withStatus(302);    }	
+    return $response->withHeader('Location','/login')->withStatus(302);    }	
     }  
  
 
@@ -114,10 +109,19 @@ $sql->bindparam(":useragent",$_SESSION['info']->useragent,PDO::PARAM_STR);
 $sql->execute();
 
     $this->logger->warning(get_class() . " gebruiker succesvol ingelogd in het systeem ",['IP-address' => $_SESSION['info']->ip,'user' => $user->email]);
+    
+/**
+* Does the user user 2FA
+*/
+if ($user->twofactor == 'y') {
+  return $response->withHeader('Location','/2factor-auth')->withStatus(302);
+  }    
+    
+    
     if ($this->settings['redirect']) {
     return $response->withHeader('Location',$this->settings['redirect'])->withStatus(302); 
     } else {
-    return $response->withHeader('Location',$returnurl . 'backend/dashboard')->withStatus(302);	
+    return $response->withHeader('Location',$this->settings['url'] . '/backend/dashboard')->withStatus(302);	
  	   }
     }
 

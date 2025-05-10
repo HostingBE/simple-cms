@@ -1,0 +1,104 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="py-4">{{ trans('manager.advertisements.edit_advertisement') | capitalize }} </h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+       {% include "backend/alert.twig" %} 
+
+ </div>
+
+<div class="row">
+<div class="col-md-6 col-sm-12">
+
+<div class="card mb-3">
+	<div class="card-body">
+
+<form name="advertentie" action="{{url}}/manager/edit-advertisement/{{advertentie.id}}/" method="POST" id="ajax-form">
+ {{ csrf() | raw  }}
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.name') | capitalize }}</label>
+ <div class="col-md-9">
+  <input class="form-control" type="text" name="naam" value="{{advertentie.naam}}" placeholder="vul een naam in ..">
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.title') | capitalize }}</label>
+ <div class="col-md-9">
+  <input class="form-control" type="text" name="titel" value="{{advertentie.titel}}" placeholder="vul een titel in ..">
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.description') | capitalize }}</label>
+ <div class="col-md-9">
+  <textarea class="form-control" name="omschrijving" rows="5" cols="60" placeholder="vul een omschrijving in ..">{{advertentie.omschrijving}}</textarea>
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.link') | capitalize }}</label>
+ <div class="col-md-9">
+  <input class="form-control" type="text" name="link" value="{{advertentie.link}}" placeholder="vul een link in ..">
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.code') | capitalize }}</label>
+   <div class="col-md-9">
+  <textarea class="form-control" name="code" rows="5" cols="60" placeholder="vul code in ..">{{advertentie.script}}</textarea>
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.kind') | capitalize }}</label>
+ <div class="col-md-9">
+  <select name="soort" class="form-control">
+  <option value="banner"{% if advertentie.soort == "banner" %} selected{%endif%}>Banner</option>
+  <option value="text"{% if advertentie.soort == "text" %} selected{%endif%}>Text</option>
+  <option value="script"{% if advertentie.soort == "script" %} selected{%endif%}>Javascript code</option>  
+  </select>
+</div>
+</div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisement.language') | capitalize }}</label>
+   <div class="col-md-9">
+ <select class="form-control" name="language">
+ {% for language in languages %}
+   <option value="{{language}}"{% if advertentie.language == language %} selected{% endif %}>{{ language | upper }}</option>
+ {% endfor  %}
+ </select>
+ </div>
+ </div>
+
+<div class="row form-group p-2">
+  <label class="form-label col-md-3">{{ trans('manager.advertisements.active') | capitalize }}</label>
+ <div class="col-md-9">
+<div class="form-check form-switch">
+  <input class="form-check-input" id="activeren" name="activeren" type="checkbox" value="a"{% if advertentie.status == "a" %} checked{%endif%}>
+   </div>
+</div>
+</div>
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.advertisements.save_changes') | capitalize }}</button>
+</form>
+
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+{% include "frontend/footer.twig" %}

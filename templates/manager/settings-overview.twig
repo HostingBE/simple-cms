@@ -3,7 +3,7 @@
 
 <div class="container">
 
-	<h1 class="pt-4 pb-4">Settings overview</h1>
+	<h1 class="pt-4 pb-4">{{ trans('manager.settings.overview') | capitalize }}</h1>
 
 <div class="row mb-4">
 {% include "manager/manager-menu.twig" %}
@@ -16,18 +16,18 @@
 
 <div class="card mb-3">
 <div class="card-body">
-<h2>Overview settings</h2>
+<h2>{{ trans('manager.settings.overview') | capitalize }}</h2>
 
 <form name="settings" action="{{url}}/manager/settings" method="POST" id="ajax-form" data-reload="true">
   {{ csrf() | raw }}
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Sitename</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.sitename') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="sitename" value="{{settings.sitename.value}}" placeholder="name of website!">
+  <input class="form-control" type="text" name="sitename" value="{{settings.sitename.value}}" placeholder="{{ trans('manager.settings.sitename_text') | capitalize }}!">
 </div>
 </div>
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Record lengte</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.record_length') | capitalize }}</label>
     <div class="col-md-9">
   <select name="records" class="form-control">
   <option value="10"{% if settings.records.value == "10" %} selected{% endif %}>10</option>
@@ -39,13 +39,13 @@
 </div>
 
 <div class="row mb-3">
-  <label class="col-md-3 form-check-label" for="html_email">HTML email sending</label>
+  <label class="col-md-3 form-check-label" for="html_email">{{ trans('manager.settings.html_sending') | capitalize }}</label>
  <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="html_email" type="checkbox" id="html_email"{% if settings.html_email.value == "on" %}  checked{% endif %}></div>
     </div>
 
-  <label class="col-md-3 form-check-label" for="cache">Cache website</label>
+  <label class="col-md-3 form-check-label" for="cache">{{ trans('manager.settings.cache') | capitalize }}</label>
  <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="cache" type="checkbox" id="cache"{% if settings.cache.value == "on" %}  checked{% endif %}></div>
@@ -55,13 +55,13 @@
 
 
 <div class="row mb-3">
-  <label class="col-md-3 form-check-label" for="advertenties">Advertenties</label>
+  <label class="col-md-3 form-check-label" for="advertenties">{{ trans('manager.settings.advertisement') | capitalize }}</label>
  <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="advertenties" type="checkbox" id="advertenties"{% if settings.advertenties.value == "on" %}  checked{% endif %}></div>
     </div>
 
-  <label class="col-md-3 form-check-label" for="multilanguage">Multi language</label>
+  <label class="col-md-3 form-check-label" for="multilanguage">{{ trans('manager.settings.multi_language') | capitalize }}</label>
  <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="multilanguage" type="checkbox" id="multilanguage"{% if settings.multilanguage.value == "on" %}  checked{% endif %}></div>
@@ -69,134 +69,132 @@
 </div>
 
 <div class="row mb-3">
-  <label class="col-md-3 form-check-label" for="htmleditor">HTML editor</label>
+  <label class="col-md-3 form-check-label" for="htmleditor">{{ trans('manager.settings.html_editor') | capitalize }}</label>
  <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="htmleditor" type="checkbox" id="htmleditor"{% if settings.htmleditor.value == "on" %}  checked{% endif %}></div>
     </div>
-  <label class="col-md-3 form-check-label" for="disablesupport">Disable Support</label>
+  <label class="col-md-3 form-check-label" for="disablesupport">{{ trans('manager.settings.disable_support') | capitalize }}</label>
  <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="disablesupport" type="checkbox" id="disablesupport"{% if settings.disablesupport.value == "on" %}  checked{% endif %}></div>
     </div>
-
 </div>
 
+
 <div class="row mb-3">
-  <label class="col-md-3 form-check-label" for="disableforum">Disable Forum</label>
- <div class="col-md-9">
+  <label class="col-md-3 form-check-label" for="disableforum">{{ trans('manager.settings.disable_forum') | capitalize }}</label>
+ <div class="col-md-3">
 <div class="form-check form-switch">
    <input class="form-check-input" name="disableforum" type="checkbox" id="disableforum"{% if settings.disableforum.value == "on" %}  checked{% endif %}></div>
+    </div>
+  <label class="col-md-3 form-check-label" for="markdown">{{ trans('manager.settings.markdown') | capitalize }}</label>
+ <div class="col-md-3">
+<div class="form-check form-switch">
+   <input class="form-check-input" name="markdown" type="checkbox" id="markdown"{% if settings.markdown.value == "on" %}  checked{% endif %}></div>
     </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Website url</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.redirect') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="url" value="{{settings.url.value}}" placeholder="website root url ..">
+  <input class="form-control" type="text" name="redirect" value="{{settings.redirect.value}}" placeholder="{{ trans('manager.settings.redirect_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Redirect url</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.apiusername') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="redirect" value="{{settings.redirect.value}}" placeholder="redirect url after login ..">
+  <input class="form-control" type="text" name="apiusername" value="{{settings.apiusername.value}}" placeholder="{{ trans('manager.settings.apiusername_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Search api username</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.apipassword') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="apiusername" value="{{settings.apiusername.value}}" placeholder="search api username ..">
+  <input class="form-control" type="text" name="apipassword" value="{{settings.apipassword.value}}" placeholder="{{ trans('manager.settings.apipassword_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Search api password</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.email_originator') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="apipassword" value="{{settings.apipassword.value}}" placeholder="search api password ..">
+  <input class="form-control" type="text" name="email" value="{{settings.email.value}}" placeholder="{{ trans('manager.settings.originator_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">E-mail originator</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.email_originator_text') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="email" value="{{settings.email.value}}" placeholder="e-mail address originator ..">
+  <input class="form-control" type="text" name="email_name" value="{{settings.email_name.value}}" placeholder=" {{ trans('manager.settings.originator_text_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Originator text</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.resizeimage') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="email_name" value="{{settings.email_name.value}}" placeholder=" originator text ..">
+  <input class="form-control" type="text" name="image_size" value="{{settings.image_size.value}}" placeholder="{{ trans('manager.settings.resizeimage_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Resize image to size</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.address') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="image_size" value="{{settings.image_size.value}}" placeholder=" resize image to size ..">
+  <input class="form-control" type="text" name="address" value="{{settings.address.value}}" placeholder="{{ trans('manager.settings.address_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Address</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.zipcode') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="address" value="{{settings.address.value}}" placeholder=" address for contact page ..">
-</div>
-</div>
-
-<div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Zipcode</label>
-  <div class="col-md-9">
-  <input class="form-control" type="text" name="zipcode" value="{{settings.zipcode.value}}" placeholder=" zipcode for contact page ..">
+  <input class="form-control" type="text" name="zipcode" value="{{settings.zipcode.value}}" placeholder="{{ trans('manager.settings.zipcode_text') | capitalize }}e ..">
 </div>
 </div>
 
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">City</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.city') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="city" value="{{settings.city.value}}" placeholder=" city for contact page ..">
+  <input class="form-control" type="text" name="city" value="{{settings.city.value}}" placeholder="{{ trans('manager.settings.city_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Country</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.country') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="country" value="{{settings.country.value}}" placeholder=" country for contact page ..">
+  <input class="form-control" type="text" name="country" value="{{settings.country.value}}" placeholder="{{ trans('manager.settings.country_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">COC number</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.coc') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="coc" value="{{settings.coc.value}}" placeholder=" COC number for contact page ..">
+  <input class="form-control" type="text" name="coc" value="{{settings.coc.value}}" placeholder="{{ trans('manager.settings.coc_text') | capitalize }} ..">
 </div>
 </div>
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">VAT number</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.vat') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="vat" value="{{settings.vat.value}}" placeholder=" VAT number for contact page ..">
+  <input class="form-control" type="text" name="vat" value="{{settings.vat.value}}" placeholder="{{ trans('manager.settings.vat_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">IBAN number</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.iban') | capitalize }}</label>
   <div class="col-md-9">
-  <input class="form-control" type="text" name="iban" value="{{settings.iban.value}}" placeholder=" IBAN number for contact page ..">
+  <input class="form-control" type="text" name="iban" value="{{settings.iban.value}}" placeholder="{{ trans('manager.settings.iban_text') | capitalize }} ..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Footer e-mail</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.footeremail') | capitalize }}</label>
   <div class="col-md-9">
-  <textarea class="form-control" name="footer" placeholder="footer of e-mail .." rows='8'>{{settings.footer.value}}</textarea>
+  <textarea class="form-control" name="footer" placeholder="{{ trans('manager.settings.footeremail_text') | capitalize }} .." rows='8'>{{settings.footer.value}}</textarea>
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Background captcha</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.background_captcha') | capitalize }}</label>
     <div class="col-md-9">
   {% set colors = ['blue','orange','pink','white','green','red','black'] %}
 
@@ -209,7 +207,7 @@
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Color captcha</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.color_captcha') | capitalize }}</label>
     <div class="col-md-9">
   <select name="color" class="form-control">
   {% for color in colors %}
@@ -221,20 +219,20 @@
 
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Management ipaddress</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.management_ipaddress') | capitalize }}</label>
     <div class="col-md-9">
-  <input class="form-control" type="text" name="management_ip" value="{{settings.management_ip.value}}" placeholder=" ipaddress for manager ..">
+  <input class="form-control" type="text" name="management_ip" value="{{settings.management_ip.value}}" placeholder="{{ trans('manager.settings.management_ipaddress_text') | capitalize }}..">
 </div>
 </div>
 
 <div class="row mb-3">
-  <label for="text-input" class="col-md-3 form-label">Mollie payment key</label>
+  <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.mollie') | capitalize }}</label>
     <div class="col-md-9">
-  <input class="form-control" type="text" name="mollie_key" value="{{settings.mollie_key.value}}" placeholder=" payment key Mollie ..">
+  <input class="form-control" type="text" name="mollie_key" value="{{settings.mollie_key.value}}" placeholder="{{ trans('manager.settings.mollie_text') | capitalize }} ..">
 </div>
 </div>
 
-  <button class="btn btn-primary" type="submit" id="submit-ajax">save settings</button>
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.settings.save_settings') | capitalize }}</button>
 </form>
 </div>
 

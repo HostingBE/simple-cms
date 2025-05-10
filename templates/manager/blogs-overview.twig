@@ -1,0 +1,67 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="py-4">{{ trans('manager.blog.overview') | capitalize }}</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+
+
+       {% include "backend/alert.twig" %} 
+
+<div class="card mb-3">
+      <div class="card-body">
+
+<table class="table dark">
+<tr>
+<th>#</th>
+<th class="text-center">{{ trans('manager.blog.category') | capitalize }}</th>
+<th>{{ trans('manager.blog.title') | capitalize }}</th>
+<th>{{ trans('manager.blog.tags') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.blog.publish') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.blog.comments') | capitalize }}</th>
+<th>{{ trans('manager.blog.date') | capitalize }}</th>
+<th class="text-center">{{ trans('manager.blog.manage') | capitalize }}</th>
+</tr>
+
+{% if blogs|length < 1 %}
+<tr>
+		<td colspan="8" class="text-center">{{ trans('manager.blog.no_blogs') | capitalize }}r</td>
+</tr>
+{% endif %}
+
+{% if blogs|length > 0 %}
+{% for blog in blogs %}
+<tr>
+<td>#</td>
+<td >{{blog.categorie_naam}}</td>
+<td>{{blog.title|capitalize}}</td>
+<td>{{blog.tags}}</td>
+<td class="text-center">{{blog.publish}}</td>
+<td class="text-center">{{blog.reacties}}</td>
+<td>{{blog.date}}</td>
+<td class="text-center"><a href="{{url}}/manager/blog-edit/{{blog.id}}/" class="btn btn-dark btn-sm">{{ trans('manager.blog.edit') }}</a> <a href="{{url}}/manager/delete-blog/{{blog.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-blog/{{blog.id}}/" data-reload="true">{{ trans('manager.blog.delete') }}</a></td>
+
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

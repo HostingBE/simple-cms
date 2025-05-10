@@ -10,11 +10,14 @@ namespace App\Controllers;
 use PDO;
 
 class DBhelpers {
+
 protected $db;
+protected $locale;
 
 
-public function __construct($db) {
+public function __construct($db, $locale) {
     $this->db = $db;
+    $this->locale = $locale;
     }
 
 public function insert_log($user, $website, $prio = "info", $log = "no log entry") {
@@ -37,8 +40,9 @@ return $toolsets;
 
 public function get_support_categories() {
 $soort = 'h'; 
-$sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort=:soort ORDER BY naam ASC");
+$sql = $this->db->prepare("SELECT id,naam FROM categorie WHERE soort=:soort AND language=:locale ORDER BY naam ASC");
 $sql->bindparam(":soort",$soort,PDO::PARAM_STR);
+$sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $categories = $sql->fetchALL(PDO::FETCH_OBJ);
 return $categories;

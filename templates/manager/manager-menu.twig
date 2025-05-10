@@ -8,40 +8,43 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/manager/dashboard">Dashboard</a>
+          <a class="nav-link" href="{{url}}/manager/dashboard">{{ trans('manager.menu.dashboard') | capitalize }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/manager/bekijk-logging">Bekijk logging</a>
+          <a class="nav-link" href="{{url}}/manager/view-logging">{{ trans('manager.menu.view_logging') | capitalize }}</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url}}/manager/chat-overview">{{ trans('manager.menu.chat_overview') | capitalize }}</a>
+        </li>        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Manager overzichten
+            {{ trans('manager.menu.manager_overview') | capitalize }}
           </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="/manager/todo-overview">Todo overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/support-overzicht">Support overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/support-toevoegen">Support toevoegen</a></li>    
+            <li><a class="dropdown-item" href="{{url}}/manager/todo-overview">{{ trans('manager.menu.todo') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/support-overview">{{ trans('manager.menu.support') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/add-support">{{ trans('manager.menu.add_support') | capitalize }} </a></li>    
              <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/links-overview">Links overview</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/links-overview">{{ trans('manager.menu.links') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/settings-overview">Settings overview</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/settings-overview">{{ trans('manager.menu.settings') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/advertenties-overview">Advertenties overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/advertentie-toevoegen">Advertentie toevoegen</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/advertisements-overview">{{ trans('manager.menu.advertisements') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/add-advertisement">{{ trans('manager.menu.add_advertisement') | capitalize }}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/gebruikers-overzicht">Gebruikers overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/users-overview">{{ trans('manager.menu.users') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/pagina-overzicht">Pagina overzicht</a></li>
-            <li><a class="dropdown-item" href="/manager/pagina-toevoegen">Pagina toevoegen</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/pages-overview">{{ trans('manager.menu.pages') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/page-add">{{ trans('manager.menu.add_page') | capitalize }}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/categorie-overzicht">Categorie overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/category-overview">{{ trans('manager.menu.category') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/templates-overzicht">Templates overzicht</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/templates-overview">{{ trans('manager.menu.templates') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/media-overzicht">Media overzicht</a></li>   
+            <li><a class="dropdown-item" href="{{url}}/manager/media-overview">{{ trans('manager.menu.media') | capitalize }} {{ trans('manager.menu.overview') }}</a></li>   
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="/manager/blog-overzicht">Blog overzicht</a></li>   
-            <li><a class="dropdown-item" href="/manager/blog-toevoegen">Blog toevoegen</a></li>   
+            <li><a class="dropdown-item" href="{{url}}/manager/blogs-overview">{{ trans('manager.menu.blog') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>   
+            <li><a class="dropdown-item" href="{{url}}/manager/blog-add">{{ trans('manager.menu.add_blog') | capitalize }}</a></li>   
   
           </ul>
         </li>

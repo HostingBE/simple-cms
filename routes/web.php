@@ -5,13 +5,15 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 
 use App\Controllers\Account;
-use App\Controllers\Advertenties;
+use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
 use App\Controllers\Category;
+use App\Controllers\Chat;
 use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
 use App\Controllers\Forum;
+use App\Controllers\Google2FA;
 use App\Controllers\Manager;
 use App\Controllers\Media;
 use App\Controllers\Page;
@@ -25,7 +27,17 @@ use App\Controllers\Login;
 use App\Controllers\Logging;
 use App\Controllers\Users;
 
+$checkUser = new \App\Middleware\CheckUser();
+$check2Factor = new \App\Middleware\check2Factor();
 
+/*
+* Urls after login but no 2FA authentication
+*/
+
+$app->group('', function($route) {
+    $route->get('/2factor-auth', Google2FA::class . ':login')->setName('google2fa.login');
+    $route->post('/verify-code', Google2FA::class . ':verify_code');
+    })->add($checkUser);
 
 $app->group('', function($csrfroute) {
 $csrfroute->get('/status', Page::class . ':status')->setName('page.status');
@@ -40,19 +52,23 @@ $csrfroute->get('/request-activation-code', Account::class . ':request_code')->s
 $csrfroute->get('/bevestig-wachtwoord/{gebruiker}/{email}/{code}',Account::class . ':confirm_password')->setName('account.confirm_password');
 $csrfroute->get('/delete-user/{code}/{email}/', Account::class . ':delete')->setName('account.delete');
 $csrfroute->get('/blog-{id:[0-9]+}-{title:[^\/]+}/', Blog::class . ':view')->setName('blog.view');
-$csrfroute->get('/seo-blog/{id:[0-9]+}-{category:[^\/]+}/', Blog::class . ':category')->setName('blog.category');
-$csrfroute->get('/advertentie', Advertenties::class . ':advertentie')->setName('advertenties.advertentie');
+$csrfroute->get('/blog/{id:[0-9]+}-{category:[^\/]+}/', Blog::class . ':category')->setName('blog.category');
+$csrfroute->get('/advertisements', Advertisements::class . ':advertisements')->setName('advertisements.advertisements');
 $csrfroute->get('/outgoing-link/{id:[0-9]+}/{code:[a-zA-Z0-9]+}/', Advertenties::class . ':outgoing')->setName('advertenties.outgoing');
+
+$csrfroute->get('/chat-check-login', Chat::class . ':chat_check_login')->setName('chat.chat_check_login');
+$csrfroute->get('/chat-overview', Chat::class . ':chat_overview')->setName('chat.chat_overview');
 
 $csrfroute->get('/search/{q:[a-zA-Z0-9\-]+}/', Search::class . ':search')->setName('search.search');
 
-$csrfroute->get('/seo-support', Support::class . ':overview')->setName('support.overview');
-$csrfroute->get('/seo-support/{id:[0-9]+}/{name:[^\/]+}/', Support::class . ':view_category')->setName('support.view_category');
+$csrfroute->get('/support', Support::class . ':overview')->setName('support.overview');
+$csrfroute->get('/support/{id:[0-9]+}/{name:[^\/]+}/', Support::class . ':view_category')->setName('support.view_category');
 $csrfroute->get('/support/{id:[0-9]+}-{title:[^\/]+}/', Support::class . ':view')->setName('support.view');
 $csrfroute->get('/view-email/{code:[^\/]{32}}/{hash:[a-z0-9]{64}}/',Email::class . ':view')->setName('email.view');
 
 $csrfroute->get('/apisearch', Search::class . ':apisearch')->setName('search.apisearch');
 
+$csrfroute->get('/activate-2fa',Google2FA::class . ':overview')->setName('google2fa.overview');
 
 $csrfroute->post('/support-like', Support::class . ':post_like');
 
@@ -60,6 +76,9 @@ $csrfroute->post('/ask-question', Forum::class . ':postask');
 $csrfroute->post('/topic-reply', Forum::class . ':postreply');
 $csrfroute->post('/topic-upload',Forum::class . ':topic_upload');
 $csrfroute->post('/forum-like', Forum::class . ':post_like');
+
+$csrfroute->post('/chat-signin', Chat::class . ':post_signin');
+$csrfroute->post('/add-chat-message', Chat::class . ':post_add');
 
 $csrfroute->post('/create-account', Account::class . ':post_create_account');
 $csrfroute->post('/login', Login::class . ':post_login')->setName('login.post_login');

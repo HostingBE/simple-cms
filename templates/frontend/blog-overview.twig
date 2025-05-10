@@ -7,12 +7,12 @@
 <h1 class="py-4">{{sitename}} {{trans('blog.blog_overview')|capitalize}}</h1>
 
         <!-- Search bar + filters-->
-        <div class="row gy-3 mb-4 pb-2">
+        <div class="row gy-3 mb-4 pb-2 bg-secondary bg-opacity-50 rounded rounded-3">
           <div class="col-md-4 order-md-1 order-2">
               <form name="search" method="POST" action="{{url}}/blog-search">
               {{ csrf() | raw }}
             <div class="position-relative input-group">
-            <input class="form-control pe-5" type="text" placeholder="{{trans('blog.search_for')}}..." name="q" value="{{query}}"><button class="btn btn-secondary" title="search blog button" type="submit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" class="bi text-primary" fill="currentColor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></button> 
+            <input class="form-control pe-5" type="text" placeholder="{{trans('blog.search_for')}}..." name="q" value="{{query}}"><button class="btn btn-success" title="search blog button" type="submit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" class="bi text-white" fill="currentColor"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></button> 
                       </div>
                  </form>
                </div>
@@ -30,10 +30,10 @@
               <div class="col-6 d-flex flex-sm-row flex-column align-items-sm-center">
                 <label class="d-inline-block me-sm-2 mb-sm-0 mb-2 text-nowrap" for="sortby"><i class="fa fa-arrows-sort mt-n1 me-2 align-middle opacity-70"></i>{{trans('blog.sort_on')}}:</label>
                 <select class="form-select" id="sortby">
-                  <option value="newest">Newest</option>
-                  <option value="oldest">Oldest</option>
-                  <option value="populair">Populair</option>
-                  <option value="sponsored">Sponsored</option>
+                  <option value="newest">{{ trans('frontend.common.newest') | capitalize }}</option>
+                  <option value="oldest">{{ trans('frontend.common.oldest') | capitalize }}</option>
+                  <option value="populair">{{ trans('frontend.common.populair') | capitalize }}</option>
+                  <option value="sponsored">{{ trans('frontend.common.sponsored') | capitalize }}</option>
                 </select>
               </div>
             </div>
@@ -53,11 +53,11 @@
                                 {{blog.content|striptags()}}
                             </p>
                         </div>
-                        <a href="{{locale_url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|url_encode(true)|lower}}/"><img class="img-fluid rounded" src="{% if blog.media %}/uploads/{{blog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{blog.imagename}}-200.webp 200w, {{url}}/uploads/{{blog.imagename}}-400.webp 400w,{{url}}/uploads/{{blog.imagename}}-800.webp 800w" sizes="50vw" width="{{blog.width}}" height="{{blog.height}}" alt="{{blog.alt|capitalize}}"></a>
+                        <a href="{{locale_url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|url_encode(true)|lower}}/"><img class="img-fluid " src="{% if blog.media %}/uploads/{{blog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{blog.imagename}}-200.webp 200w, {{url}}/uploads/{{blog.imagename}}-400.webp 400w,{{url}}/uploads/{{blog.imagename}}-800.webp 800w" sizes="50vw" width="{{blog.width}}" height="{{blog.height}}" alt="{{blog.alt|capitalize}}"></a>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
                         <span>{{trans('blog.comments')}} {{blog.reacties}}, {{trans('blog.published')}} {{blog.date}}</span>
-                        <a href="{{locale_url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" class="btn btn-light-primary" data-bs-toggle="tooltip" title="{{trans('blog.read_more_about')}} {{blog.title}}" alt="{{trans('blog.read_more_about')}} {{blog.title}}">{{trans('blog.read_more_about')}} {{blog.tags|replace({',':' '})}} ..</a>
+                        <a href="{{locale_url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" class="btn btn-light-primary" data-bs-toggle="tooltip" title="{{trans('blog.read_more_about')}} {{blog.title}}" alt="{{trans('blog.read_more_about')}} {{blog.title}}">{{blog.tags|replace({',':' '})}} ..</a>
                     </div>
  </div><!-- /. card -->
      </div>

@@ -17,15 +17,17 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use App\Views\Extensions\CsrfExtension;
 
 use App\Controllers\Account;
-use App\Controllers\Advertenties;
+use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
-use App\Controllers\Category;
+use App\Controllers\Manager\Category;
+use App\Controllers\Chat;
 use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
 use App\Controllers\Forum;
+use App\Controllers\Google2FA;
 use App\Controllers\Manager\Links;
-use App\Controllers\Manager;
+use App\Controllers\Manager\Manager;
 use App\Controllers\Manager\Media;
 use App\Controllers\Page;
 use App\Controllers\Pages;
@@ -39,7 +41,7 @@ use App\Controllers\Manager\Todo;
 use App\Controllers\Login;
 use App\Controllers\Manager\Logging;
 use App\Controllers\Manager\Upload;
-use App\Controllers\Users;
+use App\Controllers\Manager\Users;
 
 
 $containerBuilder = new ContainerBuilder();
@@ -87,20 +89,11 @@ $capsule->addConnection([
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-
 $container->set('locale', function($container) use ($app) {
+      return (new \App\Language\LanguageByDomain($container->get('settings')['translations']))->getDomain();
+ 
+});
 
-$currentlang = substr($_SERVER['REQUEST_URI'],0,4);
-
-if ((strpos($currentlang,"/") == 0) && (strrpos($currentlang,"/") == 3)) {
-$currentlang = str_replace('/','',$currentlang);
-} 
-if (in_array($currentlang, $container->get('settings')['translations']['languages'])) {
-return $currentlang;
-          }  
-$_SESSION['locale'] = $currentlang;
-return "";
- });
 
 $container->set('translator', function ($container) use ($app) {
 $loader = new Illuminate\Translation\FileLoader(
@@ -171,16 +164,17 @@ return $results;
 });
 
 
-if ($container->get('locale')) {
-$container->get("view")->getEnvironment()->addGlobal('locale_url', $container->get('sitesettings')['url']."/".$container->get('locale')); 
-} else {
-$container->get("view")->getEnvironment()->addGlobal('locale_url', $container->get('sitesettings')['url']);     
-}
-$container->get("view")->getEnvironment()->addGlobal('url', $container->get('sitesettings')['url']);   
+/**
+ * Determine the currrent url
+ */
+$key = array_search($container->get('locale'), array_column($container->get('settings')['translations']['languages'], 'language'));
+$url = $container->get('settings')['translations']['languages'][$key]['url'];
+
+$container->get("view")->getEnvironment()->addGlobal('url', 'https://'.$url);   
 $container->get("view")->getEnvironment()->addGlobal('sitename',$container->get('sitesettings')['sitename']);
 $container->get("view")->getEnvironment()->addGlobal('version',$container->get('settings')['version']);
 $container->get("view")->getEnvironment()->addGlobal('advertenties',$container->get('sitesettings')['advertenties']);
-$container->get("view")->getEnvironment()->addGlobal('locale',$container->get('locale'));
+$container->get("view")->getEnvironment()->addGlobal('languages',$container->get('settings')['translations']['languages']);
 $container->get("view")->getEnvironment()->addGlobal('multilanguage',$container->get('sitesettings')['multilanguage']);
 $container->get("view")->getEnvironment()->addGlobal('htmleditor',$container->get('sitesettings')['htmleditor']);
 $container->get("view")->getEnvironment()->addGlobal('disableforum',$container->get('sitesettings')['disableforum']);
@@ -198,6 +192,19 @@ $container->set('mail', function () {
     return $mail;
 });
 
+/**
+ * create the REDIS adapter
+ */
+$container->set('cache', function () {
+      $cache = new \App\Cache\RedisAdapter(new \Predis\Client([
+                                          'scheme' => 'tcp',
+                                          'host' => '127.0.0.1',
+                                          'port' => 6379,
+                                          'password' => null
+                                          ]));
+      return $cache;
+      });
+
 /*
 * management ip excluding from statistics and chat
 */
@@ -208,16 +215,29 @@ $container->get("view")->getEnvironment()->addGlobal('management_ip',$management
 /*
 * blogs for footer
 */
-$sql = $container->get('db')->prepare("SELECT a.id,a.title,a.user,a.image,substr(a.content,1,200) as content,DATE_FORMAT(a.date,'%d-%m-%Y') AS datum,b.naam as categorienaam,CONCAT(c.naam,'.',c.extentie) as media,c.naam as imagename,c.alt,(SELECT COUNT(*) as aantal from blog_reacties where blog=a.id and status='a') AS reacties from blog AS a LEFT JOIN categorie b ON b.id=a.category LEFT JOIN media c ON c.id=a.image WHERE a.publish='y' AND a.publishdate <= now() ORDER BY a.id desc limit 2");
-$sql->execute();
-$footer_blogs = $sql->fetchALL(PDO::FETCH_OBJ);
+if ($container->get('cache')->get($container->get('sitesettings')['sitename'].':blogs_footer:'.$container->get('locale'))) {
+      $footer_blogs = json_decode($container->get('cache')->get($container->get('sitesettings')['sitename'].':blogs_footer:'.$container->get('locale'),true));
+      } else {
+      $sql = $container->get('db')->prepare("SELECT a.id,a.title,a.user,a.image,substr(a.content,1,200) as content,DATE_FORMAT(a.date,'%d-%m-%Y') AS datum,b.naam as categorienaam,CONCAT(c.naam,'.',c.extentie) as media,c.naam as imagename,c.alt,(SELECT COUNT(*) as aantal from blog_reacties where blog=a.id and status='a') AS reacties from blog AS a LEFT JOIN categorie b ON b.id=a.category LEFT JOIN media c ON c.id=a.image WHERE a.publish='y' AND a.language=:locale AND a.publishdate <= now() ORDER BY a.id desc limit 2");
+      $sql->bindparam(":locale", $container->get('locale'),PDO::PARAM_STR,2);
+      $sql->execute();
+      $footer_blogs = $sql->fetchALL(PDO::FETCH_OBJ);
+      $container->get('cache')->put($container->get('sitesettings')['sitename'].':blogs_footer:'.$container->get('locale'),json_encode($footer_blogs),3600);
+}
 
 /*
 * menu for header and footer
 */
-$sql = $container->get('db')->prepare("SELECT a.name,a.title,a.url,b.naam FROM links AS a LEFT JOIN categorie AS b ON b.id=a.category");
-$sql->execute();
-$linksobj = $sql->fetchALL(PDO::FETCH_OBJ);
+if ($container->get('cache')->get($container->get('sitesettings')['sitename'].':linksobj:'.$container->get('locale'))) {
+      $linksobj = json_decode($container->get('cache')->get($container->get('sitesettings')['sitename'].':linksobj:'.$container->get('locale'),true));
+      } else {
+      $sql = $container->get('db')->prepare("SELECT a.name,a.title,a.url,b.naam FROM links AS a LEFT JOIN categorie AS b ON b.id=a.category WHERE b.language=:locale");
+      $sql->bindparam(":locale", $container->get('locale'),PDO::PARAM_STR,2);
+      $sql->execute();
+      $linksobj = $sql->fetchALL(PDO::FETCH_OBJ);
+      $container->get('cache')->put($container->get('sitesettings')['sitename'].':linksobj:'.$container->get('locale'),json_encode($linksobj),3600);
+}
+
 $headerlinks = array();
 $footerlinks = array();
 
@@ -259,10 +279,27 @@ return new Pages(
 $container->set(Category::class, function($container) {
 return new Category(
       $container->get('view'),
-      $container->get('db')
+      $container->get('db'),
+      $container->get('locale'),
+      $container->get('translator'),  
+      $container->get('settings')['translations']['languages']
       );
 
 });
+
+$container->set(Chat::class, function($container) {
+      return new Chat(
+            $container->get('view'),
+            $container->get('db'),
+            $container->get('flash'),
+            $container->get('mail'),
+            $container->get('logger'),   
+            $container->get('sitesettings'),
+            $container->get('locale'),
+            $container->get('translator')  
+            );
+      
+      });
 
 $container->set(Templates::class, function($container) {
 return new Templates(
@@ -328,8 +365,11 @@ return new Blog(
       $container->get('flash'),
       $container->get('mail'),
       $container->get('logger'),   
-      $container->get('sitesettings')  
-      );
+      $container->get('sitesettings'),  
+      $container->get('locale'),
+      $container->get('translator'),
+      $container->get('settings')['translations']['languages']    
+);
 
 });
 
@@ -393,6 +433,21 @@ return new Dashboard(
       );
 
 });
+
+$container->set(Google2FA::class, function($container) {
+      return new Google2FA(
+            $container->get('view'),
+            $container->get('db'),
+            $container->get('flash'),
+            $container->get('logger'),   
+            $container->get('sitesettings'),
+            $container->get('locale'),
+            $container->get('translator')    
+            );
+      
+      });
+
+
 $container->set(Partner::class, function($container) {
 return new Partner(
       $container->get('view'),
@@ -412,7 +467,8 @@ return new Manager(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),
-      $container->get('settings')['translations']['languages']      
+      $container->get('settings')['translations']['languages'],
+      $container->get('translator')       
       );
 
 });
@@ -446,7 +502,8 @@ return new Forum(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),
-      $container->get('locale')     
+      $container->get('locale'),
+      $container->get('translator')   
       );
 
 });
@@ -458,7 +515,9 @@ return new Support(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),  
-      $container->get('locale')  
+      $container->get('locale'),
+      $container->get('translator'),
+      $container->get('settings')['translations']['languages']
       );
 
 });
@@ -498,8 +557,8 @@ return new Email(
       );
 
 });
-$container->set(Advertenties::class, function($container) {
-return new Advertenties(
+$container->set(Advertisements::class, function($container) {
+return new Advertisements(
       $container->get('view'),
       $container->get('db'),
       $container->get('flash'),
@@ -507,7 +566,8 @@ return new Advertenties(
       $container->get('logger'),   
       $container->get('sitesettings'),
       $container->get('locale'),
-      $container->get('translator') 
+      $container->get('translator'),
+      $container->get('settings')['translations']['languages']     
       );
 
 });
