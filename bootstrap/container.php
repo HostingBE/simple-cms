@@ -184,10 +184,12 @@ $container->set('mail', function () {
 
     $mail = new PHPmailer();
     $mail->isSMTP();
-    $mail->Host = 'localhost';
-    $mail->SMTPAuth = false;
-    $mail->SMTPAutoTLS = false; 
-    $mail->Port = 25;
+    $mail->Host = $_SERVER['SMTP_HOST'];
+    $mail->SMTPAuth = $_SERVER['SMTP_AUTH'] ?: false;
+    $mail->SMTPAutoTLS = $_SERVER['SMTP_TLS'] ?: false;
+    $mail->Username = $_SERVER['SMTP_USERNAME'];
+    $mail->Password =  $_SERVER['SMTP_PASSWORD'];
+    $mail->Port = $_SERVER['SMTP_PORT'];
     $mail->isHTML(false);
     return $mail;
 });
