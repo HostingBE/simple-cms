@@ -26,6 +26,9 @@ tmp/
 templates/design/.sass-cache/
 public_sql/
 config/config.php
+public_html/index.html
+public_html/uploads/
+public_html/images/users/
 public_html/node_modules/
 public_html/package-lock.json
 public_html/install/assets/vendor/
