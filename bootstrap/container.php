@@ -6,6 +6,7 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Csrf\Guard;
+use Dotenv\Dotenv;
 use Slim\Views\TwigMiddleware;
 use Slim\Views\TwigExtension;
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
@@ -53,13 +54,20 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
+if (file_exists(__DIR__.'/../.env')) {
 
-  $container->set('logger', function($container) {
-	$settings = $container->get('settings')['logger'];
-	$logger = new Monolog\Logger($settings['name']);
-	$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'],$settings['level'])); 
-  return $logger;
-  });
+    // Looking for .env at the root directory
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__.'/../','.env');
+$dotenv->load();
+}
+
+
+$container->set('logger', function($container) {
+$settings = $container->get('settings')['logger'];
+$logger = new Monolog\Logger($settings['name']);
+$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'],$settings['level'])); 
+return $logger;
+});
 
 if (php_sapi_name() != "cli") {
       
@@ -407,7 +415,8 @@ return new Account(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),   
-      $container->get('locale') 
+      $container->get('locale'),
+      $container->get('translator') 
       );
 
 });

@@ -26,7 +26,9 @@ return [
  'city' => 'city',
  'country' => 'country',
  'date' => 'date', 
-
+ 'deleted' => 'account succesfull deleted',
+ 'activated' => 'your account is activated',
+ 
 
 
     ], 
