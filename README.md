@@ -14,7 +14,7 @@ Here’s why Simple CMS stands out:
 
 3. **Fully Customizable**: With open-source flexibility, you can tailor Simple CMS to meet your specific needs. Add features, modify templates, and create a unique website that reflects your brand’s identity.
 
-4. **Robust Community Support**: Join a growing community of developers and users who are passionate about open-source solutions. With a wealth of resources, forums, and documentation at your fingertips, help is always available when you need it.\n\n
+4. **Robust Community Support**: Join a growing community of developers and users who are passionate about open-source solutions. With a wealth of resources, forums, and documentation at your fingertips, help is always available when you need it.
 
 ![Screenshot Simple CMS](images/simple-cms-backend.jpg)
 
@@ -25,6 +25,7 @@ Here’s why Simple CMS stands out:
 * Run composer update (this will install all dependencies which are needed)
 * Run npm i in the public_html directory (this will install all dependencies which are needed)
 * Rename htaccess to .htaccess in public_html directory (if it does not exist!)
+* Markdown content editor to HTML
 
 ## Features ##
 
