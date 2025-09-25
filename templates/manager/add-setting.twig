@@ -1,0 +1,56 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+
+        <h1 class="pt-4 pb-4">{{ trans('manager.settings.add_setting') | capitalize }}</h1>
+
+<div class="row mb-4">
+
+{% include "manager/manager-menu.twig" %}
+
+</div>
+
+<div class="row">
+  <div class="col">
+       {% include "backend/alert.twig" %}
+  </div>
+ </div>
+
+<div class="row">
+<div class="col-md-6">
+    <div class="card mb-3">
+<div class="card-body">
+
+<form name="addsetting" action="{{url}}/manager/add-setting" method="POST" id="ajax-form" data-reload="true">
+
+    {{ csrf() | raw }}
+
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.settings.setting') | capitalize }}:</label>
+  <input class="form-control" type="text" name="setting" value="" placeholder="Enter name of setting ..">
+</div>
+<div class="mb-3">
+  <label for="text-input" class="form-label">{{ trans('manager.settings.value') | capitalize }}:</label>
+  <input class="form-control" type="text" name="value" value="" placeholder="Enter value of setting ..">
+</div>
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.settings.add_setting') | capitalize }}</button>
+</form>
+</div>
+</div>
+    </div>
+<div class="col-md-6">
+	<div class="callout callout-success bg-success bg-opacity-25">
+	<h4>Add a Website setting</h4>
+    <p>Add a new setting which you can use on your website. No spaces are allowed in the setting name!</p>
+	            </div>
+            </div>
+        </div>
+
+
+</div>
+
+
+
+</div>
+
+{% include "frontend/footer.twig" %}

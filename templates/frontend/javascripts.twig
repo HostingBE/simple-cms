@@ -1,7 +1,7 @@
 <script defer src="{{url}}/node_modules/jquery/dist/jquery.min.js"></script>
 <script defer src="{{url}}/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-{% if huidig in ['contact','create-account','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
+{% if huidig in ['contact','create-account','manager-add-setting','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
 
@@ -56,7 +56,7 @@ const cssMain = document.createElement('link');
 <script type="text/javascript" src="{{url}}/node_modules/tinymce/plugins/link/plugin.min.js"></script>
 <script>
   const example_image_upload_handler = (blobInfo, progress) => new Promise((resolve, reject) => {
-  
+
   const xhr = new XMLHttpRequest();
   xhr.withCredentials = false;
   xhr.open('POST', '{{url}}/manager/upload-image');
@@ -102,7 +102,8 @@ const cssMain = document.createElement('link');
 
 tinymce.init({
   selector: 'textarea#textarea-input',
-  images_upload_handler: example_image_upload_handler,  
+  license_key: 'gpl',
+  images_upload_handler: example_image_upload_handler,
       setup: function (editor) {
         editor.on('change', function () {
             tinymce.triggerSave();
@@ -152,4 +153,6 @@ tinymce.init({
 {% if huidig in ['change-password'] %}
 <script defer src="{{url}}/cms/js/string-generator.js"></script>
 {% endif %}
+{% if disablechat == "off" %}
 <script defer src="{{url}}/cms/js/website-chat.js"></script>
+{% endif %}

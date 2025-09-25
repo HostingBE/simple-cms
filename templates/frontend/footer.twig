@@ -4,7 +4,7 @@
         <div class="container-xl text-light">
            <div class="row">
            	<div class="col-md-4 col-sm-12 mb-3">
-            
+
             {% for key, value in footerlinks %}
              <h4 class="text-white">{{key|capitalize}}</h4>
             <ul class="list-unstyled">
@@ -31,20 +31,20 @@
         {% if footer_blogs|length == 0 %}
         <p>{{trans('footer.no_articles')}}</p>
         {% endif %}
-        
+
         {% if footer_blogs|length != 0 %}
         {% for blog in footer_blogs %}
             <article class="d-flex align-items-start text-light"><img class="img img-fluid rounded round-2 p-2" loading="eager" src="{{url}}/uploads/{% if blog.media %}{{blog.imagename}}-200.webp{%else%}/images/default-image.jpg{% endif %}" width="200" height="125" alt="{{blog.alt}}">
               <div>
                 <h5 class="mb-2"><a class="nav-link text-light" href="{{url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" data-bs-toggle="tooltip" title="read {{blog.title}} article"> {{blog.title|capitalize}}</a></h5> in {{blog.categorienaam|capitalize}}
-                <p class="mb-2">{{blog.content|striptags}}..</p> 
+                <p class="mb-2">{{blog.content|striptags}}..</p>
                 <span class="fs-6 text-light">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-light mb-1" fill="currentColor"><path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z"/></svg> {{blog.datum}}
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-light mb-1" fill="currentColor"><path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"/></svg> {{blog.reacties}} {{trans('footer.comments')}}</span>
               </div>
             </article>
             <hr class="text-dark opacity-10 my-4">
-            {% endfor %}  
+            {% endfor %}
             {% endif %}
             </div>
        </div>
@@ -60,6 +60,7 @@
             </div>
       </div>
 
+{% if disablechat == "off" %}
 <div class="position-relative">
     <div class="position-fixed bottom-0 end-0 m-2">
     <button type="button" class="btn btn-default float-end" data-bs-toggle="modal" data-bs-target="#chatModal"><svg height="50px" width="50px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 58 58" xml:space="preserve">
@@ -80,29 +81,29 @@
     </div>
 </div>
 
-<!-- Chat modal -->
 
+<!-- Chat modal -->
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MyChatModal" aria-hidden="true" id="chatModal">
   <div class="modal-dialog position-fixed bottom-0 end-0 px-2">
-    <div class="modal-content bg-white" style="width: 300px;">
+    <div class="modal-content bg-white" style="width: 350px;">
         <form name="chat-modal" id="form-chat" method="POST" action="{{url}}/chat-signin">
 
          {{ csrf() | raw }}
 
         <div class="modal-header">
-            <div class="row">
-            <div class="col-6">Live Chat</div>
-            <div class="col-6">
+
+            <div class="col-sm-6">Live Chat {{ sitename}}</div>
+            <div class="col-sm-6">
                 <div class="dropdown">
-  <button class="btn btn-default btn-sm border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <button class="btn btn-default btn-sm border-0 float-end" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" class="text-dark" fill="currentColor"><use href="#menu-vertical"></svg>
   </button>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="#">close</a></li>
     <li><a class="dropdown-item" href="#">delete</a></li>
   </ul>
-</div></div>
-       </div>
+            </div>
+      </div>
 </div>
         <div class="modal-body chat-messages overflow-auto" style="height: 350px;">
 
@@ -110,13 +111,13 @@
               <input type="text" class="form-control" name="name" placeholder=".e.g. {{ trans('frontend.chat.yourname') | capitalize }}">
         </div>
         <div class="form-group py-2">
-        <input type="text" class="form-control" name="email" placeholder=".e.g. {{ trans('frontend.chat.youremail') | capitalize }}"> 
+        <input type="text" class="form-control" name="email" placeholder=".e.g. {{ trans('frontend.chat.youremail') | capitalize }}">
         </div>
         <div class="form-group py-2">
             <textarea class="form-control" name="message" cols="30" rows="6" placeholder=".e.g. {{ trans('frontend.chat.yourmessage') | capitalize }}"></textarea>
             </div>
-        
-       <div class="alert alert-danger d-none" id="chatmessage"></div>  
+
+       <div class="alert alert-danger d-none" id="chatmessage"></div>
     </div>
          <div class="modal-footer"><button class="btn btn-primary text-end" type="submit" id="submit-chat">{{ trans('frontend.chat.send') | capitalize }}</button></div>
 
@@ -124,6 +125,7 @@
     </form>
   </div>
 </div>
+{% endif %}
 {% include "frontend/javascripts.twig" %}
 </body>
 </html>
