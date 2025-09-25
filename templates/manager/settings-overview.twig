@@ -31,9 +31,9 @@
     <div class="col-md-9">
   <select name="records" class="form-control">
   <option value="10"{% if settings.records.value == "10" %} selected{% endif %}>10</option>
-  <option value="20"{% if settings.records.value == "20" %} selected{% endif %}>20</option>  
+  <option value="20"{% if settings.records.value == "20" %} selected{% endif %}>20</option>
   <option value="50"{% if settings.records.value == "50" %} selected{% endif %}>50</option>
-  <option value="100"{% if settings.records.value == "100" %} selected{% endif %}>100</option>  
+  <option value="100"{% if settings.records.value == "100" %} selected{% endif %}>100</option>
 </select>
 </div>
 </div>
@@ -94,6 +94,14 @@
    <input class="form-check-input" name="markdown" type="checkbox" id="markdown"{% if settings.markdown.value == "on" %}  checked{% endif %}></div>
     </div>
 </div>
+
+<div class="row mb-3">
+  <label class="col-md-3 form-check-label" for="disablechat">{{ trans('manager.settings.disable_chat') | capitalize }}</label>
+ <div class="col-md-3">
+<div class="form-check form-switch">
+   <input class="form-check-input" name="disablechat" type="checkbox" id="disablechat"{% if settings.disablechat.value == "on" %}  checked{% endif %}></div>
+    </div>
+ </div>
 
 <div class="row mb-3">
   <label for="text-input" class="col-md-3 form-label">{{ trans('manager.settings.redirect') | capitalize }}</label>

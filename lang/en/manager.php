@@ -18,7 +18,7 @@
 */
 
 return [
-     'page' => [ 
+     'page' => [
      'manager_overview' => 'manager overview pages',
      'title' => 'title',
      'description' => 'meta description',
@@ -68,11 +68,11 @@ return [
      'overview' => 'advertisements overview',
      'add' => 'add advertisement',
      'description' => 'description',
-     'active' => 'active', 
+     'active' => 'active',
      'link' => 'link',
      'code' => 'code',
      'save_changes' => 'save changes',
-     'edit_advertisement' => 'edit advertisement',  
+     'edit_advertisement' => 'edit advertisement',
      ],
     'settings' => [
       'overview' => 'settings overview',
@@ -83,6 +83,7 @@ return [
       'html_editor' => 'html editor',
       'disable_forum' => 'disable forum',
       'disable_support' => 'disable support',
+      'disable_chat' => 'disable the chat',
       'cache' => 'enable cache',
       'multi_language' => 'multi language',
       'website'=> 'website url ',
@@ -115,16 +116,16 @@ return [
      'todo' => 'todo',
      'status' => 'status',
      'date' => 'date',
-     'manage' => 'manage', 
+     'manage' => 'manage',
      'add' => 'add',
      'add_todo' => 'add your todo',
      'overview' => 'manager todo overview',
      'edit_todo' => 'manager edit todo',
      'open' => 'open',
      'closed' => 'closed',
-     'save_changes' => 'save changes', 
+     'save_changes' => 'save changes',
      'no_todo' => 'their are no todo\'s available',
-  
+
     ],
     'links' => [
        'name' => 'name',
@@ -136,9 +137,9 @@ return [
        'manager_overview' => 'manager links overview',
        'overview' => 'overview',
        'menu' => 'menu',
-            
+
     ],
-    'menu' => [ 
+    'menu' => [
         'view_logging' => 'view logging',
         'dashboard' => 'dashboard',
         'chat_overview' => 'chat overview',
@@ -226,10 +227,10 @@ return [
       'descriptionplaceholder' => 'enter the meta description',
       'keywordsplaceholder' => 'enter the meta keywords',
       'tagsplaceholder' => 'enter the tags of your blog',
-      'contentplaceholder' => 'enter the contect of your blog', 
+      'contentplaceholder' => 'enter the contect of your blog',
       'edit_blog' => 'edit blog',
       'edit_success' => 'blog item successfully edited',
-      'add_success' => 'blag item successfully added', 
+      'add_success' => 'blag item successfully added',
     ],
     'chat' => [
        'view' => 'view',
@@ -250,10 +251,10 @@ return [
 
     ],
       'logging' => [
-      
+
        'overview' => 'manager view logging',
        'view_logging' => 'view logging of day',
- 
+
       ],
       'templates' => [
        'name' => 'name',

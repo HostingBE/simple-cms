@@ -8,6 +8,10 @@
 </div>
 {% endif %}
 
+{% if advertentie.soort == "banner" %}
+<a href="{{url}}/outgoing-link/{{advertentie.id}}/{{advertentie.code}}/" target="_blank"><img src="{{advertentie.script}}" class="img-fluid my-3"></a>
+{% endif %}
+
 {% if advertentie.soort == "script" %}
 <div class="mb-3">
 {{advertentie.script|raw}}

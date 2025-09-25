@@ -18,7 +18,7 @@
 */
 
 return [
-     'page' => [ 
+     'page' => [
      'manager_overview' => 'manager overzicht pagina\'s',
      'title' => 'titel',
      'description' => 'meta omschrijving',
@@ -68,11 +68,11 @@ return [
      'overview' => 'overzicht advertenties',
      'add' => 'advertentie toevoegen',
      'description' => 'omschrijving',
-     'active' => 'aktief', 
+     'active' => 'aktief',
      'link' => 'link',
      'code' => 'code',
      'save_changes' => 'bewaar wijzigingen',
-     'edit_advertisement' => 'advertentie bewerken',  
+     'edit_advertisement' => 'advertentie bewerken',
      ],
     'settings' => [
       'overview' => 'overzicht instellingen',
@@ -83,6 +83,7 @@ return [
       'html_editor' => 'html bewerker',
       'disable_forum' => ' forum',
       'disable_support' => 'uitzetten support',
+      'disable_chat' => 'uitzetten chat functionaliteit',
       'cache' => 'aanzetten cache',
       'multi_language' => 'meerdere talen',
       'website'=> 'website url',
@@ -115,14 +116,14 @@ return [
      'todo' => 'todo',
      'status' => 'status',
      'date' => 'datum',
-     'manage' => 'beheer', 
+     'manage' => 'beheer',
      'add' => 'toevoegen',
      'add_todo' => 'jouw todo toevoegen',
      'overview' => 'beheerder todo overzicht',
      'edit_todo' => 'beheerder bewerken todo',
      'open' => 'open',
      'closed' => 'gesloten',
-     'save_changes' => 'bewaar wijzigingen', 
+     'save_changes' => 'bewaar wijzigingen',
 
     ],
     'links' => [
@@ -135,9 +136,9 @@ return [
        'manager_overview' => 'beheerder links overzicht',
        'overview' => 'overzicht',
        'menu' => 'menu',
-            
+
     ],
-    'menu' => [ 
+    'menu' => [
         'view_logging' => 'bekijk log',
         'dashboard' => 'dashboard',
         'chat_overview' => 'chat overzicht',
@@ -225,10 +226,10 @@ return [
       'descriptionplaceholder' => 'vul de meta omschrijving in',
       'keywordsplaceholder' => 'vulo de meta keywords in',
       'tagsplaceholder' => 'vul de tags in van je blog',
-      'contentplaceholder' => 'vul de content in van je blog', 
+      'contentplaceholder' => 'vul de content in van je blog',
       'edit_blog' => 'blog bewerken',
       'edit_success' => 'blog item succesvol bijgewerkt',
-      'add_success' => 'blog item succesvol toegevoegd' , 
+      'add_success' => 'blog item succesvol toegevoegd' ,
     ],
     'chat' => [
        'view' => 'bekijken',
@@ -249,10 +250,10 @@ return [
 
     ],
       'logging' => [
-      
+
        'overview' => 'beheerder bekijk logging',
        'view_logging' => 'bekijk de logging van dag',
- 
+
       ],
       'templates' => [
        'name' => 'naam',
