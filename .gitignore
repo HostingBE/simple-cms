@@ -16,6 +16,7 @@ logs/
 .dotnet/
 sess_*
 .cache/
+.env
 .npm/
 cache/
 .bashrc

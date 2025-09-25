@@ -1,9 +1,21 @@
 <?php
 
 /**
- * @author Constan van Suchtelen van de Haere <constan@hostingbe.com>
- * @copyright 2023 HostingBE
- */
+* @author Constan van Suchtelen van de Haere <constan.vansuchtelenvandehaere@hostingbe.com>
+* @copyright 2024 - 2025 HostingBE
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+* files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy,
+* modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software
+* is furnished to do so, subject to the following conditions:
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+* BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+* OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*
+*/
 
 namespace App\Controllers;
 
@@ -28,9 +40,10 @@ protected $logger;
 protected $settings;
 protected $directory = __DIR__ . '/../../public_html/uploads/';
 protected $subject;
+protected $translator;
 	
 	
-public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale) {
+public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator) {
 $this->view = $view;
 $this->db = $db;
 $this->flash = $flash;
@@ -38,6 +51,7 @@ $this->mail = $mail;
 $this->logger = $logger;
 $this->settings = $settings;
 $this->locale = $locale;
+$this->translator = $translator;
 Validator::langDir(__DIR__ . '/../../vendor/vlucas/valitron/lang/');
 Validator::lang($this->locale);
 }
@@ -59,9 +73,9 @@ public function delete_account(Request $request,Response $response) {
         
     $this->logger->alert("Account: user with e-mail address " . $user->email . " is succesfull loggedoff and deleted!",array('ip-adres' => get_client_ip()));
   
-    $this->flash->addMessage('success','account deleted, i hope to see you back in the future!'); 
+    $this->flash->addMessage('success',$this->translator->get('backend.account.deleted') .  '!'); 
 
-$response->getBody->write("account deleted!");
+$response->getBody->write($this->translator->get('backend.account.deleted'));
 return $response;
 }
 
@@ -76,7 +90,7 @@ return $response;
   
   
 if ($Activation->complete($user, $code)) {
-    $success = 'thank you, your account is succesfully created. You can now login to seosite!';
+    $success = $this->translator->get('backend.account.activated') . '!';
 
     $code = random(32);
     $email_hash = hash('sha256', $user->email);
@@ -84,9 +98,9 @@ if ($Activation->complete($user, $code)) {
 
 
     // mail versturen naar de bezoeker
-    $mailbody = $this->view->fetch('email/aanmelding-voltooid.twig',['naam' => $user->first_name . " " . $user->last_name,'email' => $user->email, 'url' => $this->settings['url'],'email_hash' => $email_hash,'code' => $code]);
+    $mailbody = $this->view->fetch('email/aanmelding-voltooid.twig',['naam' => $user->first_name . " " . $user->last_name,'email' => $user->email, 'url' => $this->locale,'email_hash' => $email_hash,'code' => $code]);
   
-   $this->setSubject("[".$this->settings['url']."]: Register complete " . date('H:i d-m-Y'));
+   $this->setSubject("[".$this->locale."]: Register complete " . date('H:i d-m-Y'));
    
    // contact fomulier is goed nu versturen
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
@@ -98,7 +112,7 @@ if ($Activation->complete($user, $code)) {
      if(!$this->mail->send()) {
      $this->flash->addMessage('errors',$this->mail->ErrorInfo);
      } else {
-     $this->flash->addMessage('success','sending of confirmation e-mail is succesfully completed!');
+     $this->flash->addMessage('success',$this->translator->get('backend.account.') . '!');
      }
 
 
@@ -131,7 +145,7 @@ $sql->execute();
 $userdata = $sql->fetch(PDO::FETCH_OBJ);
 
 if ($sql->rowCount() == 0) {
-    $this->logger->alert("Account: No such user with e-mail address " . $email . " and code " . $code,array('ip-adres' => get_client_ip()));
+    $this->logger->alert("Account: No such user with e-mail address " . $email . " and code " . $code, array('ip-adres' => get_client_ip()));
     $this->flash->addMessage('errors','No such user found with the data you supplied!'); 
     return $response->withHeader('Location','/login');   
    }
@@ -214,7 +228,7 @@ public function confirm_password(Request $request,Response $response) {
   // wachtwoord vergeten email
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
    $this->mail->addAddress($user->email, $user->first_name . " " . $user->last_name);
-   $this->mail->Subject = 'Your new password for website ' . $this->settings['url'];
+   $this->mail->Subject = 'Your new password for website ' . $this->locale;
    $this->mail->Body = $mailbody;
    $this->mail->IsHTML($this->settings['html_email']);
 
@@ -278,7 +292,7 @@ public function post_request_code(Request $request,Response $response) {
     $email_hash = hash('sha256', $activation->email);
     $this->setSubject('Your account is one step from beeing activated!');
 
-    $mailbody = $this->view->fetch('email/reminder-activation.twig',['url' => $this->settings['url'], 'activation' => $activation,'subject' => $this->getSubject(),'email_hash'=> $email_hash,'code'=> $code,'footer' => $this->settings['footer']]);
+    $mailbody = $this->view->fetch('email/reminder-activation.twig',['url' => $this->locale, 'activation' => $activation,'subject' => $this->getSubject(),'email_hash'=> $email_hash,'code'=> $code,'footer' => $this->settings['footer']]);
     // herinnering sturen naar bezoeker
     $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
     $this->mail->addAddress($activation->email, $activation->first_name . " " . $activation->last_name);
@@ -348,12 +362,12 @@ public function post_request_password(Request $request,Response $response) {
   // create a random code
   $code = random(15);
 
-  $mailbody = $this->view->fetch('email/wachtwoord-vergeten.twig',['email' => $gebruiker->email,'gebruiker' => $gebruiker->id,'voornaam' => $gebruiker->first_name, 'achternaam' => $gebruiker->last_name,'code' => $code,'url' => $this->settings['url'], 'footer' => $this->settings['footer']]);
+  $mailbody = $this->view->fetch('email/wachtwoord-vergeten.twig',['email' => $gebruiker->email,'gebruiker' => $gebruiker->id,'voornaam' => $gebruiker->first_name, 'achternaam' => $gebruiker->last_name,'code' => $code,'url' => $this->locale, 'footer' => $this->settings['footer']]);
 
   // wachtwoord vergeten email
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
    $this->mail->addAddress($gebruiker->email, $gebruiker->first_name . " " . $gebruiker->last_name);
-   $this->mail->Subject = "Forgotten password instructions " . $this->settings['url'];
+   $this->mail->Subject = "Forgotten password instructions " . $this->locale;
    $this->mail->Body = $mailbody;
    if ($this->settings['html_email'] == "on") { 
    $this->mail->IsHTML($this->settings['html_email']); 
@@ -444,7 +458,7 @@ public function post_account_info(Request $request,Response $response) {
     
   $data = $request->getParsedBody();
 
-    $returnurl = $this->settings['url'] . "/";
+    $returnurl = $this->locale . "/";
 
     if ($data['locale']) {
      $returnurl = $returnurl . $data['locale']  . "/";   
@@ -575,13 +589,15 @@ if($uitkomst != $data['captcha']) {
       } 
 
    
-  $wachtwoord = random(14);
+  $password = random(32);
    
   $user = Sentinel::register([
   'email' => $data['email'],
-  'password'=> $wachtwoord,
+  'password'=> $password,
   'first_name'=> $data['first_name'],
-  'last_name' => $data['last_name']]);
+  'icon' => 'default-icon.jpg',
+  'last_name' => $data['last_name'],
+  'twofactor' => 'n']);
 
   $Activation = Sentinel::getActivationRepository();
   $activation = $Activation->create($user);
@@ -591,10 +607,10 @@ if($uitkomst != $data['captcha']) {
 
   $code = random(32);
   $email_hash = hash('sha256', $user->email);
-  $this->setSubject("[".$this->settings['url']."]: Confirm sign-up at website " . date('H:i d-m-Y'));
+  $this->setSubject("[".$this->locale."]: Confirm sign-up at website " . date('H:i d-m-Y'));
 
   // mail versturen naar de bezoeker
-  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'wachtwoord' => $wachtwoord, 'activation_code' => $activation->code, 'url' => $this->settings['url'],'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
+  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'wachtwoord' => $wachtwoord, 'activation_code' => $activation->code, 'url' => $this->locale,'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
 
    // contact fomulier is goed nu versturen
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
@@ -630,9 +646,9 @@ if($uitkomst != $data['captcha']) {
 
 public function create_account(Request $request,Response $response) {
     
-    $meta['title'] = "create your free SEO toolset account today, improve your SEO score";
-    $meta['description'] = "Are you looking to improve and optimize your SEO score for your websites, create your account and start today";   
-    $meta['keywords'] = "create,account,free,SEO,toolset,optimize,website";     
+$meta['title']=$this->translator->get('meta.create-account.title');
+$meta['description']=$this->translator->get('meta.create-account.description');
+$meta['keywords']=$this->translator->get('meta.create-account.keywords');     
 
     $captcha = new Captcha();
     $captcha->settype('webp');

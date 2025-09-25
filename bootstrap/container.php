@@ -6,6 +6,7 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Csrf\Guard;
+use Dotenv\Dotenv;
 use Slim\Views\TwigMiddleware;
 use Slim\Views\TwigExtension;
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
@@ -53,13 +54,20 @@ AppFactory::setContainer($container);
 
 $app = AppFactory::create();
 
+if (file_exists(__DIR__.'/../.env')) {
 
-  $container->set('logger', function($container) {
-	$settings = $container->get('settings')['logger'];
-	$logger = new Monolog\Logger($settings['name']);
-	$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'],$settings['level'])); 
-  return $logger;
-  });
+    // Looking for .env at the root directory
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__.'/../','.env');
+$dotenv->load();
+}
+
+
+$container->set('logger', function($container) {
+$settings = $container->get('settings')['logger'];
+$logger = new Monolog\Logger($settings['name']);
+$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'],$settings['level'])); 
+return $logger;
+});
 
 if (php_sapi_name() != "cli") {
       
@@ -184,10 +192,12 @@ $container->set('mail', function () {
 
     $mail = new PHPmailer();
     $mail->isSMTP();
-    $mail->Host = 'localhost';
-    $mail->SMTPAuth = false;
-    $mail->SMTPAutoTLS = false; 
-    $mail->Port = 25;
+    $mail->Host = $_SERVER['SMTP_HOST'];
+    $mail->SMTPAuth = $_SERVER['SMTP_AUTH'] ?: false;
+    $mail->SMTPAutoTLS = $_SERVER['SMTP_TLS'] ?: false;
+    $mail->Username = $_SERVER['SMTP_USERNAME'];
+    $mail->Password =  $_SERVER['SMTP_PASSWORD'];
+    $mail->Port = $_SERVER['SMTP_PORT'];
     $mail->isHTML(false);
     return $mail;
 });
@@ -405,7 +415,8 @@ return new Account(
       $container->get('mail'),
       $container->get('logger'),   
       $container->get('sitesettings'),   
-      $container->get('locale') 
+      $container->get('locale'),
+      $container->get('translator') 
       );
 
 });
