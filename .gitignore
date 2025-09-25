@@ -14,7 +14,6 @@ logs/
 .local/
 .config/
 .dotnet/
-package.json-20250925
 sess_*
 .cache/
 .env

@@ -1,13 +1,9 @@
 $(document).ready(function(e) {
     'use strict';
-  
-    var time = "";
-    var align = "left";
-    var background = "info";
-    var text = "dark";
-    var avatar = "avatar1.png";
-  
-  
+
+    var myInterval;
+    var url = window.location;
+
   $("<input>").attr({
                   name: "antispam",
                   id: "spam",
@@ -16,15 +12,19 @@ $(document).ready(function(e) {
   }).appendTo("#form-chat");
   
   
-  function checkLogin() {
-   
-   var url = window.location;
+function returnUrl(url) {
+  return  'https://' + new URL(url).host;
+}
 
-   $.ajax({
+
+  function checkLogin() {
+
+    $.ajax({
       type: 'GET',
       datatype: 'json',
-      url: '/chat-check-login',
+      url:  returnUrl(url) + '/chat-check-login',
       success: function(data) {
+        console.log("checkLogin: " + data);
       var json = JSON.parse(data);
       if (json.status == "success") {
             $("#form-chat").attr('action', 'https://' + new URL(url).host + '/add-chat-message');
@@ -48,12 +48,12 @@ $(document).ready(function(e) {
   $.ajax({
                   type: 'GET',
                   datatype: 'json',
-                  url: '/chat-overview',
+                  url: returnUrl(url) + '/chat-overview',
   
   
                   success: function (data) {
-             
-                            var json = JSON.parse(data);
+                  console.log("messages reload executed!");
+                  var json = JSON.parse(data);
                        if (json.status == "error") {
                                   $('#chatmessage').toggleClass('d-none d-block');
                                   $('#chatmessage').html(json.message);
@@ -66,14 +66,17 @@ $(document).ready(function(e) {
                              for (let i = 0;i < json.messages.length;i++) {
                        
                              $('.modal-body.chat-messages').html($('.modal-body.chat-messages').html() + `<div class="chat-message-${json.messages[i].align} mb-4">
-                  <div class="p-1">
+                  <div class="row">
+                    <div class="col-sm-2">
                     <img src="${json.messages[i].avatar}" class="rounded-circle" alt="${json.messages[i].name}" width="40" height="40">
                     <div class="text-muted small text-nowrap">${json.messages[i].time}</div>
-                  </div>
+                      </div>
+                  <div class="col-sm-10">
                   <div class="flex-shrink-1 bg-${json.messages[i].background} text-${json.messages[i].text} rounded p-2">
                     <div class="fw-bold fs-xs">${json.messages[i].name}</div>
                     ${json.messages[i].message}
-                  </div>
+                      </div>
+                    </div>
                 </div>`);
   
                                       } 
@@ -93,10 +96,10 @@ $(document).ready(function(e) {
       $('#form-chat').on('click', '#submit-chat',  function(e) { 
           e.preventDefault(); // preventing default click action
           var data = $("#form-chat :input").serializeArray();
-          var url = $("#form-chat").attr('action');
+          var action = $("#form-chat").attr('action');
   
           $.ajax({
-              url: url,
+              url: action,
               type: 'POST',
               datatype: "json",
               data: data,
@@ -110,13 +113,12 @@ $(document).ready(function(e) {
               } 
 
               if (obj.status == "success") {
-                   console.log(url);
-                  if (new URL(url).pathname == "/chat-signin") { 
+                  if (new URL(action).pathname == "/chat-signin") { 
                    $('.modal-body.chat-messages').html("Your chat request is generated and the messages are loaded!");
-                   $("#form-chat").attr('action','https://' + new URL(url).host + '/add-chat-message');
+                   $("#form-chat").attr('action','https://' + returnUrl(action) + '/add-chat-message');
                    $('.modal-footer').html(`<div class="input-group"><input type="text" name="message" class="form-control" placeholder="enter your message"><button type="submit" id="submit-chat" class="btn btn-info">send</button></div>`);
                    getMessages();
-                   setInterval(getMessages, 3000);
+                   myInterval = setInterval(getMessages, 3000);
                    } else {
                    $("#form-chat").trigger("reset");
                    getMessages();
@@ -130,7 +132,7 @@ $(document).ready(function(e) {
   });
   
   $(document).on('hidden.bs.modal', '#chatModal', function (e) {
-      clearInterval(time);
+      clearInterval(myInterval);
   });
   
   $(document).on('show.bs.modal', '#chatModal', function (e) {

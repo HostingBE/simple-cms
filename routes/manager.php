@@ -30,7 +30,7 @@ use App\Controllers\Manager\Manager;
 use App\Controllers\Manager\Media;
 use App\Controllers\Page;
 use App\Controllers\Settings;
-use App\Controllers\Manager\Settings as ManagerSettings; 
+use App\Controllers\Manager\Settings as ManagerSettings;
 use App\Controllers\Support;
 use App\Controllers\Templates;
 use App\Controllers\Manager\Todo;
@@ -44,6 +44,7 @@ $app->group('', function($route) {
 $route->get('/manager/dashboard', Dashboard::class . ':manager_overview')->setName('dashboard.manager_overview');
 $route->get('/manager/page-add', Manager::class . ':add')->setName('manager.add');
 $route->get('/manager/edit-page/{pagina:[0-9]+}/', Manager::class . ':edit')->setName('manager.edit');
+$route->get('/manager/add-setting', ManagerSettings::class . ':add')->setName('managersettings.add');
 $route->get('/manager/pages-overview', Manager::class . ':overview')->setName('manager.overview');
 $route->get('/manager/delete-page/{pagina:[0-9]+}/', Manager::class . ':delete')->setName('manager.delete');
 $route->get('/manager/blog-add', Blog::class . ':add')->setName('blog.add');
@@ -78,6 +79,7 @@ $route->get('/manager/chat-overview', Chat::class . ':overview');
 $route->get('/manager/view-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':manager_view');
 $route->get('/manager/delete-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':delete')->setName('chat.delete');
 
+$route->post('/manager/add-setting', ManagerSettings::class . ':post');
 $route->post('/manager/add-chat-message', Chat::class . ':post_manager_chat_message');
 $route->post('/manager/add-advertisement', Advertisements::class . ':post_add');
 $route->post('/manager/edit-advertisement/{id:[0-9]+}/', Advertisements::class . ':post_edit');

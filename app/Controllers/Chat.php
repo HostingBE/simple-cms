@@ -235,15 +235,19 @@ public function post_signin(Request $request,Response $response) {
     $status = 'a';
     $eigenaar = "visitor";
     $avatar = '/images/default-icon.jpg';
+   
 
     // bepalen of er al een chat sessie is opgestart voor deze gebruiker
-    $sql = $this->db->prepare("SELECT id FROM chat WHERE ipaddress=:ipaddress AND session=:session");
+    $sql = $this->db->prepare("SELECT id FROM chat WHERE ipaddress=:ipaddress AND session=:session LIMIT 1");
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
     $sql->execute();
-    $chat = $sql->fetch();
+    $chat = $sql->fetch(PDO::FETCH_OBJ);
     
-    if (!isset($chat['id'])) {
+    if (!isset($chat->id)) {
+
+    $chat = new \stdClass();
+
     $sql = $this->db->prepare("INSERT INTO chat (session,ipaddress,name,email,status,avatar,date) VALUES(:session,:ipaddress,:name,:email,:status,:avatar,now())");
     $sql->bindparam(":session", session_id(),PDO::PARAM_STR);
     $sql->bindparam(":name", $data['name'],PDO::PARAM_STR);
@@ -252,11 +256,11 @@ public function post_signin(Request $request,Response $response) {
     $sql->bindparam(":status", $status,PDO::PARAM_STR);
     $sql->bindparam(":avatar", $avatar,PDO::PARAM_STR);
     $sql->execute();
-    $chat['id'] = $this->db->lastinsertid();
+    $chat->id = $this->db->lastinsertid();
     } 
 
     $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
-    $sql->bindparam(":chat", $chat['id'],PDO::PARAM_INT); 
+    $sql->bindparam(":chat", $chat->id,PDO::PARAM_INT); 
     $sql->bindparam(":owner", $eigenaar, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
     $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
@@ -273,20 +277,19 @@ public function post_signin(Request $request,Response $response) {
 
 
     if(time() < $open || time() > $dicht) {
-    $eigenaar = "beheerder";
+    $owner = "beheerder";
     $buitenkantoortijden = "Momenteel zijn we niet aanwezig, we zijn bereikbaar op werkdagen van 09:00 tot 18:00. Je chat wordt wel gelezen tijdens kantoortijden en beantwoord via email!";
     $this->logger->warning("Chat aanvraag automatisch beantwoord we zijn buiten kantoor tijden!");
-    $sql = $this->db->prepare("INSERT INTO `chat_messages` (id,eigenaar,ipaddress,chat,message,date) VALUES('',:eigenaar,:ipaddress,:chat,:message,now())");
+    $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
 
-
-    $sql->bindparam(":chat", $chat['id'],PDO::PARAM_INT); 
+    $sql->bindparam(":chat", $chat->id, PDO::PARAM_INT); 
     $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":message",$buitenkantoortijden,PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":message",$buitenkantoortijden, PDO::PARAM_STR);
     $sql->execute();
     }
 
-    $response->getBody()->write(json_encode(array('status' => 'success','message' => 'chat user succesfully signed-in!'))); 
+    $response->getBody()->write(json_encode(array('status' => 'success','message' => 'Chat user succesfully signed-in!'))); 
     return  $response;  
     }   
 
@@ -313,8 +316,8 @@ public function chat_overview(Request $request,Response $response) {
     for ($i = 0;$i < count($messages);$i++) {
         
         if ($messages[$i]->owner == "beheerder") {
-        $messages[$i]->name = "Team SeoSite";
-        $messages[$i]->avatar = "/images/default-icon.jpg";
+        $messages[$i]->name = $this->settings['chatname'] ?: 'manager';
+        $messages[$i]->avatar = $this->settings['avatar'] ?: '/images/default-icon.jpg';
         $messages[$i]->align = "right";
         $messages[$i]->text = "light";   
         $messages[$i]->background = "secondary";    
