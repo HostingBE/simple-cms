@@ -26,12 +26,12 @@
     <div class="card-body">
             <div class="mb-4 mb-md-5" id="comments">
               <h2 class="mb-4 pb-2">{{aantal_berichten}} comments</h2>
-              
+
               {% if berichten|length < 1 %}
-              
+
               <p>No comments on this article, or your comment is not yet approved!</p>
               {% endif %}
-  
+
               {% for bericht in berichten %}
               <!-- Comment-->
               <div class="pb-4">
@@ -63,7 +63,7 @@
             <form class="row gy-md-4 gy-3" action="{{url}}/post-support-comment" method="POST" id="ajax-form">
 
             {{ csrf() | raw }}
-            
+
             <input type="hidden" name="article" value="{{artikel.id}}">
               <div class="col-sm-6 p-2">
                 <label class="form-label" for="comment-name">{{ trans('frontend.common.name') | capitalize }}</label>
@@ -79,20 +79,20 @@
                 <label class="form-label" for="comment-titel">{{ trans('frontend.common.title') | capitalize }}</label>
                 <input class="form-control form-control-lg" type="text" name="title" id="comment-titel" placeholder="The title of your comment..">
                 <div class="invalid-feedback">Vul een titel in voor je reactie</div>
-              </div>              
+              </div>
               <div class="col-12 p-2">
                 <label class="form-label" for="comment-text">{{ trans('frontend.common.comment') | capitalize }}</label>
                 <textarea class="form-control form-control-lg" name="message" id="comment-text" rows="4" placeholder="Your comment about this article.."></textarea>
                 <div class="invalid-feedback">Please type your comment.</div>
                              </div>
-                
+
                 <div class="col-lg-6 col-6">
                                         <img src="{{captcha|raw}}" class="rounded" data-bs-toggle="tooltip" data-bs-placement="right" title="{{trans('account.solve_sum_message')|capitalize}}!" width="168" height="37">
                                     </div>
                                     <div class="col-lg-6 col-6">
                                         <input type="text" id="captcha" class="form-control" name="captcha" placeholder="{{trans('account.solve_sum')|capitalize}}..">
                                     </div>
- 
+
               <div class="col-12 py-2">
                 <button class="btn btn-lg btn-primary" type="submit" id="submit-ajax">{{ trans('frontend.support.post_comment') | capitalize }}</button>
               </div>
@@ -111,6 +111,7 @@
 </div>
 </div>
 
+<div class="ads"></div>
 
 <div class="card border-gray mb-3">
 <div class="card-body">

@@ -65,12 +65,12 @@ $dotenv->load();
 $container->set('logger', function($container) {
 $settings = $container->get('settings')['logger'];
 $logger = new Monolog\Logger($settings['name']);
-$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'],$settings['level'])); 
+$logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'],$settings['level']));
 return $logger;
 });
 
 if (php_sapi_name() != "cli") {
-      
+
 $container->set('csrf', function() use ($app) {
  return new Guard($app->getResponseFactory());
  });
@@ -99,7 +99,7 @@ $capsule->bootEloquent();
 
 $container->set('locale', function($container) use ($app) {
       return (new \App\Language\LanguageByDomain($container->get('settings')['translations']))->getDomain();
- 
+
 });
 
 
@@ -121,8 +121,8 @@ $container->set('view', function($container) {
         'cache' => __DIR__. '/../cache'
     ]);
     $view->addExtension(new \Twig\Extension\DebugExtension());
-   
-    return $view;	
+
+    return $view;
 });
 
 if (php_sapi_name() != "cli") {
@@ -178,7 +178,7 @@ return $results;
 $key = array_search($container->get('locale'), array_column($container->get('settings')['translations']['languages'], 'language'));
 $url = $container->get('settings')['translations']['languages'][$key]['url'];
 
-$container->get("view")->getEnvironment()->addGlobal('url', 'https://'.$url);   
+$container->get("view")->getEnvironment()->addGlobal('url', 'https://'.$url);
 $container->get("view")->getEnvironment()->addGlobal('sitename',$container->get('sitesettings')['sitename']);
 $container->get("view")->getEnvironment()->addGlobal('version',$container->get('settings')['version']);
 $container->get("view")->getEnvironment()->addGlobal('advertenties',$container->get('sitesettings')['advertenties']);
@@ -187,6 +187,7 @@ $container->get("view")->getEnvironment()->addGlobal('multilanguage',$container-
 $container->get("view")->getEnvironment()->addGlobal('htmleditor',$container->get('sitesettings')['htmleditor']);
 $container->get("view")->getEnvironment()->addGlobal('disableforum',$container->get('sitesettings')['disableforum']);
 $container->get("view")->getEnvironment()->addGlobal('disablesupport',$container->get('sitesettings')['disablesupport']);
+$container->get("view")->getEnvironment()->addGlobal('disablechat',$container->get('sitesettings')['disablechat']);
 
 $container->set('mail', function () {
 
@@ -253,15 +254,15 @@ $footerlinks = array();
 
 foreach ($linksobj as $link) {
             if ($link->naam == "header") {
-            $headerlinks[$link->naam][] = $link; 
+            $headerlinks[$link->naam][] = $link;
             }
             if ($link->naam != "header") {
-            $footerlinks[$link->naam][] = $link; 
-            }            
+            $footerlinks[$link->naam][] = $link;
+            }
 }
 
 
-$container->get("view")->getEnvironment()->addGlobal('footer_blogs', (array) $footer_blogs); 
+$container->get("view")->getEnvironment()->addGlobal('footer_blogs', (array) $footer_blogs);
 $container->get("view")->getEnvironment()->addGlobal('headerlinks', (array) $headerlinks);
 $container->get("view")->getEnvironment()->addGlobal('footerlinks', (array) $footerlinks);
 
@@ -291,7 +292,7 @@ return new Category(
       $container->get('view'),
       $container->get('db'),
       $container->get('locale'),
-      $container->get('translator'),  
+      $container->get('translator'),
       $container->get('settings')['translations']['languages']
       );
 
@@ -303,12 +304,12 @@ $container->set(Chat::class, function($container) {
             $container->get('db'),
             $container->get('flash'),
             $container->get('mail'),
-            $container->get('logger'),   
+            $container->get('logger'),
             $container->get('sitesettings'),
             $container->get('locale'),
-            $container->get('translator')  
+            $container->get('translator')
             );
-      
+
       });
 
 $container->set(Templates::class, function($container) {
@@ -326,8 +327,8 @@ return new SettingsManager(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings') 
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -338,7 +339,7 @@ return new Links(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings')
       );
 
@@ -350,8 +351,8 @@ return new Media(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings') 
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -362,8 +363,8 @@ return new Settings(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings')  
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -374,11 +375,11 @@ return new Blog(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings'),  
+      $container->get('logger'),
+      $container->get('sitesettings'),
       $container->get('locale'),
       $container->get('translator'),
-      $container->get('settings')['translations']['languages']    
+      $container->get('settings')['translations']['languages']
 );
 
 });
@@ -388,10 +389,10 @@ return new Login(
       $container->get('view'),
       $container->get('db'),
       $container->get('flash'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
-      $container->get('locale'),   
-      $container->get('translator')  
+      $container->get('locale'),
+      $container->get('translator')
       );
 
 });
@@ -402,8 +403,8 @@ return new Users(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings')    
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -413,10 +414,10 @@ return new Account(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings'),   
+      $container->get('logger'),
+      $container->get('sitesettings'),
       $container->get('locale'),
-      $container->get('translator') 
+      $container->get('translator')
       );
 
 });
@@ -427,9 +428,9 @@ return new Contact(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
-      $container->get('locale')   
+      $container->get('locale')
       );
 
 });
@@ -439,8 +440,8 @@ return new Dashboard(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings')  
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -450,12 +451,12 @@ $container->set(Google2FA::class, function($container) {
             $container->get('view'),
             $container->get('db'),
             $container->get('flash'),
-            $container->get('logger'),   
+            $container->get('logger'),
             $container->get('sitesettings'),
             $container->get('locale'),
-            $container->get('translator')    
+            $container->get('translator')
             );
-      
+
       });
 
 
@@ -465,8 +466,8 @@ return new Partner(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings')  
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -476,10 +477,10 @@ return new Manager(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
       $container->get('settings')['translations']['languages'],
-      $container->get('translator')       
+      $container->get('translator')
       );
 
 });
@@ -489,8 +490,8 @@ return new Todo(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings')  
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -500,8 +501,8 @@ return new Logging(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings')  
+      $container->get('logger'),
+      $container->get('sitesettings')
       );
 
 });
@@ -511,10 +512,10 @@ return new Forum(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
       $container->get('locale'),
-      $container->get('translator')   
+      $container->get('translator')
       );
 
 });
@@ -524,8 +525,8 @@ return new Support(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
-      $container->get('sitesettings'),  
+      $container->get('logger'),
+      $container->get('sitesettings'),
       $container->get('locale'),
       $container->get('translator'),
       $container->get('settings')['translations']['languages']
@@ -538,10 +539,10 @@ return new Search(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
       $container->get('locale'),
-      $container->get('translator')          
+      $container->get('translator')
       );
 
 });
@@ -551,9 +552,9 @@ return new Upload(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
-      $container->get('locale')    
+      $container->get('locale')
       );
 
 });
@@ -563,7 +564,7 @@ return new Email(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings')
       );
 
@@ -574,11 +575,11 @@ return new Advertisements(
       $container->get('db'),
       $container->get('flash'),
       $container->get('mail'),
-      $container->get('logger'),   
+      $container->get('logger'),
       $container->get('sitesettings'),
       $container->get('locale'),
       $container->get('translator'),
-      $container->get('settings')['translations']['languages']     
+      $container->get('settings')['translations']['languages']
       );
 
 });

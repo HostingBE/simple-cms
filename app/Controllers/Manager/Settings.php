@@ -20,9 +20,9 @@ class Settings {
 
 public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings) {
 $this->view = $view;
-$this->db = $db; 
+$this->db = $db;
 $this->flash = $flash;
-$this->mail = $mail;       
+$this->mail = $mail;
 $this->logger = $logger;
 $this->settings = $settings;
 }
@@ -31,7 +31,7 @@ $this->settings = $settings;
 public function save(Request $request, Response $response) {
 
 $excluded = array('locale','csrf_name','csrf_value');
-$switches = array('advertenties','multilanguage','htmleditor','cache','html_email','disableforum','disablesupport');
+$switches = array('advertenties','multilanguage','htmleditor','cache','html_email','disableforum','disablesupport','disablechat');
 
 $data = $request->getParsedBody();
 
@@ -51,7 +51,7 @@ foreach ($data as $key => $value) {
 if (in_array($key,$excluded)) { continue; }
 // print "key:" . $key . "\n";
 
-if (array_search($key,array_column($settings, 'setting'))) {	
+if (array_search($key,array_column($settings, 'setting'))) {
 $currentkey = array_search($key,array_column($settings, 'setting'));
 
 // print "key " . $key  . " " . $currentkey . " met id " . $settings[$currentkey]->id ."\n";
