@@ -2,7 +2,9 @@
 
 Are you tired of complex __content management systems__ that require endless hours of training and a hefty budget? Look no further! Introducing Simple CMS – the intuitive, open-source content management system crafted in PHP, designed with simplicity and efficiency at its core.
 
-With Simple CMS, you can easily create, edit, and manage your website content without the need for advanced technical skills. Whether you're a small business owner, a blogger, or a web developer, our platform empowers you to take full control of your digital presence.\n\nHere’s why Simple CMS stands out:
+With Simple CMS, you can easily create, edit, and manage your website content without the need for advanced technical skills. Whether you're a small business owner, a blogger, or a web developer, our platform empowers you to take full control of your digital presence
+
+Here’s why Simple CMS stands out:
 
 1. **User-Friendly Interface**: Our streamlined dashboard makes navigating your content a breeze. You can quickly publish new articles, upload images, and manage your pages with just a few clicks.
 
@@ -26,14 +28,15 @@ With Simple CMS, you can easily create, edit, and manage your website content wi
 
 ## Features ##
 
-* blog
-* contact
-* roles (visitor/customer/administrator)
-* support wiki
-* forum
-* customization via seperate TWIG templates
-* multi language
-* administration backend
+* Blog
+* Contact form
+* Roles (visitor/customer/administrator)
+* Support wiki (choose enabled/disabled)
+* Forum (choose enabled/disabled)
+* Highly customizable via seperate TWIG templates
+* Multi language (choose enabled/disabled)
+* Administration backend
+* Website chat (choose enabled/disabled) 
 
 ## Crontab ##
 
