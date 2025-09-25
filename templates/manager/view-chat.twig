@@ -10,45 +10,54 @@
 
 {% include "backend/alert.twig" %} 
 
-<div class="row">
+<div class="row mb-3">
 
 
   
 
      <div class="col-md-3 col-sm-12">
      
-     <dl>
-     <dt>{{ trans('manager.chat.ipaddress') | capitalize }}:</dt><dd>{{chat.ipaddress}}</dd>
-     <dt>{{ trans('manager.chat.name') | capitalize }}:</dt><dd>{{chat.name}}</dd>
-     <dt>{{ trans('manager.chat.avatar') | capitalize }}:</dt><dd>{{chat.avatar}}</dd> 
-     <dt>{{ trans('manager.chat.email') | capitalize }}:</dt><dd>{{chat.email}}</dd>
-     <dt>{{ trans('manager.chat.date') | capitalize }}:</dt><dd>{{chat.date}}</dd>
+     <div class="callout callout-warning bg-warning bg-opacity-25 mt-0">
+        <h4>Visitor data:</h4>
+          <dl class="row">
+     <dt class="col-md-3">{{ trans('manager.chat.ipaddress') | capitalize }}:</dt><dd class="col-md-9">{{chat.ipaddress}}</dd>
+     <dt class="col-md-3">{{ trans('manager.chat.name') | capitalize }}:</dt><dd class="col-md-9">{{chat.name}}</dd>
+     <dt class="col-md-3">{{ trans('manager.chat.avatar') | capitalize }}:</dt><dd class="col-md-9"><img src="{{url}}/{{chat.avatar}}" class="img-fluid img-thumbnail" style="width: 75px; height: 75px;"></dd> 
+     <dt class="col-md-3">{{ trans('manager.chat.email') | capitalize }}:</dt><dd class="col-md-9">{{chat.email}}</dd>
+     <dt class="col-md-3">{{ trans('manager.chat.date') | capitalize }}:</dt><dd class="col-md-9">{{chat.date}}</dd>
      </dl>
+</div>
 
      </div>
 
      <div class="col-md-9 col-sm-12">
       <div class="card">
         <div class="card-body">
-
-
-<form name="chat" method="POST" action="{{url}}/manager/add-chat-message">
+<form name="chat" method="POST" action="{{url}}/manager/add-chat-message" id="ajax-form" data-reload="true">
 
 {{ csrf() | raw }}
 
 <input type="hidden" name="id" value="{{id}}">
 <input type="hidden" name="session" value="{{session}}">
 
-<div class="input-group"><input type="text" name="message" class="form-control" value="" placeholder="{{ trans('manager.chat.enter_message') }}"><button class="btn btn-primary">{{ trans('manager.chat.send') }}</button></div>
+<div class="input-group"><input type="text" name="message" class="form-control" value="" placeholder="{{ trans('manager.chat.enter_message') }}"><button class="btn btn-primary" id="submit-ajax">{{ trans('manager.chat.send') }}</button></div>
 </form>
 <div class="col-md-12 mt-4">
 <h4>{{ trans('manager.chat.chat_overview') | capitalize }} {{session}}-{{id}}:</h4>
 <ul class="list-unstyled">
 {% for message in messages %}
-
-<li class="mb-4 p-2{% if message.owner == "visitor" %} bg-info text-light{% endif %}{% if message.owner == "beheerder" %} bg-secondary text-light{% endif %}" style="height: 60px;">{{message.tijd}} {{message.message}} {{ trans('manager.chat.by') }} {{message.owner}}</li>
+<div class="row">
+        <div class="col-sm-2">
+                <img src="{{url}}/{{chat.avatar}}" class="rounded-circle" alt="{{ message.name|capitalize }} width="40" height="40">
+            <p class="small">{{message.tijd}}</p>
+          </div>
+         <div class="col-sm-10">  
+        <li class="mb-4 p-2{% if message.owner == "visitor" %} bg-info text-light{% endif %}{% if message.owner == "beheerder" %} bg-secondary text-light{% endif %}" style="height: 60px;">{{message.message|raw}} {{ trans('manager.chat.by') }} {{message.owner}}</li>
+       </div>         
+</div>
 {% endfor %}
 </ul>
+</div>
 </div>
 </div>
 </div> 
@@ -56,6 +65,6 @@
 </div><!-- /. row -->
 
 
-      </div>
+</div>
 
 {% include "frontend/footer.twig" %}       
