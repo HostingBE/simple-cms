@@ -1,7 +1,7 @@
 {% include "frontend/header.twig" %}
+{% include "frontend/svg/angle-right.twig" %}
 
 <div class="container">
-
 
 <div class="row pt-4">
 <div class="col-md-9 col-sm-12">
@@ -12,15 +12,15 @@
 
 <div class="text-center">
 <figure class="figure">
-<a href="/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})| url_encode(true)|lower}}/"><img itemprop="image" class="img-figure rounded w-100" src="{% if weblog.media %}/uploads/{{weblog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{weblog.imagename}}-200.webp 200w, {{url}}/uploads/{{weblog.imagename}}-400.webp 400w,{{url}}/uploads/{{weblog.imagename}}-800.webp 800w" sizes="75vw" alt="{{weblog.alt|capitalize}}" width="{{ dimensions| split(':')[0] }}" height="{{ dimensions| split(':')[1] }}"></a>
+<a href="{{url}}/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})| url_encode(true)|lower}}/"><img itemprop="image" class="img-figure rounded w-100" src="{% if weblog.media %}/uploads/{{weblog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{weblog.imagename}}-200.webp 200w, {{url}}/uploads/{{weblog.imagename}}-400.webp 400w,{{url}}/uploads/{{weblog.imagename}}-800.webp 800w" sizes="75vw" alt="{{weblog.alt|capitalize}}" width="{{ dimensions| split(':')[0] }}" height="{{ dimensions| split(':')[1] }}"></a>
 <figcaption itemprop="headline" class="figure-caption">{{weblog.title}}</figcaption>
 </figure>
 </div>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{locale_url}}/seo-blog">blog</a></li>
-     <li class="breadcrumb-item"><a href="{{locale_url}}/seo-blog/{{weblog.category}}-{{weblog.naam}}/">{{weblog.naam}}</a></li>
+    <li class="breadcrumb-item"><a href="{{locale_url}}/blog">blog</a></li>
+     <li class="breadcrumb-item"><a href="{{locale_url}}/blog/{{weblog.category}}-{{weblog.naam}}/">{{weblog.naam}}</a></li>
      <li class="breadcrumb-item active" aria-current="page"><a href="{{locale_url}}/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})|url_encode(true)|lower}}/" itemprop="url">{{weblog.title}}</a></li>
   </ol>
 </nav>
@@ -171,8 +171,6 @@
 <h4 class="mt-2">{{ trans('frontend.common.share') | capitalize }}</h4>
 
 {{ include("frontend/snippets/social-media-share.twig", { url: url, path: path, keywords: weblog.tags}) }}
-
-<div class="ads"></div>
 
 </div>
 

@@ -21,7 +21,7 @@
 </nav>
 
   {% include "backend/alert.twig" %}
-  
+
 <div class="row">
 <div class="col-md-9">
 
@@ -36,9 +36,9 @@
 
 
         </div>
-          
+
           <div class="row mb-3">
-    
+
     <div class="col-1">
         <div class="d-flex justify-content-between align-items-center">
            <div class="d-flex align-items-center pe-2"><img class="img-thumbnail rounded" src="{{url}}/images/{% if topic.icon != '' %}users/{{topic.userid}}/{{topic.icon}}{%else%}default-icon.jpg{%endif%}" width="50" height="50" alt="{{topic.first_name}} {{topic.last_name}}">
@@ -94,7 +94,7 @@
                   <p>{{reply.message|raw}}</p>
                 </div>
                  </div>
-     
+
 
 {% endfor %}
 {% endif %}
@@ -104,7 +104,7 @@
 </div>
 
 <button class="btn btn-secondary btn-sm text-end mb-3" data-id="{{topic.id}}" id="reply-btn">reply</button>
- 
+
    {% include "backend/alert.twig" %}
 
 	<div class="card mb-3 {{display}}" id="reply">
@@ -148,13 +148,20 @@
 
 <div class="ads"></div>
 
-<h5 class="mb-2">Categories</h5>
 
-<ul class="list-group mb-3">
-{% for category in categories %}
-<li class="list-group-item" aria-current="true"><i class="fas fa-angle-right"></i> <span class="badge rounded-pill bg-secondary">{{category.totals}}</span> <a href="/forum/{{category.naam|replace({' ':'-'})|lower}}/{{category.id}}/" data-bs-toggle="tooltip" title="Forum category {{category.naam}}">{{category.naam|capitalize}}</a></li>
- {% endfor %}
+<div class="card border-gray mb-3">
+<div class="card-body">
+<h4>{{ trans('frontend.common.categories') | capitalize }}</h4>
+<ul class="list-unstyled">
+
+  {% for categorie in categories %}
+<li class="list-group-item p-1" aria-current="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-primary" fill="currentColor"><use href="#angle-right"></svg>  <span class="badge rounded-pill bg-secondary">{{categorie.totals}}</span> <a href="{{url}}/forum/{{categorie.naam|replace({' ':'-'})|lower}}/{{categorie.id}}/" data-bs-toggle="tooltip" title="Forum category {{categorie.naam}}">{{categorie.naam|capitalize}}</a></li>
+{% endfor %}
+
 </ul>
+
+</div>
+</div>
 
 <h5 class="mb-2">Share</h5>
 

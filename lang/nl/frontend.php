@@ -38,10 +38,11 @@ return [
    'comment' => 'reactie',
    'support_message' => 'Heb je meer hulp nodig? Zoek naar antwoorden in onze artikelen of begin zelf een artikel in ons forum',
   ],
-  'blog' => [ 
+  'blog' => [
     'add_comment' => 'blog reactie toevoegen',
     'name' => 'naam',
     'email' => 'e-mail',
+    'post_comment' => 'reactie toevoegen',
     'title' =>  'titel',
     'comment' => 'reactie',
     'no_blogs' => 'nog geen blog artikelen in de categorie <strong>:category_name </strong>, kom snel terug',
@@ -79,7 +80,7 @@ return [
       'yourmessage' => 'jouw bericht',
       'send' => 'verstuur',
 
-  
+
 
     ],
 ]

@@ -132,7 +132,7 @@
 <div class="card-body"><h4 class="card-title">{{trans('frontend.common.latest_contributions')|capitalize}}</h4>
 {% for late in latest %}
 <span class="row"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" class="bi text-primary" fill="currentColor"><use href="#angle-right"></svg> {{late.titel|capitalize}}</span>
-<span class="row p-1"><small>by {{late.naam}} on <a href="/support/{{late.id}}-{{late.artikel|replace({' ':'-','?':''})}}/"><i>{{late.artikel}}</i></a></small></span>
+<span class="row p-1"><small>by {{late.naam}} on <a href="{{url}}/support/{{late.id}}-{{late.artikel|replace({' ':'-','?':''})|lower}}/"><i>{{late.artikel}}</i></a></small></span>
 {% endfor %}
 </div>
 </div>

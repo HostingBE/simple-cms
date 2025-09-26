@@ -38,10 +38,11 @@ return [
    'comment' => 'comment',
    'support_message' => 'Need more SEO help? Search for answers to your questions in our articles, or ask us your question',
   ],
-  'blog' => [ 
+  'blog' => [
     'add_comment' => 'add blog comment',
     'name' => 'name',
     'email' => 'e-mail',
+    'post_comment' => 'add comment',
     'title' =>  'title',
     'comment' => 'comment',
     'no_blog' => 'no blogs available yet in the category <strong>:category_name </strong>, checkback soon',
@@ -80,7 +81,7 @@ return [
       'yourmessage' => 'your message',
       'send' => 'send',
 
-  
+
 
     ],
 ]
