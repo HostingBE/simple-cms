@@ -24,10 +24,9 @@ function returnUrl(url) {
       datatype: 'json',
       url:  returnUrl(url) + '/chat-check-login',
       success: function(data) {
-        console.log("checkLogin: " + data);
       var json = JSON.parse(data);
       if (json.status == "success") {
-            $("#form-chat").attr('action', 'https://' + new URL(url).host + '/add-chat-message');
+            $("#form-chat").attr('action', returnUrl(url) + '/add-chat-message');
             $('.modal-footer').html(`<div class="input-group"><input type="text" name="message" class="form-control" placeholder="type your message .."><button type="submit" id="submit-chat" class="btn btn-info">send</button></div>`);
             getMessages();
             } else {
@@ -49,8 +48,7 @@ function returnUrl(url) {
                   type: 'GET',
                   datatype: 'json',
                   url: returnUrl(url) + '/chat-overview',
-  
-  
+    
                   success: function (data) {
                   console.log("messages reload executed!");
                   var json = JSON.parse(data);
@@ -115,10 +113,10 @@ function returnUrl(url) {
               if (obj.status == "success") {
                   if (new URL(action).pathname == "/chat-signin") { 
                    $('.modal-body.chat-messages').html("Your chat request is generated and the messages are loaded!");
-                   $("#form-chat").attr('action','https://' + returnUrl(action) + '/add-chat-message');
+                   $("#form-chat").attr('action', returnUrl(action) + '/add-chat-message');
                    $('.modal-footer').html(`<div class="input-group"><input type="text" name="message" class="form-control" placeholder="enter your message"><button type="submit" id="submit-chat" class="btn btn-info">send</button></div>`);
                    getMessages();
-                   myInterval = setInterval(getMessages, 3000);
+                   myInterval = setInterval(getMessages, 30000);
                    } else {
                    $("#form-chat").trigger("reset");
                    getMessages();
@@ -137,6 +135,7 @@ function returnUrl(url) {
   
   $(document).on('show.bs.modal', '#chatModal', function (e) {
       checkLogin();
+      myInterval = setInterval(getMessages, 30000);
       });
   });
   

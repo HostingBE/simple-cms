@@ -132,9 +132,10 @@ public function post_manager_chat_message(Request $request,Response $response) {
     
 
 	 if (!$v->validate()) {
-        $this->flash->addMessage('errors',$v->errors());
-        return $response->withHeader('Location','/manager/view-chat/'.$data['id'].'/'.$data['session'].'/');    
-        }
+        $errormessage = current((Array)$v->errors())[0];
+        $response->getBody()->write(json_encode(array('status' => 'error','message' => $errormessage))); 
+        return  $response;
+        }   
 
     $owner = "beheerder";
 
@@ -142,12 +143,11 @@ public function post_manager_chat_message(Request $request,Response $response) {
     $sql->bindparam(":chat", $data['id'],PDO::PARAM_INT);
     $sql->bindparam(":owner", $owner,PDO::PARAM_STR);    	
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
+    $sql->bindparam(":message",$this->makeLinks($data['message']),PDO::PARAM_STR);
     $sql->execute();
 
-    $this->flash->addMessage('success','het bericht is geplaatst op de chat!');	
-    $response = $response->withHeader('Location','/manager/view-chat/'.$data['id'].'/'.$data['session'].'/')->withStatus(302); 
-    return $response;
+      $response->getBody()->write(json_encode(array('status' => 'success','message' => 'manager chat message added to chat!')));  
+      return $response; 
 }
 
 
@@ -178,7 +178,7 @@ public function post_add(Request $request,Response $response) {
     $sql->bindparam(":chat", $chat->id,PDO::PARAM_INT);	
     $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
+    $sql->bindparam(":message",$this->makeLinks($data['message']),PDO::PARAM_STR);
     $sql->execute();
 
 	$response->getBody()->write(json_encode(array('status' => 'success','message' => $this->translator->get('frontend.chat.message_added') . '!')));	
@@ -201,7 +201,7 @@ public function overview(Request $request,Response $response) {
     $chats = $sql->fetchALL(PDO::FETCH_OBJ);
 
 
-return $this->view->render($response,'manager/chat-overview.twig',['huidig' => 'manager-chat-overview','chats' => $chats, 'manager_heading' => $manager_heading,'berichten' => $berichten, 'id' => $id,'session' => $session, 'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'info' => $this->flash->getFirstMessage('info')]);
+return $this->view->render($response,'manager/chat-overview.twig',['huidig' => 'manager-chat-overview','chats' => $chats, 'manager_heading' => $manager_heading,'berichten' => $berichten, 'id' => $id,'session' => $session]);
 }    
 
 
@@ -259,11 +259,11 @@ public function post_signin(Request $request,Response $response) {
     $chat->id = $this->db->lastinsertid();
     } 
 
-    $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
+    $sql = $this->db->prepare("INSERT INTO chat_messages (owner, ipaddress, chat, message, date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $chat->id,PDO::PARAM_INT); 
     $sql->bindparam(":owner", $eigenaar, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
-    $sql->bindparam(":message",$data['message'],PDO::PARAM_STR);
+    $sql->bindparam(":message",$this->makeLinks($data['message']),PDO::PARAM_STR);
     $sql->execute();
 
 
@@ -278,14 +278,14 @@ public function post_signin(Request $request,Response $response) {
 
     if(time() < $open || time() > $dicht) {
     $owner = "beheerder";
-    $buitenkantoortijden = "Momenteel zijn we niet aanwezig, we zijn bereikbaar op werkdagen van 09:00 tot 18:00. Je chat wordt wel gelezen tijdens kantoortijden en beantwoord via email!";
-    $this->logger->warning("Chat aanvraag automatisch beantwoord we zijn buiten kantoor tijden!");
+    $buitenkantoortijden = "We're currently unavailable. We're available weekdays from 9:00 AM to 6:00 PM. Your chat will be read during office hours and answered via email or phone! In the meantime, please visit our website: https://simple-cms.hostingbe.lan";
+    $this->logger->warning(__CLASS__.": answered chat via autoresponder because we are closed!");
     $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
 
     $sql->bindparam(":chat", $chat->id, PDO::PARAM_INT); 
     $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
     $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
-    $sql->bindparam(":message",$buitenkantoortijden, PDO::PARAM_STR);
+    $sql->bindparam(":message",$this->makeLinks($buitenkantoortijden), PDO::PARAM_STR);
     $sql->execute();
     }
 
@@ -327,8 +327,8 @@ public function chat_overview(Request $request,Response $response) {
         $messages[$i]->name = ucfirst($chat->name);
         $messages[$i]->avatar = $chat->avatar;
         $messages[$i]->align = "left";       
-        $messages[$i]->text = "light";   
-        $messages[$i]->background = "primary";           
+        $messages[$i]->text = "white";   
+        $messages[$i]->background = "success bg-opacity-50";           
         }   
     }
 
@@ -336,6 +336,19 @@ public function chat_overview(Request $request,Response $response) {
 	return  $response;	
 }
 
+
+private function makeLinks($str, $target='_blank') {
+    if ($target) {
+        $target = ' target="'.$target.'"';
+    } else {
+        $target = '';
+    }
+    // find and replace link
+    $str = preg_replace('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.~]*(\?\S+)?)?)*)@', '<a href="$1" '.$target.'>$1</a>', $str);
+    // add "http://" if not set
+    $str = preg_replace('/<a\s[^>]*href\s*=\s*"((?!https?:\/\/)[^"]*)"[^>]*>/i', '<a href="http://$1" '.$target.'>', $str);
+    return $str;
+    }
 }
 
 

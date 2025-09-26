@@ -1,7 +1,7 @@
 <?php
 
 
-return [ 
+return [
 
 'blog_overview' => 'blog overview',
 'category' => 'category',
@@ -23,7 +23,7 @@ return [
 'your_email' => 'your e-mail address',
 'title_comment' => 'the title of your comment',
 'your_comment' => 'your comment about this article',
-'post_comment' => 'post comment', 
+'post_comment' => 'post comment',
 'no_comments' => 'no comments on this article, or your comment is not yet approved!',
 'newest' => 'newest',
 'oldest' => 'oldest',
