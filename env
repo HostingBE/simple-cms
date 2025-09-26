@@ -13,3 +13,4 @@ SMTP_HOST=
 SMTP_TLS=true
 SMTP_AUTH=true
 version=3.1.0
+theme=simple
