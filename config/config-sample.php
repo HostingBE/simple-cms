@@ -5,7 +5,7 @@ return [
                    'displayErrorDetails' => true,
                    'logErrorDetails' => true,
                    'debug' => true,
-                   'version' => '3.1.0',
+                   'version' => getenv('version'),
                    'logger' => [
                    'name' => '[logname]',
                    'path' => __DIR__ . '/../logs/'.date('d-m-Y').'-app.log',
@@ -13,10 +13,10 @@ return [
                         ],
                    'db'  => [
 
-     'host' => '[host]',
-     'username' => '[username]',
-     'database' => '[database]',
-     'password' => '[password]',
+     'host' => getenv('db'),
+     'username' => getenv('username'),
+     'database' => getenv('database'),
+     'password' => getenv('password'),
 
      ],
      'translations' => [

@@ -15,7 +15,7 @@ echo "Create a backup of the current version\n"
 tar -cvf  $(pwd)/backup-$(date +"%Y-%m-%d-%H").tar $(pwd)/app $(pwd)/bootstrap $(pwd)/Classes composer.json $(pwd)/config $(pwd)/Classes  $(pwd)/lang $(pwd)/routes $(pwd)/logs $(pwd)/templates $(pwd)/public_html
 
 echo "Moving the CMS to original directory"
-${rsync} -av $(pwd)/simple-cms $(pwd)
+${rsync} -rv $(pwd)/simple-cms/ $(pwd)
 
 echo "Getting the new version from the config file"
 version=`${cat} $(pwd)/simple-cms/config/config-sample.php | grep version | awk '{ print $3 }' | sed -e s/[\'\,]//g`

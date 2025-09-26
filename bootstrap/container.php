@@ -115,7 +115,7 @@ $translator->setFallBack($container->get('settings')['translations']['fallback']
 
 
 $container->set('view', function($container) {
-	   $loader =  new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
+	   $loader =  new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates/'.getenv('theme'));
          $view = new \Slim\Views\Twig($loader, [
         'debug' => $container->get('settings')['debug'],
         'cache' => __DIR__. '/../cache'
