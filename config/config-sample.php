@@ -13,7 +13,7 @@ return [
                         ],
                    'db'  => [
 
-     'host' => getenv('db'),
+     'host' => getenv('host'),
      'username' => getenv('username'),
      'database' => getenv('database'),
      'password' => getenv('password'),
@@ -23,9 +23,9 @@ return [
             'path' => __DIR__."/../lang",
             'fallback' => 'en',
             'languages' => array(
-                           array('url' => 'simple-cms-nl.hostingbe.lan', 'language' => 'nl', 'spoken' => 'nederlands'),
-                           array('url' => 'simple-cms.hostingbe.lan', 'language' => 'en', 'spoken' => 'english'),
-                           array('url' => 'simple-cms-de.hostingbe.lan', 'language' => 'de','spoken' => 'deutsch')),
+                           array('url' => 'nl-'.$_SERVER['HTTP_HOST'], 'language' => 'nl', 'spoken' => 'nederlands'),
+                           array('url' => $_SERVER['HTTP_HOST'], 'language' => 'en', 'spoken' => 'english'),
+                           array('url' => 'de-'.$_SERVER['HTTP_HOST'], 'language' => 'de','spoken' => 'deutsch')),
             'enabled' => true,
      ],
         ],

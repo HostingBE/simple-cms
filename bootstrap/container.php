@@ -193,12 +193,12 @@ $container->set('mail', function () {
 
     $mail = new PHPmailer();
     $mail->isSMTP();
-    $mail->Host = $_SERVER['SMTP_HOST'];
-    $mail->SMTPAuth = $_SERVER['SMTP_AUTH'] ?: false;
-    $mail->SMTPAutoTLS = $_SERVER['SMTP_TLS'] ?: false;
-    $mail->Username = $_SERVER['SMTP_USERNAME'];
-    $mail->Password =  $_SERVER['SMTP_PASSWORD'];
-    $mail->Port = $_SERVER['SMTP_PORT'];
+    $mail->Host = $_SERVER['smtp_host'];
+    $mail->SMTPAuth = $_SERVER['smtp_auth'] ?: false;
+    $mail->SMTPAutoTLS = $_SERVER['smtp_tls'] ?: false;
+    $mail->Username = $_SERVER['smtp_username'];
+    $mail->Password =  $_SERVER['smtp_password'];
+    $mail->Port = $_SERVER['smtp_port'];
     $mail->isHTML(false);
     return $mail;
 });
@@ -209,9 +209,9 @@ $container->set('mail', function () {
 $container->set('cache', function () {
       $cache = new \App\Cache\RedisAdapter(new \Predis\Client([
                                           'scheme' => 'tcp',
-                                          'host' => '127.0.0.1',
-                                          'port' => 6379,
-                                          'password' => null
+                                          'host' => $_SERVER['redis_host'],
+                                          'port' => $_SERVER['redis_port'] ?: "6379",
+                                          'password' => $_SERVER['redis_password'] ?: null
                                           ]));
       return $cache;
       });
