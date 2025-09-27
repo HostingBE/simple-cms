@@ -70,7 +70,7 @@ CREATE TABLE `api` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(4) NOT NULL,
   `username` char(32) NOT NULL,
-  `password` char(32) NOT NULL,
+  `password` char(64) NOT NULL,
   `ipaddress` varchar(64) NOT NULL,
   `datum` date NOT NULL,
   PRIMARY KEY (`id`)

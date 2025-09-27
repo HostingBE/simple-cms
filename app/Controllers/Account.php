@@ -610,7 +610,7 @@ if($uitkomst != $data['captcha']) {
   $this->setSubject("[".$this->locale."]: Confirm sign-up at website " . date('H:i d-m-Y'));
 
   // mail versturen naar de bezoeker
-  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'wachtwoord' => $wachtwoord, 'activation_code' => $activation->code, 'url' => $this->settings['url'],'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
+  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'password' => $password, 'activation_code' => $activation->code, 'url' => $this->settings['url'],'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
 
    // contact fomulier is goed nu versturen
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
