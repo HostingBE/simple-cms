@@ -19,18 +19,30 @@
 */
 '
 
-# database connection data
-hostname="db01.hostingbe.lan"
-database="test_website"
-username="test-website"
+# Database Connection strings
+hostname=""
+database=""
+username=""
 password=""
-# if you have another directory name as public website enter it below
+
+# If you have another directory name as public website enter it below
 public="public_html"
+
+# SMTP settings 
+smtp_port=587
+smtp_username=
+smtp_password=
+smtp_host=
+smtp_tls=true
+smtp_auth=true
 
 #
 # No need to edit the file below this line!
 #
+version="simple-cms-3.1"
 curl="/usr/bin/curl"
+mkdir="/usr/bin/mkdir"
+rsync="/usr/bin/rsync"
 
 echo "Checking if we need to update?"
 
@@ -42,11 +54,14 @@ fi
 echo "Checking if public directory exists"
 
 if [ -d $(pwd)'/public_html' ]; then
-  mv $(pwd)'/public_html' $(pwd)'/public_html-'date("+%Y-%m-%d")
+  mv $(pwd)'/public_html' $(pwd)'/public_html-'$(date +"%Y-%m-%d")
 fi
 
 echo "Downloading latest source code"
-${curl} https://github.com/HostingBE/simple-cms/archive/refs/heads/master.zip -o simple-cms.zip 
+${curl} -L -o simple-cms.zip https://github.com/HostingBE/simple-cms/archive/refs/tags/v3.1.zip 
+
+echo "Making temp directory for install"
+${mkdir} $(pwd)/simple-cms/
 
 echo "Move download to seperate directory"
 mv simple-cms.zip $(pwd)/simple-cms/.
@@ -55,13 +70,14 @@ echo "Unzip download file in temp directory"
 unzip $(pwd)/simple-cms/simple-cms.zip
 
 echo "Moving the CMS to original directory"
-${rsync} -rv $(pwd)/simple-cms/ $(pwd)
+${rsync} -rv $(pwd)/${version}/ $(pwd)
 
 echo "Deleting the simple-cms directory"
 rm -rf $(pwd)/simple-cms/
+rm -rf $(pwd)/${version}/
 
 echo "Creating the .env file for the CMS"
-mv $(pwd)/env ${pwd}/.env
+mv $(pwd)/env $(pwd)/.env
 
 echo "Running composer update"
 if ! [ $(composer update; echo $0) ]; then
@@ -69,14 +85,23 @@ if ! [ $(composer update; echo $0) ]; then
 fi
 
 echo "copy config.php to config directory"
-mv -p $(pwd)/config/config-sample.php $(pwd)/config/config.php
+mv $(pwd)/config/config-sample.php $(pwd)/config/config.php
 
+echo "Changing database settings in env"
 sed -i -e "s/database=/database=${database}/" $(pwd)/.env
 sed -i -e "s/username=/username=${username}/" $(pwd)/.env
 sed -i -e "s/password=/password=${password}/" $(pwd)/.env
 sed -i -e "s/host=/host=${host}/" $(pwd)/.env
 
-if [ ${public} ne "public_html" ]; then
+echo "Changing SMTP settings in env"
+sed -i -e "s/smtp_port=/smtp_port=${smtp_port}/" $(pwd)/.env
+sed -i -e "s/smtp_username=/smtp_username=${smtp_username}/" $(pwd)/.env
+sed -i -e "s/smtp_password=/smtp_password=${smtp_password}/" $(pwd)/.env
+sed -i -e "s/smtp_host=/smtp_host=${smtp_host}/" $(pwd)/.env
+sed -i -e "s/smtp_tls=/smtp_tls=${smtp_tls}/" $(pwd)/.env
+sed -i -e "s/smtp_auth=/smtp_auth=${smtp_auth}/" $(pwd)/.env
+
+if [ ${public} != "public_html" ]; then
 mv $(pwd)/public_html/ $(pwd)/${public}/
 fi
 
@@ -91,7 +116,7 @@ echo "Making the temp directory"
 mkdir $(pwd)/tmp
 
 echo "Import the database schema";
-mysql -u ${script_variables['username']} -p${script_variables['password']} -h ${script_variables['host']} ${script_variables['database']} < $(pwd)/sql/simple_cms.sql
-mysql -u ${script_variables['username']} -p${script_variables['password']} -h ${script_variables['host']} ${script_variables['database']} < $(pwd)/sql/simple_cms_data.sql
+mysql -u ${username} -p${password} -h ${hostname} ${database} < $(pwd)/sql/simple_cms.sql
+mysql -u ${username} -p${password} -h ${hostname} ${database} < $(pwd)/sql/simple_cms_data.sql
 
 echo "done";
