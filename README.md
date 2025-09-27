@@ -19,25 +19,26 @@ Here’s why Simple CMS stands out:
 ![Screenshot Simple CMS](images/simple-cms-backend.jpg)
 
 ## Howto get started ##
-* Clone the repository or download the zip file
-* Copy config/config-sample.php to config/config.php and change the settings
-* Import the database sql schema from the sql directory in your database
-* Run composer update (this will install all dependencies which are needed)
-* Run npm i in the public_html directory (this will install all dependencies which are needed)
-* Rename htaccess to .htaccess in public_html directory (if it does not exist!)
-* Markdown content editor to HTML
+* Download the install.sh script (wget https://raw.githubusercontent.com/HostingBE/simple-cms/refs/heads/master/install.sh)
+* Make install.sh executable (chmod 755)
+* Enter the requested values in install.sh
+* Run install.sh
+* Create your first account via create account
+* Your all set to go
 
 ## Features ##
 
 * Blog
 * Contact form
 * Roles (visitor/customer/administrator)
-* Support wiki (choose enabled/disabled)
-* Forum (choose enabled/disabled)
+* Support wiki (choice enabled/disabled)
+* Forum (choice enabled/disabled)
 * Highly customizable via seperate TWIG templates
-* Multi language (choose enabled/disabled)
+* Multi language (choice enabled/disabled)
 * Administration backend
-* Website chat (choose enabled/disabled) 
+* Website chat (choice enabled/disabled) 
+* Online WYSIWYG editor
+* Markdown support with TOC (table of contents) generation
 
 ## Crontab ##
 
@@ -52,6 +53,16 @@ The send-reminders will send reminders to users who are not logged in for a cert
 ```
 30 3 * * * /usr/bin/php /home/username/bin/console.php reminder-email send-reminders
 ```
+
+## History ##
+
+The first release of Simple CMS for an SEO website was in early May 2022. We use Simple CMS for every website we create, launch, and manage. The foundation is robust and simple, offering all the necessary functionality you'd expect from a CMS.
+
+Of course, every website requires its own unique functionalities, which are integrated into Simple CMS as modules or plugins. The CMS is fully equipped for this, providing a solid foundation for any website.
+
+## Roadmap ##
+
+High on the wish list is an online upgrade option and then an online installer. Expanding online chat capabilities and adding more functionality for uploading media such as photos, videos, and documents.
 
 ## Website design ##
 

@@ -220,22 +220,22 @@ public function confirm_password(Request $request,Response $response) {
  $user = Sentinel::findByCredentials(['login' => $request->getAttribute('email')]);
   
   // create a random code
-  $wachtwoord = random(15);
+  $password = random(32);
      
-  $mailbody = $this->view->fetch('email/nieuw-wachtwoord.twig',['email' => $user->email,'gebruiker' => $user->id,'voornaam' => $user->first_name, 'achternaam' => $user->last_name,'wachtwoord' => $wachtwoord]);
+  $mailbody = $this->view->fetch('email/new-password.twig',['email' => $user->email,'user' => $user->id,'firstname' => $user->first_name, 'lastname' => $user->last_name,'password' => $password, 'footer' => $this->settings['footer']]);
   
   
   // wachtwoord vergeten email
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
    $this->mail->addAddress($user->email, $user->first_name . " " . $user->last_name);
-   $this->mail->Subject = 'Your new password for website ' . $this->locale;
+   $this->mail->Subject = 'Your new password for website ' . $this->settings['url'];
    $this->mail->Body = $mailbody;
    $this->mail->IsHTML($this->settings['html_email']);
 
   // verwijderen wachtwoord verzoek
   WWvergetenModel::where('code',$code)->delete();
   // wachtwoord wijzigen van gebruiker
-  Sentinel::getUserRepository()->update($user,array_only(['password' => $wachtwoord], ['password']));
+  Sentinel::getUserRepository()->update($user,array_only(['password' => $password], ['password']));
                             
 if(!$this->mail->send()) {
     $this->flash->addMessage('errors',$this->mail->ErrorInfo);
@@ -595,7 +595,7 @@ if($uitkomst != $data['captcha']) {
   'email' => $data['email'],
   'password'=> $password,
   'first_name'=> $data['first_name'],
-  'icon' => 'default-icon.jpg',
+  'icon' => '',
   'last_name' => $data['last_name'],
   'twofactor' => 'n']);
 
@@ -609,10 +609,14 @@ if($uitkomst != $data['captcha']) {
   $email_hash = hash('sha256', $user->email);
   $this->setSubject("[".$this->locale."]: Confirm sign-up at website " . date('H:i d-m-Y'));
 
-  // mail versturen naar de bezoeker
-  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'password' => $password, 'activation_code' => $activation->code, 'url' => $this->settings['url'],'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
+  /**
+   * Create e-mail to visitor
+   */
+  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['name' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'password' => $password, 'activation_code' => $activation->code, 'url' => $this->settings['url'],'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
 
-   // contact fomulier is goed nu versturen
+/**
+ * Send e-mail to visitor 
+ */
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
    $this->mail->addAddress($data['email'], $data['first_name'] . " " . $data['last_name']);
    $this->mail->Subject = $this->getSubject();
@@ -624,11 +628,11 @@ if($uitkomst != $data['captcha']) {
      if(!$this->mail->send()) {
      $this->flash->addMessage('errors',$this->mail->ErrorInfo);
      } else {
-     $this->flash->addMessage('success','sending of confirmation e-mail is succesfully completed!');
+     $this->flash->addMessage('success','Sending of confirmation e-mail is succesfully completed!');
      }
 
-    /*
-    * e-mail die verstuurd wordt in de datbase stoppen
+    /**
+    *  Save e-mail in the database for online viewing
     */
     $sql = $this->db->prepare("INSERT INTO email (code,onderwerp,email,user,body,datum) VALUES(:code,:onderwerp,:email,:user,:body,now())");
     $sql->bindparam(":code",$code,PDO::PARAM_STR);
@@ -638,7 +642,7 @@ if($uitkomst != $data['captcha']) {
     $sql->bindparam(":body",$mailbody,PDO::PARAM_STR);
     $sql->execute();
 
-     $this->logger->info("Account: user with e-mail address " . $data['email'] . " and name " . $data['voornaam'] . " " . $data['achternaam'] . " is registered!");
+     $this->logger->info("Account: user with e-mail address " . $data['email'] . " and name " . $data['first_name'] . " " . $data['last_name'] . " is registered!");
     
      $response->getBody()->write(json_encode(array('status' => 'success','message' => 'your sign-up is completed, don\'t forget to confirm your registration via e-mail!')));  
      return  $response;  

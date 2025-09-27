@@ -59,7 +59,7 @@
                      {% if user %}
                                        
                                       
-                                       <div class="dropdown"><img src="/images/{% if user.icon|length > 2 %}users/{{user.id}}/{{user.icon}}{%else%}default-icon.jpg{% endif %}" alt="{{user.first_name}} {{user.last_name}}" width="48" height="48"> 
+                                       <div class="dropdown"><img src="{{url}}/images/{% if user.icon|length > 2 %}users/{{user.id}}/{{user.icon}}{%else%}default-icon.jpg{% endif %}" alt="{{user.first_name}} {{user.last_name}}" width="48" height="48" class="rounded rounded-2"> 
                                        <a href="#" class="dropdown-toggle" id="accountmenu"  data-bs-toggle="dropdown" aria-expanded="false">{{user.first_name}} {{user.last_name}}</a>                           
                                                    
 

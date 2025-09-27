@@ -40,7 +40,7 @@
 </div>
 <div class="col-md-6 col-sm-12">
 
-    {% include "alert.twig" %}
+    {% include "backend/alert.twig" %}
         
 <div class="card mb-3">
 	<div class="card-body">
@@ -50,7 +50,7 @@
 
 <p>Verify your 2FA setup by entering a code here.</p>
 <form name="activate2fa" action="{{url}}/verify" method="POST" id="ajax-form">
-
+{{ csrf() | raw }}
 <div class="input-group">
 <input type="text" class="form-control" name="code2fa" value="" placeholder="enter your code..">
 <input type="submit" class="btn btn-primary" id="submit-ajax" value="Verify">
