@@ -98,7 +98,7 @@ if ($Activation->complete($user, $code)) {
 
 
     // mail versturen naar de bezoeker
-    $mailbody = $this->view->fetch('email/aanmelding-voltooid.twig',['naam' => $user->first_name . " " . $user->last_name,'email' => $user->email, 'url' => $this->locale,'email_hash' => $email_hash,'code' => $code]);
+    $mailbody = $this->view->fetch('email/aanmelding-voltooid.twig',['naam' => $user->first_name . " " . $user->last_name,'email' => $user->email, 'url' => $this->settings['url'],'email_hash' => $email_hash,'code' => $code]);
   
    $this->setSubject("[".$this->locale."]: Register complete " . date('H:i d-m-Y'));
    
@@ -292,7 +292,7 @@ public function post_request_code(Request $request,Response $response) {
     $email_hash = hash('sha256', $activation->email);
     $this->setSubject('Your account is one step from beeing activated!');
 
-    $mailbody = $this->view->fetch('email/reminder-activation.twig',['url' => $this->locale, 'activation' => $activation,'subject' => $this->getSubject(),'email_hash'=> $email_hash,'code'=> $code,'footer' => $this->settings['footer']]);
+    $mailbody = $this->view->fetch('email/reminder-activation.twig',['url' => $this->settings['url'], 'activation' => $activation,'subject' => $this->getSubject(),'email_hash'=> $email_hash,'code'=> $code,'footer' => $this->settings['footer']]);
     // herinnering sturen naar bezoeker
     $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
     $this->mail->addAddress($activation->email, $activation->first_name . " " . $activation->last_name);
@@ -362,7 +362,7 @@ public function post_request_password(Request $request,Response $response) {
   // create a random code
   $code = random(15);
 
-  $mailbody = $this->view->fetch('email/wachtwoord-vergeten.twig',['email' => $gebruiker->email,'gebruiker' => $gebruiker->id,'voornaam' => $gebruiker->first_name, 'achternaam' => $gebruiker->last_name,'code' => $code,'url' => $this->locale, 'footer' => $this->settings['footer']]);
+  $mailbody = $this->view->fetch('email/wachtwoord-vergeten.twig',['email' => $gebruiker->email,'gebruiker' => $gebruiker->id,'voornaam' => $gebruiker->first_name, 'achternaam' => $gebruiker->last_name,'code' => $code,'url' => $this->settings['url'], 'footer' => $this->settings['footer']]);
 
   // wachtwoord vergeten email
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
@@ -610,7 +610,7 @@ if($uitkomst != $data['captcha']) {
   $this->setSubject("[".$this->locale."]: Confirm sign-up at website " . date('H:i d-m-Y'));
 
   // mail versturen naar de bezoeker
-  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'wachtwoord' => $wachtwoord, 'activation_code' => $activation->code, 'url' => $this->locale,'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
+  $mailbody = $this->view->fetch('email/aanmelding-formulier.twig',['naam' => $data['first_name'] . " " . $data['last_name'],'email' => $data['email'], 'wachtwoord' => $wachtwoord, 'activation_code' => $activation->code, 'url' => $this->settings['url'],'code'=> $code, 'email_hash' => $email_hash, 'footer' => $this->settings['footer']]);
 
    // contact fomulier is goed nu versturen
    $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);

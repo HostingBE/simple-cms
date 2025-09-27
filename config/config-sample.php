@@ -23,9 +23,9 @@ return [
             'path' => __DIR__."/../lang",
             'fallback' => 'en',
             'languages' => array(
-                           array('url' => 'nl-'.$_SERVER['HTTP_HOST'], 'language' => 'nl', 'spoken' => 'nederlands'),
-                           array('url' => $_SERVER['HTTP_HOST'], 'language' => 'en', 'spoken' => 'english'),
-                           array('url' => 'de-'.$_SERVER['HTTP_HOST'], 'language' => 'de','spoken' => 'deutsch')),
+                           array('url' => '[domain]', 'language' => 'nl', 'spoken' => 'nederlands'),
+                           array('url' => '[domain]', 'language' => 'en', 'spoken' => 'english'),
+                           array('url' => '[domain]', 'language' => 'de','spoken' => 'deutsch')),
             'enabled' => true,
      ],
         ],

@@ -196,6 +196,7 @@ $container->set('mail', function () {
     $mail->Host = $_SERVER['smtp_host'];
     $mail->SMTPAuth = $_SERVER['smtp_auth'] ?: false;
     $mail->SMTPAutoTLS = $_SERVER['smtp_tls'] ?: false;
+    $mail->From = $_SERVER['smtp_from'];
     $mail->Username = $_SERVER['smtp_username'];
     $mail->Password =  $_SERVER['smtp_password'];
     $mail->Port = $_SERVER['smtp_port'];

@@ -28,11 +28,15 @@ password=""
 # If you have another directory name as public website enter it below
 public="public_html"
 
+# domain without https://
+url="yourdomain.com"
+
 # SMTP settings 
 smtp_port=587
 smtp_username=
 smtp_password=
 smtp_host=
+smtp_from=
 smtp_tls=true
 smtp_auth=true
 
@@ -88,18 +92,23 @@ echo "copy config.php to config directory"
 mv $(pwd)/config/config-sample.php $(pwd)/config/config.php
 
 echo "Changing database settings in env"
-sed -i -e "s/database=/database=${database}/" $(pwd)/.env
-sed -i -e "s/username=/username=${username}/" $(pwd)/.env
-sed -i -e "s/password=/password=${password}/" $(pwd)/.env
-sed -i -e "s/host=/host=${host}/" $(pwd)/.env
+sed -i -e "s/database=.*/database=${database}/" $(pwd)/.env
+sed -i -e "s/username=.*/username=${username}/" $(pwd)/.env
+sed -i -e "s/password=.*/password=${password}/" $(pwd)/.env
+sed -i -e "s/host=.*/host=${hostname}/" $(pwd)/.env
 
 echo "Changing SMTP settings in env"
-sed -i -e "s/smtp_port=/smtp_port=${smtp_port}/" $(pwd)/.env
-sed -i -e "s/smtp_username=/smtp_username=${smtp_username}/" $(pwd)/.env
-sed -i -e "s/smtp_password=/smtp_password=${smtp_password}/" $(pwd)/.env
-sed -i -e "s/smtp_host=/smtp_host=${smtp_host}/" $(pwd)/.env
-sed -i -e "s/smtp_tls=/smtp_tls=${smtp_tls}/" $(pwd)/.env
-sed -i -e "s/smtp_auth=/smtp_auth=${smtp_auth}/" $(pwd)/.env
+sed -i -e "s/smtp_port=.*/smtp_port=${smtp_port}/" $(pwd)/.env
+sed -i -e "s/smtp_username=.*/smtp_username=${smtp_username}/" $(pwd)/.env
+sed -i -e "s/smtp_password=.*/smtp_password=${smtp_password}/" $(pwd)/.env
+sed -i -e "s/smtp_host=.*/smtp_host=${smtp_host}/" $(pwd)/.env
+sed -i -e "s/smtp_tls=.*/smtp_tls=${smtp_tls}/" $(pwd)/.env
+sed -i -e "s/smtp_auth=.*/smtp_auth=${smtp_auth}/" $(pwd)/.env
+sed -i -e "s/smtp_from=.*/smtp_from=${smtp_from}/" $(pwd)/.env
+
+echo "Changing the domain name in the config file"
+sed -i -e "s/\[domain\]/${url}/" $(pwd)/config/config.php
+sed -i -e "s/\[domain\]/${url}/" $(pwd)/sql/simple_cms_data.sql
 
 if [ ${public} != "public_html" ]; then
 mv $(pwd)/public_html/ $(pwd)/${public}/
