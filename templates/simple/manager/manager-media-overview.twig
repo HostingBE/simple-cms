@@ -1,0 +1,87 @@
+{% include "frontend/header.twig" %}
+
+<div class="container">
+        <h1 class="py-4">Manager media overzicht</h1>
+
+{% include "manager/manager-menu.twig" %} 
+
+<div class="row">
+
+<div class="col-12">
+       {% include "backend/alert.twig" %} 
+           
+           <!-- Photos / video-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="photos">
+              <div class="d-flex align-items-center justify-content-between mb-4 pb-2">
+              <h2 class="mb-4"><i class="fi-image text-primary fs-5 mt-n1 me-2"></i>{{ trans('manager.media.upload_media') |capitalize }}</h2>
+            </div>
+
+              <div class="alert alert-info mb-4" role="alert">
+                <div class="d-flex"><i class="fi-alert-circle me-2 me-sm-3"></i>
+                  <p class="fs-sm mb-1">{{ trans('manager.media.text') |capitalize }}</p>
+                </div>
+              </div>
+
+             {{ csrf() | raw }}
+
+              <input class="file-uploader file-uploader-grid" type="file" name="file" id="fileuploader" data-url="{{url}}/manager/upload-media" id="fileuploader" multiple data-max-file-size="5MB" data-max-files="5" accepted-file-types="image/*,application/pdf" data-label-idle="&lt;div class=&quot;btn btn-primary mb-3&quot;&gt;&lt;i class=&quot;fas fa-cloud-upload-alt me-2&quot;&gt;&lt;/i&gt;Upload photos / video&lt;/div&gt;&lt;br&gt;of sleep de bestanden"  enctype="multipart/form-data">
+            </section>
+</div>
+</div>
+
+<div class="row">
+<div class="col-12">
+<div class="card mb-3">
+<div class="card-body">
+<p>Total files in media: <strong>{{aantal}}</strong></p>
+<div class="table-responsive-sm">
+<table class="table table-hover">
+<tr>
+<th>#</th>
+<th>{{ trans('manager.media.filename') |capitalize }}</th>
+<th>{{ trans('manager.media.extension') |capitalize }}</th>
+<th class="text-end">link</th>
+<th>{{ trans('manager.media.alt_text') |capitalize }}</th>
+<th>{{ trans('manager.media.size') |capitalize }}</th>
+<th>{{ trans('manager.media.date') |capitalize }}</th>
+<th class="text-center">{{ trans('manager.media.manage') |capitalize }}</th>
+</tr>
+
+{% if media|length < 1 %}
+<tr>
+		<td colspan="7" class="text-center">{{ trans('manager.media.no_media') |capitalize }}</td>
+</tr>
+{% endif %}
+
+{% if media|length > 0 %}
+{% for medium in media %}
+<tr>
+<td>..</td>
+<td><button class="btn btn-default btn-sm"><i class="fa-solid fa-edit"></i></button> {{medium.naam}}</td>
+<td>{{medium.extentie}}</td>
+<td class="text-end"><a href="{{url}}/uploads/{{medium.naam}}.{{medium.extentie}}" target="_blank" data-bs-toggle="tooltip" title="show {{medium.extentie}} file {{medium.naam}}"><i class="fas fa-link"></i></a></td>
+<td class="text-center"><input type="text" class="form-control" name="alt-text" placeholder="..image alt text.." data-id="{{medium.id}}" value="{{medium.alt}}"></td>
+<td>{{medium.size|round(2)}} Kb</td>
+<td>{{medium.datum}}</td>
+<td class="text-center"><a href="{{url}}/manager/delete-media/{{medium.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-media/{{medium.id}}/" data-reload="true">{{ trans('manager.media.delete') }}</a></td>
+
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div>
+{% include "backend/pagelinks.twig" %}
+</div>
+</div><!-- /. row -->
+
+      </div>
+      </div>
+
+
+
+{% include "frontend/footer.twig" %}

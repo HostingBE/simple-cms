@@ -182,7 +182,7 @@ $container->get("view")->getEnvironment()->addGlobal('url', 'https://'.$url);
 $container->get("view")->getEnvironment()->addGlobal('sitename',$container->get('sitesettings')['sitename']);
 $container->get("view")->getEnvironment()->addGlobal('version',$container->get('settings')['version']);
 $container->get("view")->getEnvironment()->addGlobal('advertenties',$container->get('sitesettings')['advertenties']);
-$container->get("view")->getEnvironment()->addGlobal('languages',$container->get('settings')['translations']['languages']);
+$container->get("view")->getEnvironment()->addGlobal('footer_languages',$container->get('settings')['translations']['languages']);
 $container->get("view")->getEnvironment()->addGlobal('multilanguage',$container->get('sitesettings')['multilanguage']);
 $container->get("view")->getEnvironment()->addGlobal('htmleditor',$container->get('sitesettings')['htmleditor']);
 $container->get("view")->getEnvironment()->addGlobal('disableforum',$container->get('sitesettings')['disableforum']);

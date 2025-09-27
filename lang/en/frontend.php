@@ -45,7 +45,7 @@ return [
     'post_comment' => 'add comment',
     'title' =>  'title',
     'comment' => 'comment',
-    'no_blog' => 'no blogs available yet in the category <strong>:category_name </strong>, checkback soon',
+    'no_blogs' => 'no blogs available yet in the category <strong>:category_name </strong>, checkback soon',
   ],
 'support' => [
 'post_comment' => 'post comment',

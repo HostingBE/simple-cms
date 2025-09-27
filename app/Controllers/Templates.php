@@ -54,13 +54,22 @@ $response->getBody()->write($json);
 return $response;
 }  
 
+
+  $ext = pathinfo($name, PATHINFO_EXTENSION);
+
+  if ($ext != "twig") {
+      $response->getBody()->write(json_encode(array('status' => 'error','message' => 'Only template names with extension twig are allowed !'))); 
+      return $response;
+    }
+
+
   	  		
-  if (fopen(__DIR__."/../../templates/frontend/".$name, "w") === false) {
+  if (fopen(__DIR__."/../../templates/".getenv('theme')."/frontend/".$name, "w") === false) {
   $response->getBody()->write(json_encode(array('status' => 'error','message' => 'unable to open file ' . $name . '!'))); 
   return $response;
   }
   
-  $myfile = fopen(__DIR__."/../../templates/frontend/".$name, "w");
+  $myfile = fopen(__DIR__."/../../templates/".getenv('theme')."/frontend/".$name, "w");
   fwrite($myfile, $data['template']);
   fclose($myfile);		
 
@@ -71,31 +80,53 @@ return $response;
     
 	public function post_add_template(Request $request,Response $response) {
     
-	  $data =  $request->getParsedBody(); 
+    $data =  $request->getParsedBody(); 
+    
 
-    $myfile = fopen(__DIR__."/../../templates/frontend/".$data['name'], "w") or die("Unable to open file!");
+    $v = new Validator($data);
+
+    $v->rule('required',['name','template']);  
+    $v->rule('regex','[a-zA-Z0-9\.\_\-]+');
+
+    if (!$v->validate()) {
+    $first = key($v->errors());
+    $json = json_encode(array('status' => 'error','message' => $v->errors()[$first][0]));
+    $response->getBody()->write($json);   
+    return $response;
+    }  
+
+
+  $ext = pathinfo($data['name'], PATHINFO_EXTENSION);
+
+  if ($ext != "twig") {
+      $response->getBody()->write(json_encode(array('status' => 'error','message' => 'Only template names with extension twig are allowed !'))); 
+      return $response;
+    }
+
+
+
+    $myfile = fopen(__DIR__."/../../templates/".getenv('theme')."/frontend/".$data['name'], "w") or die("Unable to open file!");
     fwrite($myfile, $data['template']);
     fclose($myfile);		
   
-    $this->flash->addMessage('success','de template ' . $data['name'] .  ' is toegevoegd!');
-    return $this->view->render($response,'backend/add_template.twig',['menu' => admin_menu(), 'template' => $template,'name' => $name ]);
-    
-    }		    
+  $response->getBody()->write(json_encode(array('status' => 'success','message' => 'template with name ' . $datap['name'] . ' succesfull added !'))); 
+  return $response;
+  }    
 
 	public function add(Request $request,Response $response) {
     
  
-    return $this->view->render($response,'manager/add-template.twig',['huidig' =>'manager-edit-template','template' => $template,'name' => $name,'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'status' => $this->flash->getFirstMessage('status')]);
+    return $this->view->render($response,'manager/add-template.twig',['huidig' =>'manager-add-template']);
     
     }		
 	
 	public function edit(Request $request,Response $response) {
     
     $name = $request->getAttribute('file');
-    $templates = array_diff(scandir(__DIR__."/../../templates/frontend/"), array('.', '..','admin','errors'));   
+    $templates = array_diff(scandir(__DIR__."/../../templates/".getenv('theme')."/frontend/"), array('.', '..','admin','errors'));   
    
-    $myfile = fopen(__DIR__."/../../templates/frontend/".$name, "r") or die("Unable to open file!");
-    $template = fread($myfile,filesize(__DIR__."/../../templates/frontend/".$name));
+    $myfile = fopen(__DIR__."/../../templates/".getenv('theme')."/frontend/".$name, "r") or die("Unable to open file!");
+    $template = fread($myfile,filesize(__DIR__."/../../templates/".getenv('theme')."/frontend/".$name));
     fclose($myfile);	
 
   
@@ -106,15 +137,15 @@ return $response;
     public function overview(Request $request,Response $response) {
  
        
-    $datas = array_diff(scandir(__DIR__."/../../templates/frontend/"), array('.', '..','admin','errors'));   
+    $datas = array_diff(scandir(__DIR__."/../../templates/".getenv('theme')."/frontend/"), array('.', '..','admin','errors'));   
 
     $i = 0;
     $templates = array();
     
     foreach ($datas as $data) {
-    if (is_file(__DIR__."/../../templates/frontend/".$data)) {
-    $size = filesize(__DIR__."/../../templates/frontend/".$data);
-    $date = date("d F Y",filemtime(__DIR__."/../../templates/frontend/".$data));
+    if (is_file(__DIR__."/../../templates/".getenv('theme')."/frontend/".$data)) {
+    $size = filesize(__DIR__."/../../templates/".getenv('theme')."/frontend/".$data);
+    $date = date("d F Y",filemtime(__DIR__."/../../templates/".getenv('theme')."/frontend/".$data));
     
     $templates[$i]['file'] = $data;
     $templates[$i]['size'] = $size;

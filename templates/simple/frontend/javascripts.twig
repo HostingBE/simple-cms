@@ -1,7 +1,7 @@
 <script defer src="{{url}}/node_modules/jquery/dist/jquery.min.js"></script>
 <script defer src="{{url}}/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-{% if huidig in ['contact','manager-chat-bekijken','create-account','manager-add-setting','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
+{% if huidig in ['contact','manager-chat-bekijken','create-account','manager-add-setting','manager-add-template','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
 
@@ -129,7 +129,7 @@ tinymce.init({
 <script defer src="{{url}}/cms/js/blog-overview.js"></script>
 {% endif %}
 {% if huidig == 'media-overzicht' %}
-    <script defer src="{{url}}/cms/js/media-overview.js"></script>
+    <script defer src="{{url}}/cms/js/media-overview.js" type="module"></script>
 {% endif %}
 {% if huidig == "view-topic" %}
 <script defer src="{{url}}/cms/js/view-topic.js"></script>
