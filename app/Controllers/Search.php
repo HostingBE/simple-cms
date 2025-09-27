@@ -29,7 +29,7 @@ use AlesZatloukal\GoogleSearchApi\GoogleSearchApi;
 
 class Search {
 
-const API_URL = 'https://api.hostingbe.nl';
+const API_URL = 'https://searchapi.hostingbe.com';
 const API_PATH = '/api/';
 
 protected $view;
@@ -108,7 +108,7 @@ $res = $client->login($this->settings['apiusername'],$this->settings['apipasswor
 
 $res = $client->search($data['q'],$website,$ip,$referer);
 if ($res->code != "200") {
-      return $this->view->render($response,'frontend/error.twig',['message' => $res->code . " " . $res->message]);
+      return $this->view->render($response,'frontend/error.twig',['message' => $res->code . " " . $res->message . ", did you sign-up at https://hostingbe.com/search-engine-for-website?"]);
 } 
 
 // aantal pagina's bepalen

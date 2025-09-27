@@ -595,7 +595,7 @@ if($uitkomst != $data['captcha']) {
   'email' => $data['email'],
   'password'=> $password,
   'first_name'=> $data['first_name'],
-  'icon' => 'default-icon.jpg',
+  'icon' => '',
   'last_name' => $data['last_name'],
   'twofactor' => 'n']);
 

@@ -19,7 +19,7 @@ Here’s why Simple CMS stands out:
 ![Screenshot Simple CMS](images/simple-cms-backend.jpg)
 
 ## Howto get started ##
-* Download the install.sh (wget https://raw.githubusercontent.com/HostingBE/simple-cms/refs/heads/master/install.sh)
+* Download the install.sh script (wget https://raw.githubusercontent.com/HostingBE/simple-cms/refs/heads/master/install.sh)
 * Make install.sh executable (chmod 755)
 * Enter the requested values in install.sh
 * Run install.sh
@@ -31,12 +31,14 @@ Here’s why Simple CMS stands out:
 * Blog
 * Contact form
 * Roles (visitor/customer/administrator)
-* Support wiki (choose enabled/disabled)
-* Forum (choose enabled/disabled)
+* Support wiki (choice enabled/disabled)
+* Forum (choice enabled/disabled)
 * Highly customizable via seperate TWIG templates
-* Multi language (choose enabled/disabled)
+* Multi language (choice enabled/disabled)
 * Administration backend
-* Website chat (choose enabled/disabled) 
+* Website chat (choice enabled/disabled) 
+* Online WYSIWYG editor
+* Markdown support with TOC (table of contents) generation
 
 ## Crontab ##
 
@@ -51,6 +53,16 @@ The send-reminders will send reminders to users who are not logged in for a cert
 ```
 30 3 * * * /usr/bin/php /home/username/bin/console.php reminder-email send-reminders
 ```
+
+## History ##
+
+The first release of Simple CMS for an SEO website was in early May 2022. We use Simple CMS for every website we create, launch, and manage. The foundation is robust and simple, offering all the necessary functionality you'd expect from a CMS.
+
+Of course, every website requires its own unique functionalities, which are integrated into Simple CMS as modules or plugins. The CMS is fully equipped for this, providing a solid foundation for any website.
+
+## Roadmap ##
+
+Hoog op het verlanglijstje staat een online upgrade mogelijkheid en daarna een online installer. Uitbouwen van de online chat mogelijkheden, meer functionaliteit bij het uploaden van media zoals foto's, videos en documenten.
 
 ## Website design ##
 
