@@ -75,5 +75,5 @@ INSERT INTO `website_settings` (`id`, `setting`, `value`) VALUES
 (32, 'apipassword', ''),
 (33, 'disablechat', 'off'),
 (34, 'markdown', 'on'),
-(35, 'url', [domain]);
+(35, 'url', '[domain]');
 COMMIT;
