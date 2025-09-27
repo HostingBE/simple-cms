@@ -54,8 +54,8 @@ INSERT INTO `website_settings` (`id`, `setting`, `value`) VALUES
 (10, 'color', 'white'),
 (11, 'management_ip', ''),
 (12, 'sitename', 'Simple CMS'),
-(14, 'email', ''),
-(15, 'email_name', ''),
+(14, 'email', '[email]'),
+(15, 'email_name', '[email]'),
 (16, 'advertenties', 'on'),
 (17, 'mollie_key', ''),
 (18, 'multilanguage', 'on'),
@@ -75,5 +75,5 @@ INSERT INTO `website_settings` (`id`, `setting`, `value`) VALUES
 (32, 'apipassword', ''),
 (33, 'disablechat', 'off'),
 (34, 'markdown', 'on'),
-(35, 'url', '[domain]');
+(35, 'url', 'https://[domain]');
 COMMIT;
