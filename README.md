@@ -62,7 +62,7 @@ Of course, every website requires its own unique functionalities, which are inte
 
 ## Roadmap ##
 
-Hoog op het verlanglijstje staat een online upgrade mogelijkheid en daarna een online installer. Uitbouwen van de online chat mogelijkheden, meer functionaliteit bij het uploaden van media zoals foto's, videos en documenten.
+High on the wish list is an online upgrade option and then an online installer. Expanding online chat capabilities and adding more functionality for uploading media such as photos, videos, and documents.
 
 ## Website design ##
 
