@@ -19,13 +19,12 @@ Here’s why Simple CMS stands out:
 ![Screenshot Simple CMS](images/simple-cms-backend.jpg)
 
 ## Howto get started ##
-* Clone the repository or download the zip file
-* Copy config/config-sample.php to config/config.php and change the settings
-* Import the database sql schema from the sql directory in your database
-* Run composer update (this will install all dependencies which are needed)
-* Run npm i in the public_html directory (this will install all dependencies which are needed)
-* Rename htaccess to .htaccess in public_html directory (if it does not exist!)
-* Markdown content editor to HTML
+* Download the install.sh (wget https://raw.githubusercontent.com/HostingBE/simple-cms/refs/heads/master/install.sh)
+* Make install.sh executable (chmod 755)
+* Enter the requested values in install.sh
+* Run install.sh
+* Create your first account via create account
+* Your all set to go
 
 ## Features ##
 

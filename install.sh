@@ -92,19 +92,19 @@ echo "copy config.php to config directory"
 mv $(pwd)/config/config-sample.php $(pwd)/config/config.php
 
 echo "Changing database settings in env"
-sed -i -e "s/database=.*/database=${database}/" $(pwd)/.env
-sed -i -e "s/username=.*/username=${username}/" $(pwd)/.env
-sed -i -e "s/password=.*/password=${password}/" $(pwd)/.env
-sed -i -e "s/host=.*/host=${hostname}/" $(pwd)/.env
+sed -i -e "s/^database=.*/database=${database}/" $(pwd)/.env
+sed -i -e "s/^username=.*/username=${username}/" $(pwd)/.env
+sed -i -e "s/^password=.*/password=${password}/" $(pwd)/.env
+sed -i -e "s/^host=.*/host=${hostname}/" $(pwd)/.env
 
 echo "Changing SMTP settings in env"
-sed -i -e "s/smtp_port=.*/smtp_port=${smtp_port}/" $(pwd)/.env
-sed -i -e "s/smtp_username=.*/smtp_username=${smtp_username}/" $(pwd)/.env
-sed -i -e "s/smtp_password=.*/smtp_password=${smtp_password}/" $(pwd)/.env
-sed -i -e "s/smtp_host=.*/smtp_host=${smtp_host}/" $(pwd)/.env
-sed -i -e "s/smtp_tls=.*/smtp_tls=${smtp_tls}/" $(pwd)/.env
-sed -i -e "s/smtp_auth=.*/smtp_auth=${smtp_auth}/" $(pwd)/.env
-sed -i -e "s/smtp_from=.*/smtp_from=${smtp_from}/" $(pwd)/.env
+sed -i -e "s/^smtp_port=.*/smtp_port=${smtp_port}/" $(pwd)/.env
+sed -i -e "s/^smtp_username=.*/smtp_username=${smtp_username}/" $(pwd)/.env
+sed -i -e "s/^smtp_password=.*/smtp_password=${smtp_password}/" $(pwd)/.env
+sed -i -e "s/^smtp_host=.*/smtp_host=${smtp_host}/" $(pwd)/.env
+sed -i -e "s/^smtp_tls=.*/smtp_tls=${smtp_tls}/" $(pwd)/.env
+sed -i -e "s/^smtp_auth=.*/smtp_auth=${smtp_auth}/" $(pwd)/.env
+sed -i -e "s/^smtp_from=.*/smtp_from=${smtp_from}/" $(pwd)/.env
 
 echo "Changing the domain name in the config file"
 sed -i -e "s/\[domain\]/${url}/" $(pwd)/config/config.php
@@ -121,9 +121,11 @@ mv $(pwd)/${public}/htaccess $(pwd)/${public}/.htaccess
 echo "Running npm update\n"
 cd $(pwd)/${public};npm install;cd ..
 
-echo "Making the temp directory"
+echo "Making the temp and other directories"
 
 mkdir $(pwd)/tmp
+mkdir $(pwd)/${public}/uploads
+mkdir $(pwd)/${public}/images/users
 
 echo "Import the database schema";
 mysql -u ${username} -p${password} -h ${hostname} ${database} < $(pwd)/sql/simple_cms.sql
