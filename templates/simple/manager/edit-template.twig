@@ -11,10 +11,11 @@
 </div>
 
 <div class="row">
+      <div class="col-12">
        {% include "backend/alert.twig" %} 
+      </div>
 
-
-<div class="col">
+<div class="col-12">
 <div class="card mb-3">
     <div class="card-body">
  <form name="edit-template" action="{{url}}/manager/edit-template/{{name}}/" method="POST" id="ajax-form" data-reload="true">      

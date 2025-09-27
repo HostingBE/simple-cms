@@ -161,6 +161,7 @@ return [
         'templates' => 'templates',
         'blog' => 'blogs',
         'add_blog' => 'blog toevoegen',
+        'add_template' => 'template toevoegen',
     ],
     'support' => [
     'save_article' => 'bewaar artikel',

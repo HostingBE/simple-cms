@@ -1,0 +1,43 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+        
+        <h1 class="pt-4 pb-4">{{ trans('manager.templates.overview') | capitalize }}</h1>
+
+<div class="row mb-4">
+{% include "manager/manager-menu.twig" %}
+</div>
+
+<div class="row">
+      <div class="col-12">
+       {% include "backend/alert.twig" %} 
+      </div>
+
+<div class="col-12">
+<div class="card mb-3">
+    <div class="card-body">
+ <form name="add-template" action="{{url}}/manager/add-template" method="POST" id="ajax-form" data-reload="true">      
+
+ {{ csrf() | raw }} 
+
+ <div class="mb-3">
+ <input type="text" name="name" class="form-control" value="{{name}}" placeholder="filename">
+</div>
+<div class="mb-3">
+<textarea name="template" class="form-control" cols="70" rows="15" placeholder="content of template"></textarea>
+</div>
+<div class="mb-3">
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.templates.save') | capitalize }}</button>
+</div>
+</div>
+
+      </div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

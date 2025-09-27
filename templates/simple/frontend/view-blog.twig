@@ -12,8 +12,8 @@
 
 <div class="text-center">
 <figure class="figure">
-<a href="{{url}}/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})| url_encode(true)|lower}}/"><img itemprop="image" class="img-figure rounded w-100" src="{% if weblog.media %}/uploads/{{weblog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{weblog.imagename}}-200.webp 200w, {{url}}/uploads/{{weblog.imagename}}-400.webp 400w,{{url}}/uploads/{{weblog.imagename}}-800.webp 800w" sizes="75vw" alt="{{weblog.alt|capitalize}}" width="{{ dimensions| split(':')[0] }}" height="{{ dimensions| split(':')[1] }}"></a>
-<figcaption itemprop="headline" class="figure-caption">{{weblog.title}}</figcaption>
+<a href="{{url}}/blog-{{weblog.id}}-{{weblog.title|replace({' ':'-'})| url_encode(true)|lower}}/"><img itemprop="image" class="img-figure img-fluid rounded w-100" src="{% if weblog.media %}/uploads/{{weblog.imagename}}-800.webp{%else%}/images/default-image.jpg{% endif %}" srcset="{{url}}/uploads/{{weblog.imagename}}-200.webp 200w, {{url}}/uploads/{{weblog.imagename}}-400.webp 400w,{{url}}/uploads/{{weblog.imagename}}-800.webp 800w" sizes="75vw" alt="{{weblog.alt|capitalize}}" width="{{ dimensions| split(':')[0] }}" height="{{ dimensions| split(':')[1] }}"></a>
+<figcaption itemprop="headline" class="figure-caption">{{weblog.alt}}</figcaption>
 </figure>
 </div>
 

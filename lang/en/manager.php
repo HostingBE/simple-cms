@@ -143,6 +143,19 @@ return [
        'menu' => 'menu',
 
     ],
+    'media' => [
+    'filename' => 'filename',
+    'size' => 'size',
+    'date' => 'date',
+    'manage' => 'manage',
+    'delete' => 'delete',
+    'no_media' => 'no media available, upload media!',
+    'extension' => 'extension',
+    'alt_text' => 'alternative text',
+    'text' => 'The maximum file size is 5 MB. Formats: JPEG, JPG, GIF, WEBP, PNG, and PDF. The maximum video size is 10 MB. Formats: MP4 and MOV.',
+    'upload_media' => 'upload media',
+    ],
+
     'menu' => [
         'view_logging' => 'view logging',
         'dashboard' => 'dashboard',
@@ -167,6 +180,7 @@ return [
         'templates' => 'templates',
         'blog' => 'blogs',
         'add_blog' => 'add a blog',
+        'add_template' => 'add template',
     ],
     'support' => [
     'save_article' => 'save article',
@@ -201,11 +215,6 @@ return [
   'language' => 'language',
 
   ],
-    'media' => [
-        'delete' => 'delete',
-        'no_media' => 'no media available, upload media!',
-
-    ],
     'blog' => [
       'name' => 'name',
       'title' => 'title',

@@ -16,7 +16,6 @@
 * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 *
 */
-
 namespace App\Controllers\Manager;
 
 use PDO;
@@ -27,6 +26,7 @@ use Valitron\Validator;
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Gumlet\ImageResize;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use JasonGrimes\Paginator;
 
 class Media {
 	
@@ -37,6 +37,8 @@ protected $mail;
 protected $logger;
 protected $settings;
 protected $directory = __DIR__ . '/../../../public_html/uploads/';
+protected $allowed = array('jpg','jpeg','png', 'gif');
+
   
 public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings) {
 $this->view = $view;
@@ -85,6 +87,48 @@ $response->getBody()->write("media item succesvol verwijderd!");
 return $response;    
 }
 
+public function post_name(Request $request,Response $response) {
+
+ $data = $request->getParsedBody();
+
+$v = new Validator($data); 
+$v->rule('required','filename');
+$v->rule('required','filenameold');
+$v->rule('length','filename',3, 64);
+$v->rule('length','filenameold',3, 64);
+
+$sql = $this->db->prepare("SELECT id,naam,extentie FROM media WHERE naam=:naamoud LIMIT 1");
+$sql->bindparam(":naamoud",$data['filenameold'],PDO::PARAM_STR);
+$sql->execute();
+$media = $sql->fetch(PDO::FETCH_OBJ);
+
+if (file_exists($this->directory . $media->naam .".".$media->extentie)) {
+   rename($this->directory . $media->naam.".".$media->extentie, $this->directory . $data['filename'].".".$media->extentie);
+   }
+
+foreach (array('800','400','200') as $w) {
+if (file_exists($this->directory . $media->naam."-". $w .".".$media->extentie)) {
+   rename($this->directory . $media->naam."-". $w .".".$media->extentie, $this->directory . $data['filename']."-". $w .".".$media->extentie);
+   }   
+if (file_exists($this->directory . $media->naam."-". $w .".webp")) {
+   rename($this->directory . $media->naam."-". $w .".webp", $this->directory . $data['filename']."-". $w .".webp");
+   }
+}
+
+
+$sql = $this->db->prepare("UPDATE media SET naam=:naam WHERE id=:id AND naam=:naamoud");
+$sql->bindparam(":id",$media->id,PDO::PARAM_INT);
+$sql->bindparam(":naamoud",$data['filenameold'],PDO::PARAM_STR);
+$sql->bindparam(":naam",$data['filename'],PDO::PARAM_STR);
+$sql->execute();
+
+$this->logger->warning(get_class() . ": bestand " . $media->naam . ".".$media->extentie . " is renamed to file " . $data['filename']); 
+
+$response->getBody()->write(json_encode(array('status' => 'success','message' => "filename succesfully changed to " . $filename . "!", 'filename' => $data['filename'])));
+return $response;
+}
+
+
 public function post_alt(Request $request,Response $response) {
 
  $data = $request->getParsedBody();
@@ -95,7 +139,7 @@ $v->rule('length','alt',3,32);
 
 $sql = $this->db->prepare("UPDATE media SET alt=:alt WHERE id=:id");
 $sql->bindparam(":id",$data['id'],PDO::PARAM_INT);
-$sql->bindparam(":alt",$data['alt'],PDO::PARAM_STR);
+$sql->bindparam(":alt",substr($data['alt'],0,128),PDO::PARAM_STR);
 $sql->execute();
 
 
@@ -113,9 +157,7 @@ public function post_upload(Request $request,Response $response) {
          $max_post = (int)(ini_get('post_max_size') * 1024 * 1024);
          $memory_limit = (int)(ini_get('memory_limit') * 1024 * 1024);
          $upload_mb = min($max_upload, $max_post, $memory_limit);     
-
-
-
+      
 
     	   if (!$uploadedFiles['file']->getSize()) {
          $response->getBody()->write(json_encode(array('status' => 'error','message' => "er is geen bestand geselecteerd om te verzenden!")));
@@ -144,6 +186,11 @@ public function post_upload(Request $request,Response $response) {
           $doctype = $uploadedFiles['file']->getClientMediaType();
 
 
+         /**
+          * als het een image is dan verwerken
+          */
+         if (in_array($extension,$this->allowed)) {
+
          foreach (array('800','400','200') as $w) {
          $image = new ImageResize($this->directory."/".$fullfilename);
          $image->resizeToWidth($w, $allow_enlarge = True); 
@@ -167,10 +214,14 @@ public function post_upload(Request $request,Response $response) {
          
          imagedestroy($img);
          }
-
-         $size = round(filesize($this->directory."/".$fullfilename),2);
-         list($width, $height) = @getimagesize($this->directory."/".$fullfilename);
          
+         list($width, $height) = @getimagesize($this->directory."/".$fullfilename);
+         } else {
+         $width = $height = 0;  
+         }
+         
+         $size = round(filesize($this->directory."/".$fullfilename),2);
+
          $sql = $this->db->prepare("INSERT INTO media (naam,extentie,size,width,height,datum) VALUES(:naam,:extentie,:size,:width,:height,now())");
          $sql->bindparam(":naam",$filename,PDO::PARAM_STR);
          $sql->bindparam(":extentie",$extension,PDO::PARAM_STR);        
@@ -179,20 +230,48 @@ public function post_upload(Request $request,Response $response) {
          $sql->bindparam(":height",$height,PDO::PARAM_INT);          
          $sql->execute();
 
-         $response->getBody()->write(json_encode(array('status' => 'success','message' => 'bestand foto/video succesvol ge-upload!')));
+         $response->getBody()->write(json_encode(array('status' => 'success','message' => 'bestand foto/video succesvol ge-upload!','files' => $filename.".".$extention)));
   
           return $response;
 	     }
 
 
 public function overview(Request $request,Response $response) {
-	       
-	      $sql = $this->db->prepare("SELECT id,naam,extentie,(size/1024) AS size,alt,datum FROM media ORDER BY id DESC");
-	      $sql->execute();
-	      $media = $sql->fetchALL(PDO::FETCH_OBJ);
-	      
+   $page  = 1;
 
-	      return $this->view->render($response,'manager/media-overview.twig',['meta' =>  $meta,'huidig' => 'media-overzicht','media' => $media]);
+if ($request->getMethod() == "GET") {
+        if ($request->getQueryParams()) {
+        $page = $request->getQueryParams()['page'];
+        }
+    }
+
+   $sql = $this->db->prepare("SELECT count(id) AS aantal FROM media");
+   $sql->execute();
+   $aantal = $sql->fetch(PDO::FETCH_OBJ);
+
+    if ($request->getMethod() == "GET") {
+    $url = (string) parse_url($request->getUri())['path']  . "?page=(:num)"; 
+    }
+
+   // aantal pagina's bepalen
+   $start = $page * $this->settings['records'] - $this->settings['records'];       
+
+   $pagelinks = new Paginator($aantal->aantal, $this->settings['records'], $page ,  $url);
+   $pagelinks->setMaxPagesToShow(5);
+   $pagelinks->setPreviousText('previous');
+   $pagelinks->setNextText('next');
+
+	$sql = $this->db->prepare("SELECT id,naam,extentie,(size/1024) AS size,alt,datum FROM media ORDER BY id DESC LIMIT :start,:records");
+	$sql->bindparam(":start",$start,PDO::PARAM_INT);
+   $sql->bindparam(":records",$this->settings['records'],PDO::PARAM_INT);        
+   $sql->execute();
+	$media = $sql->fetchALL(PDO::FETCH_OBJ);
+	      
+   $meta['title'] = "overview of media uploaded to your website";      
+   $meta['description'] = "Manage media which is uploaded to your website, you can upload multiple media in a single click"; 
+   $meta['keywords'] = "upload media,multiple uploads,images,images website,pdf website"; 
+
+	      return $this->view->render($response,'manager/manager-media-overview.twig',['meta' =>  $meta,'huidig' => 'media-overzicht','media' => $media,'paginator' => $pagelinks,'url' => $this->settings['url'],'start' => $start,'aantal' => $aantal->aantal ]);
       }
 }
 

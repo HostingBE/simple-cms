@@ -56,6 +56,7 @@ $route->get('/manager/delete-blog/{id:[0-9]+}/', Blog::class . ':delete')->setNa
 $route->get('/manager/todo-overview', Todo::class . ':overview');
 $route->get('/manager/templates-overview', Templates::class . ':overview');
 $route->get('/manager/edit-template/{file:[^\/]+}/', Templates::class . ':edit');
+$route->get('/manager/add-template', Templates::class . ':add');
 $route->get('/manager/todo-edit/{id:[^\/]+}/', Todo::class . ':edit');
 $route->get('/manager/delete-todo/{id:[0-9]+}/', Todo::class . ':delete');
 $route->get('/manager/view-logging', Logging::class . ':view')->setName('logging.view');
@@ -79,6 +80,7 @@ $route->get('/manager/chat-overview', Chat::class . ':overview');
 $route->get('/manager/view-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':manager_view');
 $route->get('/manager/delete-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':delete')->setName('chat.delete');
 
+$route->post('/manager/add-template', Templates::class . ':post_add_template');
 $route->post('/manager/add-setting', ManagerSettings::class . ':post');
 $route->post('/manager/add-chat-message', Chat::class . ':post_manager_chat_message');
 $route->post('/manager/add-advertisement', Advertisements::class . ':post_add');
@@ -94,6 +96,7 @@ $route->post('/manager/blog-edit/{id:[0-9]+}/', Blog::class . ':post_edit');
 $route->post('/manage/add-todo', Todo::class . ':post_add');
 $route->post('/manager/todo-edit/{id:[0-9]+}/', Todo::class . ':post_edit');
 $route->post('/manager/upload-media', Media::class . ':post_upload');
+$route->post('/manager/change-filename', Media::class . ':post_name');
 $route->post('/manager/alt-media', Media::class . ':post_alt');
 $route->post('/manager/add-link', Links::class . ':post_add');
 $route->post('/manager/delete-links', Links::class . ':delete');
