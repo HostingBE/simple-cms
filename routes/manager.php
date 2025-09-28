@@ -24,6 +24,7 @@ use App\Controllers\Blog;
 use App\Controllers\Manager\Category;
 use App\Controllers\Chat;
 use App\Controllers\Dashboard;
+use App\Controllers\Manager\Events;
 use App\Controllers\Forum;
 use App\Controllers\Manager\Links;
 use App\Controllers\Manager\Manager;
@@ -32,6 +33,7 @@ use App\Controllers\Page;
 use App\Controllers\Settings;
 use App\Controllers\Manager\Settings as ManagerSettings;
 use App\Controllers\Support;
+use App\Controllers\Manager\SupportComments;
 use App\Controllers\Templates;
 use App\Controllers\Manager\Todo;
 use App\Controllers\Manager\Logging;
@@ -65,6 +67,7 @@ $route->get('/manager/media-overview', Media::class . ':overview')->setName('med
 $route->get('/manager/delete-media/{id:[0-9]+}/', Media::class . ':delete')->setName('media.delete');
 $route->get('/manager/add-support', Support::class . ':add')->setName('support.add');
 $route->get('/manager/support-overview', Support::class . ':manager_overview')->setName('support.manager_overview');
+$route->get('/manager/support-comments', SupportComments::class . ':overview')->setName('supportcomments.overview');
 $route->get('/manager/support-edit/{id:[0-9]+}/', Support::class . ':edit')->setName('support.edit');
 $route->get('/manager/delete-support/{id:[0-9]+}/', Support::class . ':delete')->setName('support.delete');
 $route->get('/manager/users-overview', Users::class . ':overview')->setName('users.overview');
@@ -79,7 +82,11 @@ $route->get('/manager/delete-advertisement/{id:[0-9]+}/', Advertisements::class 
 $route->get('/manager/chat-overview', Chat::class . ':overview');
 $route->get('/manager/view-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':manager_view');
 $route->get('/manager/delete-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':delete')->setName('chat.delete');
+$route->get('/manager/support-comment-delete/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':delete')->setName('supportcomments.delete');
+$route->get('/manager/support-comment-edit/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':edit')->setName('supportcomments.edit');
 
+$route->post('/manager/edit-support-comment/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':post')->setName('supportcomments.post');
+$route->post('/manager/overview-events', Events::class . ':post');
 $route->post('/manager/add-template', Templates::class . ':post_add_template');
 $route->post('/manager/add-setting', ManagerSettings::class . ':post');
 $route->post('/manager/add-chat-message', Chat::class . ':post_manager_chat_message');

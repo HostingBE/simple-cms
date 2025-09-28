@@ -8,6 +8,9 @@
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
 
+{% if current in ['support-comment-edit'] %}
+<script defer src="{{url}}/cms/js/edit-support-comment.js" type="module"></script>
+{% endif %}
 
 {% if huidig in ['account-info','media-overzicht','ask'] %}
 <script defer src="{{url}}/node_modules/filepond/dist/filepond.min.js"></script>
@@ -44,7 +47,7 @@ const cssMain = document.createElement('link');
 {% if huidig in ["bekijk-blog","view-topic"] %}
 <script defer crossorigin="anonymous" src="https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v14.0" nonce="XzqtTNEI"></script>
 {% endif %}
-{% if huidig in ['account-info','manager-chat-overview','manager-pagina-overzicht','todo-overview','media-overzicht','manager-blog-overzicht','manager-support-overzicht','manager-gebruikers-overzicht','manager-category-overview','manager-advertenties-overzicht'] %}
+{% if huidig in ['support-comments-overview','account-info','manager-chat-overview','manager-pagina-overzicht','todo-overview','media-overzicht','manager-blog-overzicht','manager-support-overzicht','manager-gebruikers-overzicht','manager-category-overview','manager-advertenties-overzicht'] %}
 <script defer src="{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 <script defer src="{{url}}/cms/js/sweet-alert.js"></script>
 {% endif %}
@@ -159,3 +162,15 @@ tinymce.init({
 {% if disablechat == "off" %}
 <script defer src="{{url}}/cms/js/website-chat.js"></script>
 {% endif %}
+
+<script>
+(function() {
+const cssMain = document.createElement('link');
+      cssMain.href = '{{url}}/node_modules/jquery-toast-plugin/dist/jquery.toast.min.css';
+      cssMain.rel = 'stylesheet';
+      cssMain.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(cssMain);
+})();
+</script>
+<script defer src="{{url}}/node_modules/jquery-toast-plugin/dist/jquery.toast.min.js"></script>
+<script defer src="{{url}}/cms/js/manager-events.js" type="module"></script>

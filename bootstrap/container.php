@@ -25,6 +25,7 @@ use App\Controllers\Chat;
 use App\Controllers\Contact;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
+use App\Controllers\Manager\Events;
 use App\Controllers\Forum;
 use App\Controllers\Google2FA;
 use App\Controllers\Manager\Links;
@@ -37,6 +38,7 @@ use App\Controllers\Search;
 use App\Controllers\Settings;
 use App\Controllers\Manager\Settings as SettingsManager;
 use App\Controllers\Support;
+use App\Controllers\Manager\SupportComments;
 use App\Controllers\Templates;
 use App\Controllers\Manager\Todo;
 use App\Controllers\Login;
@@ -447,6 +449,18 @@ return new Dashboard(
 
 });
 
+$container->set(Events::class, function($container) {
+      return new Events(
+            $container->get('view'),
+            $container->get('db'),
+            $container->get('logger'),
+            $container->get('sitesettings'),
+            $container->get('locale'),
+            $container->get('translator')
+            );
+
+      });
+
 $container->set(Google2FA::class, function($container) {
       return new Google2FA(
             $container->get('view'),
@@ -533,6 +547,18 @@ return new Support(
       $container->get('settings')['translations']['languages']
       );
 
+});
+$container->set(SupportComments::class, function($container) {
+return new SupportComments(
+      $container->get('view'),
+      $container->get('db'),
+      $container->get('flash'),
+      $container->get('mail'),
+      $container->get('logger'),
+      $container->get('sitesettings'),
+      $container->get('locale'),
+      $container->get('translator'),
+      );
 });
 $container->set(Search::class, function($container) {
 return new Search(
