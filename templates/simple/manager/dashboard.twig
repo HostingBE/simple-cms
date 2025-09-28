@@ -14,16 +14,12 @@
 <div class="card">
 <div class="card-body">
 
-<table class="table table-hover">
-
+<h2>Website searches</h2>
+<ul class="list-unstyled list-horizontal">
 {% for search in searches %}
-<tr>
-<td>{{search.query}}</td>
-<td><a href="{{search.referer}}" target="_blank">{{search.referer}}</a></td>
-<td>{{search.date}}</td>
-</tr>
+<li class="badge text-bg-secondary my-2" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover" data-bs-title="Search {{search.query}}" data-bs-content="Referer: {{search.referer}} Date: {{search.date}}"><span class="h6">{{search.query}}</span></li>
 {% endfor %}
-</table>
+</ul>
 
 </div>
 

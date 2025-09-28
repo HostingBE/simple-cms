@@ -13,11 +13,6 @@ return [
 'categories' => 'categorieen',
 'no_articles_new' => 'no new articles',
 'no_articles_read' => 'no most read articles',
-
-
-
-
-
 ];
 
 

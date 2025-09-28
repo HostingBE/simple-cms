@@ -1,0 +1,58 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+<h1 class="py-4">{{ trans('manager.support.support_overview') | capitalize }} {{ trans('manager.support.comments') }} </h1>
+
+
+{% include "manager/manager-menu.twig" %} 
+
+
+       {% include "backend/alert.twig" %} 
+        
+<div class="row">
+<div class="card mb-3">
+<div class="card-body">
+<table class="table table-hover">
+<tr>
+<th>{{ trans('manager.support.status') | capitalize }}</th>
+<th>{{ trans('manager.support.name') | capitalize }}</th>
+<th>{{ trans('manager.support.email') | capitalize }}</th>
+<th>{{ trans('manager.support.ipaddress') | capitalize }}</th>
+<th>{{ trans('manager.support.article') | capitalize }}</th>
+<th>{{ trans('manager.support.title') | capitalize }}</th>
+<th>{{ trans('manager.support.date') | capitalize }}</th>
+<th class="text-end">{{ trans('manager.support.manage') | capitalize }}</th>
+</tr>
+
+{% if comments|length < 1 %}
+<tr>
+		<td colspan="8" class="text-center">{{ trans('manager.support.no_comments') | capitalize }}</td>
+</tr>
+{% endif %}
+
+{% if comments|length > 0 %}
+{% for comment in comments %}
+<tr>
+<td class="text-center">{% if comment.status == "p" %}<span class="text-danger">{{ trans('manager.support.pending')}}</span>{%endif%}{% if comment.status == "a" %}<span class="text-success">{{ trans('manager.support.approved')}}</span>{%endif%}</td>
+<td>{{ comment.naam }}</td>
+<td>{{ comment.email }}</td>
+<td>{{ comment.ipadres }}</td>
+<td>{{ comment.article }}</td>
+<td>{{ comment.titel }}</td>
+<td>{{ comment.datum }}</td>
+<td class="text-end"><a href="{{url}}/manager/support-comment-edit/{{comment.id}}/{{comment.code}}/" class="btn btn-dark btn-sm">{{ trans('manager.support.edit') }}</a> <a href="{{url}}/manager/support-comment-delete/{{comment.id}}/{{comment.code}}/"" data-url="{{url}}/manager/support-comment-delete/{{comment.id}}/{{comment.code}}/" class="btn btn-danger btn-sm" data-reload="true">{{ trans('manager.support.delete') }}</a></td>
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+
+
+{% include "frontend/footer.twig" %}

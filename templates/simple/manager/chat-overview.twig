@@ -18,13 +18,13 @@
 
 <div class="card mb-3">
 <div class="card-body">
-     <table class="table">
+     <table class="table table-hover">
      <thead>
      <tr>
             <th>#</th>
+            <th class="text-center">{{ trans('manager.chat.avatar') }}</th> 
             <th>{{ trans('manager.chat.ipaddress') }}</th>
             <th>{{ trans('manager.chat.name') }}</th> 
-            <th>{{ trans('manager.chat.avatar') }}</th> 
             <th>{{ trans('manager.chat.total_messages') }}</th>  
             <th>{{ trans('manager.chat.date') }}</th>
             <th>{{ trans('manager.chat.manage')  }}</th>  
@@ -41,9 +41,9 @@
      {% for chat in chats %}
      <tr>
      <td>..</td>
+     <td class="text-center"><img src="{{url}}/{{chat.avatar}}" class="img-thumbnail" width="48" height="48"></td> 
      <td>{{chat.ipaddress}}</td>
      <td>{{chat.name}}</td>
-     <td>{{chat.avatar}}</td> 
      <td class="fw-bold text-center">({{chat.berichten}})</td>
      <td>{{chat.datum}}</td>
      <td class="text-right"><a href="{{url}}/manager/view-chat/{{chat.id}}/{{chat.session}}/" class="btn btn-primary btn-sm">{{ trans('manager.chat.view') }}</a> <a href="{{url}}/manager/delete-chat/{{chat.id}}/{{chat.session}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-chat/{{chat.id}}/{{chat.session}}/" data-reload="true">{{ trans('manager.chat.delete') }}</a></td>
