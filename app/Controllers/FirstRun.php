@@ -76,7 +76,7 @@ private function createAdmin() {
 
 $passwd = (new \App\Helpers\Helpers)->RandomString(32);
 
-$user = Sentinel::register([
+$user = Sentinel::registerAndActivate([
 'email' => 'admin@'.$_SERVER['HTTP_HOST'],
 'password'=> $passwd,
 'first_name'=> 'automatic',
@@ -87,7 +87,7 @@ $user = Sentinel::register([
 $Activation = Sentinel::getActivationRepository();
 $activation = $Activation->create($user);
 
-$role = Sentinel::findRoleByName('customer');    
+$role = Sentinel::findRoleByName('administrator');    
 $role->users()->attach($user); 
 
 $this->logger->info(__CLASS__.": New user administrator created with username admin@".$_SERVER['HTTP_HOST']." and password " . $passwd);
@@ -111,7 +111,7 @@ $settings = array('sitename' => 'CMS HostingBE',
                 'disableforum' => 'off',
                 'markdown' => 'off',
                 'disablechat' => 'off',
-                'url' => $_SERVER['HTTP_HOST'], 
+                'url' => 'https://'.$_SERVER['HTTP_HOST'], 
                 );
 
 $sql = $this->db->prepare("INSERT INTO website_settings(setting, value) VALUES(:setting, :value)");
@@ -127,21 +127,49 @@ $this->logger->warning(__CLASS__ . ": New website settings imported in the datab
 private function createPage() {
     
 $content = $this->view->fetch('frontend/main.twig');
+$contentnl = $this->view->fetch('frontend/main-nl.twig');
+$contentde = $this->view->fetch('frontend/main-de.twig');
 
-$page = (object) array(
+$pages[0] = (object) array(
      'name' => 'index',
-     'titel' => 'First page',
-     'description' => 'First page for CMS simple',
-     'keywords' => 'CMS, php,slim,hostingbe',
-     'template' => 'template.twig',
+     'titel' => 'Simple CMS the content management system for a fast SEO friendly website',
+     'description' => 'With HostingBE\'s simple CMS, you can easily and quickly set up a website in multiple languages on multiple domains. The CMS is open source, so available for free, and is versatile and developed with SEO and speed as important basic features',
+     'keywords' => 'simple cms, content management system, free php cms, security in mind',
+     'template' => 'page-template.twig',
      'content' => $content,
      'publish'=> 'y',
      'language' => 'en',
      'datum' => date('Y-m-d'),
      );
-    
 
-$sql = $this->db->prepare("INSERT INTO pages (name,titel,description,keywords,template,content,publish,publish_date,language,datum) VALUES(:name,:titel,:description,:keywords,:template,:content,:publish,:publish_date,:language,now())");
+$pages[1] = (object) array(
+     'name' => 'index',
+     'titel' => 'Simple CMS het content management systeem voor een snelle SEO-vriendelijke website',
+     'description' => 'Met het eenvoudige CMS van HostingBE zet je eenvoudig en snel een website op in meerdere talen op meerdere domeinen. Het CMS is open source, dus gratis beschikbaar, veelzijdig en ontwikkeld met SEO en snelheid als belangrijke basisfuncties',
+     'keywords' => 'simple cms, content management system, gratis php cms, veiligheid in gedachte',
+     'template' => 'page-template.twig',
+     'content' => $contentnl,
+     'publish'=> 'y',
+     'language' => 'nl',
+     'datum' => date('Y-m-d'),
+     );
+
+$pages[2] = (object) array(
+     'name' => 'index',
+     'titel' => 'Einfaches CMS, das Content Management System für eine schnelle SEO-freundliche Website',
+     'description' => 'Mit dem einfachen CMS von HostingBE können Sie einfach und schnell eine Website in mehreren Sprachen auf mehreren Domains einrichten. Das CMS ist Open Source, also kostenlos verfügbar.',
+     'keywords' => 'einfaches CMS,SEO-freundliche,php CMS opensource',
+     'template' => 'page-template.twig',
+     'content' => $contentde,
+     'publish'=> 'y',
+     'language' => 'de',
+     'datum' => date('Y-m-d'),
+     );
+
+$sql = $this->db->prepare("INSERT INTO pages (name,titel,description,keywords,template,content,publish,publish_date,language, datum) VALUES(:name,:titel,:description,:keywords,:template,:content,:publish,:publish_date,:language,now())");
+
+
+foreach ($pages as $page) {
 $sql->bindparam(":name",$page->name,PDO::PARAM_STR);
 $sql->bindparam(":titel",$page->titel,PDO::PARAM_STR);
 $sql->bindparam(":description",$page->description,PDO::PARAM_STR);
@@ -152,6 +180,7 @@ $sql->bindparam(":publish",$page->publish,PDO::PARAM_STR,1);
 $sql->bindparam(":publish_date",$page->datum,PDO::PARAM_STR);
 $sql->bindparam(":language",$page->language,PDO::PARAM_STR);
 $sql->execute();
+}
 
 $this->logger->warning(__CLASS__ . ": new page created no index found!");
 

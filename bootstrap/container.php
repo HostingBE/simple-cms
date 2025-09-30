@@ -279,7 +279,7 @@ return new Page(
       $container->get('flash'),
       $container->get('logger'),
       $container->get('locale'),
-      $container->get('settings')['translations']['fallback']
+      $container->get('translator')
       );
 
 });

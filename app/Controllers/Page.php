@@ -32,14 +32,16 @@ class Page  {
 	protected $flash;
     protected $logger;
     protected $locale;
-	
-	public function __construct(Twig $view,$db, $flash, $logger, $locale, $default) {
+	protected $translator;
+    
+	public function __construct(Twig $view, $db, $flash, $logger, $locale, $translator) {
 
 	$this->view = $view;
 	$this->db = $db;
 	$this->flash = $flash;
     $this->logger = $logger;
-	$this->locale = $locale ?: $default;
+	$this->locale = $locale;
+    $this->translator = $translator;
 	}
 
 
@@ -73,7 +75,7 @@ class Page  {
        
     $sql = $this->db->prepare("SELECT id,name,titel,description,keywords,content,template FROM pages WHERE name=:slug AND language=:language AND publish='y' LIMIT 1");
     $sql->bindParam(':slug',$page,PDO::PARAM_STR);
-    $sql->bindParam(':language',$this->locale,PDO::PARAM_STR,2);   
+    $sql->bindParam(':language',$this->locale, PDO::PARAM_STR, 2);   
     $sql->execute();
     $pageobj = $sql->fetch(PDO::FETCH_OBJ);
 

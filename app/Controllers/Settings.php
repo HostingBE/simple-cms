@@ -72,8 +72,8 @@ $sql->bindparam(":ipaddress",$data['ipaddress'],PDO::PARAM_STR);
 
 $sql->execute();
  } else {
-$username = random(32);
-$password = random(32);
+$username = (new \App\Helpers\Helpers)->RandomString(32);
+$password = (new \App\Helpers\Helpers)->RandomString(32);
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -85,10 +85,6 @@ $sql->bindparam(":password",$hash,PDO::PARAM_STR);
 $sql->bindparam(":ipaddress",$data['ipaddress'],PDO::PARAM_STR);
 $sql->execute();
 }
-
-
-
-
 
   $response->getBody()->write(json_encode(array('status' => 'success','message' => 'API settings are saved for ' . $user['email'] . ' !')));   
   return  $response;    
@@ -161,9 +157,9 @@ public function api(Request $request, Response $response) {
  
   if ($sql->rowcount() == 0) {
     $settings = new \stdClass();
-    $settings->username = random(32);
-    $settings->password = random(32);
-    $settings->ipaddress = get_client_ip();
+    $settings->username = (new \App\Helpers\Helpers)->RandomString(32);
+    $settings->password = (new \App\Helpers\Helpers)->RandomString(32);
+    $settings->ipaddress = (new \App\Helpers\Helpers)->get_client_ip();
     
     $hash = password_hash($settings->password, PASSWORD_DEFAULT);
     
