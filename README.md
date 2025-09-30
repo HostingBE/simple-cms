@@ -23,8 +23,11 @@ Here’s why Simple CMS stands out:
 * Make install.sh executable (chmod 755)
 * Enter the requested values in install.sh
 * Run install.sh
-* Create your first account via create account
 * Your all set to go
+
+## Login data ##
+
+At the first time you visit your website an admin account is automaticly created. The username and password are printed in the logfile on the server. The logfile is located in the logs directory and it's name is %d-%m-%Y-app.log.
 
 ## Features ##
 

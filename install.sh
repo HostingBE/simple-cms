@@ -108,8 +108,6 @@ sed -i -e "s/^smtp_from=.*/smtp_from=${smtp_from}/" $(pwd)/.env
 
 echo "Changing the domain name in the config file"
 sed -i -e "s/\[domain\]/${url}/" $(pwd)/config/config.php
-# sed -i -e "s/\[domain\]/${url}/" $(pwd)/sql/simple_cms_data.sql
-# sed -i -e "s/\[email\]/${smtp_from}/" $(pwd)/sql/simple_cms_data.sql
 
 if [ ${public} != "public_html" ]; then
 mv $(pwd)/public_html/ $(pwd)/${public}/
@@ -124,12 +122,12 @@ cd $(pwd)/${public};npm install;cd ..
 echo "Making the temp and other directories"
 
 mkdir $(pwd)/tmp
+mkdir $(pwd)/logs
 mkdir $(pwd)/${public}/uploads
 mkdir $(pwd)/${public}/images/users
 
 echo "Import the database schema";
 mysql -u ${username} -p${password} -h ${hostname} ${database} < $(pwd)/sql/simple_cms.sql
-# mysql -u ${username} -p${password} -h ${hostname} ${database} < $(pwd)/sql/simple_cms_data.sql
 
 touch $(pwd)/.new_install
 
