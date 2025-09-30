@@ -92,7 +92,8 @@ return $response;
 if ($Activation->complete($user, $code)) {
     $success = $this->translator->get('backend.account.activated') . '!';
 
-    $code = random(32);
+    $code = (new \App\Helpers\Helpers)->RandomString(32);
+
     $email_hash = hash('sha256', $user->email);
 
 
@@ -220,8 +221,8 @@ public function confirm_password(Request $request,Response $response) {
  $user = Sentinel::findByCredentials(['login' => $request->getAttribute('email')]);
   
   // create a random code
-  $password = random(32);
-     
+  $password = (new \App\Helpers\Helpers)->RandomString(32);
+       
   $mailbody = $this->view->fetch('email/new-password.twig',['email' => $user->email,'user' => $user->id,'firstname' => $user->first_name, 'lastname' => $user->last_name,'password' => $password, 'footer' => $this->settings['footer']]);
   
   
@@ -288,7 +289,8 @@ public function post_request_code(Request $request,Response $response) {
     return  $response;
     }
 
-    $code = random(32);
+    $code = (new \App\Helpers\Helpers)->RandomString(32);
+
     $email_hash = hash('sha256', $activation->email);
     $this->setSubject('Your account is one step from beeing activated!');
 
@@ -360,7 +362,8 @@ public function post_request_password(Request $request,Response $response) {
   return  $response;
   }
   // create a random code
-  $code = random(15);
+  $code = (new \App\Helpers\Helpers)->RandomString(32);
+
 
   $mailbody = $this->view->fetch('email/wachtwoord-vergeten.twig',['email' => $gebruiker->email,'gebruiker' => $gebruiker->id,'voornaam' => $gebruiker->first_name, 'achternaam' => $gebruiker->last_name,'code' => $code,'url' => $this->settings['url'], 'footer' => $this->settings['footer']]);
 
@@ -457,23 +460,19 @@ public function upload_icon(Request $request,Response $response) {
 public function post_account_info(Request $request,Response $response) { 
     
   $data = $request->getParsedBody();
-
-    $returnurl = $this->locale . "/";
-
-    if ($data['locale']) {
-     $returnurl = $returnurl . $data['locale']  . "/";   
-    }
-    
+ 
   $v = new Validator($data); 
   $v->rule('required','email');
   $v->rule('required','first_name'); 
   $v->rule('required','last_name'); 
 
 
-     if (!$v->validate()) {
-        $this->flash->addMessage('errors',$v->errors());
-        return $response->withHeader('Location',$returnurl . 'my-account')->withStatus(302);  
-        } 
+  if (!$v->validate()) {
+    $errormessage = current((Array)$v->errors())[0];
+    $response->getBody()->write(json_encode(array('status' => 'error','message' => $errormessage))); 
+    return  $response;
+    }      
+
 $user = Sentinel::getUser();
 
 $sql = $this->db->prepare("UPDATE users SET first_name=:first_name,last_name=:last_name,email=:email WHERE id=:user");
@@ -483,9 +482,9 @@ $sql->bindParam(":last_name", $data['last_name'], PDO::PARAM_STR);
 $sql->bindParam(":first_name", $data['first_name'],PDO::PARAM_STR);
 $sql->execute();
 
-$this->flash->addMessage('success','the account information of your account is changed!');
 
-    return $response->withHeader('Location',$returnurl . 'my-account')->withStatus(302);  
+$response->getBody()->write(json_encode(array('status' => 'success','message' => $this->translator->get('account.info_updated')))); 
+return  $response;
 }
 
 public function info(Request $request,Response $response) {	
@@ -503,7 +502,7 @@ $sql->execute();
 $logins = $sql->fetchALL(PDO::FETCH_OBJ);
 
 
-return $this->view->render($response,'backend/account-info.twig',['huidig' => 'account-info','user' => $user, 'logins'=> $logins, 'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'info' => $this->flash->getFirstMessage('info')]);
+return $this->view->render($response,'backend/account-info.twig',['huidig' => 'account-info', 'current' => substr($request->getUri()->getPath(),1),'user' => $user, 'logins'=> $logins ]);
 }	
 
 
@@ -589,8 +588,8 @@ if($uitkomst != $data['captcha']) {
       } 
 
    
-  $password = random(32);
-   
+  $password = (new \App\Helpers\Helpers)->RandomString(32);
+     
   $user = Sentinel::register([
   'email' => $data['email'],
   'password'=> $password,
@@ -605,7 +604,7 @@ if($uitkomst != $data['captcha']) {
   $role = Sentinel::findRoleByName('customer');    
   $role->users()->attach($user);  
 
-  $code = random(32);
+  $code = (new \App\Helpers\Helpers)->RandomString(32);
   $email_hash = hash('sha256', $user->email);
   $this->setSubject("[".$this->locale."]: Confirm sign-up at website " . date('H:i d-m-Y'));
 

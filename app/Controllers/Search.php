@@ -88,7 +88,7 @@ if ((!$this->settings['apiusername']) || (!$this->settings['apiusername'])) {
  if ($request->getMethod() == "POST") {
         $sql = $this->db->prepare("INSERT INTO site_search_history (query,ip,referer,date) VALUES(:query,:ip,:referer,now())");
         $sql->bindparam(":query",$data['q'],PDO::PARAM_STR);
-        $sql->bindparam(":ip",get_client_ip(),PDO::PARAM_STR);
+        $sql->bindparam(":ip",(new \App\Helpers\Helpers)->get_client_ip(), PDO::PARAM_STR);
         $sql->bindparam(":referer",$_SERVER['HTTP_REFERER'],PDO::PARAM_STR);
         $sql->execute();
 }
@@ -99,7 +99,7 @@ $client = new \App\Search\SiteSearch([
 ]);
 
 $website = $_SERVER['SERVER_NAME'];
-$ip = get_client_ip();
+$ip = (new \App\Helpers\Helpers)->get_client_ip();
 $referer = $_SERVER['HTTP_REFERER'] ?: null;
 
 if ($client->loggedin === false) {
@@ -126,7 +126,7 @@ if ($request->getMethod() == "POST") {
     $pagelinks->setPreviousText('previous');
     $pagelinks->setNextText('next');
 
-$this->logger->info("Search: Searched for " . $data['q'] . " which returned " . $res->data->hits .  " results!",array('ipaddress' => get_client_ip()));
+$this->logger->info("Search: Searched for " . $data['q'] . " which returned " . $res->data->hits .  " results!",array('ipaddress' => (new \App\Helpers\Helpers)->get_client_ip()));
 
 
 $meta['title'] = $this->translator->get('search.search_results',['q' => $data['q']]);

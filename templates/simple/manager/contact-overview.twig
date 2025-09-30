@@ -1,0 +1,64 @@
+{% include "frontend/header.twig" %}
+
+
+
+<div class="container">        
+        <h1 class="py-4">{{ trans('manager.contact.contact_overview') | capitalize }}</h1>
+
+<div class="row mb-4">
+{% include "manager/manager-menu.twig" %}         
+</div>
+
+<div class="col-12">
+{% include "backend/alert.twig" %}
+</div>
+
+
+<div class="row mb-3">
+<div class="col-12">
+
+<div class="card mb-3">
+<div class="card-body">
+<table class="table table-hover">
+<tr>
+<th>{{ trans('manager.contact.company') | capitalize }}</th>
+<th>{{ trans('manager.contact.name') | capitalize }}</th>
+<th>{{ trans('manager.contact.email') | capitalize }}</th>
+<th>{{ trans('manager.contact.ipaddress') | capitalize }}</th>
+<th>{{ trans('manager.contact.subject') | capitalize }}</th>
+<th>{{ trans('manager.contact.date') | capitalize }}</th>
+<th class="text-end">{{ trans('manager.contact.manage') | capitalize }}</th>
+</tr>
+
+{% if contacts|length < 1 %}
+<tr>
+		<td colspan="8" class="text-center">{{ trans('manager.contact.no_contacts') | capitalize }}</td>
+</tr>
+{% endif %}
+
+{% if contacts|length > 0 %}
+{% for contact in contacts %}
+<tr>
+<td>{{ contact.company }}</td>
+<td>{{ contact.name }}</td>
+<td>{{ contact.email }}</td>
+<td>{{ contact.ip }}</td>
+<td>{{ contact.subject }}</td>
+<td>{{ comment.date }}</td>
+<td class="text-end"><a href="{{url}}/manager/edit-contact/{{contact.id}}/{{contact.code}}/" class="btn btn-dark btn-sm">{{ trans('manager.contact.edit') }}</a> <a href="{{url}}/manager/delete-contact/{{contact.id}}/{{contact.code}}/" data-url="{{url}}/manager/delete-contact/{{contact.id}}/{{contact.code}}/" class="btn btn-danger btn-sm" data-reload="true">{{ trans('manager.contact.delete') }}</a></td>
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% include "frontend/footer.twig" %}

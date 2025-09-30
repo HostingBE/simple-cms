@@ -15,10 +15,14 @@ Sentinel::instance(
 );
 
 require __DIR__ . '/container.php';
+if (stream_resolve_include_path(__DIR__ . '/../app/Custom/bootstrap/container.php')) {
 require __DIR__ . '/../app/Custom/bootstrap/container.php';
+}
 require __DIR__ . '/middleware.php';
 require __DIR__ . '/../routes/web.php';
+if (stream_resolve_include_path(__DIR__ . '/../app/Custom/routes/routes.php')) {
 require __DIR__ . '/../app/Custom/routes/routes.php';
+}
 require __DIR__ . '/../routes/backend.php';
 require __DIR__ . '/../routes/manager.php';
 require __DIR__ . '/../routes/catchall.php';

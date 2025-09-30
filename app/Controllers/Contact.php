@@ -50,10 +50,9 @@ $this->locale = $locale;
 }
 
 public function postcontact(Request $request,Response $response) {
- 
 
-  
-	$data =  $request->getParsedBody();
+
+$data =  $request->getParsedBody();
 
   $v = new Validator($data);
 
@@ -81,19 +80,32 @@ public function postcontact(Request $request,Response $response) {
      
      unset($_SESSION['captcha']);
      
-     
-     $sql = $this->db->prepare("INSERT INTO contact (name,company,email,phone,subject,message,ip,date) values(:name,:company,:email,:phone,:subject,:message,:ip,now())");
-     $sql->bindParam(':name',$data['name'],PDO::PARAM_STR);
-     $sql->bindParam(':company',$data['company'],PDO::PARAM_STR);
-     $sql->bindParam(':email',$data['email'],PDO::PARAM_STR);
-     $sql->bindParam(':phone',$data['phone'],PDO::PARAM_STR);
-     $sql->bindParam(':subject',$data['subject'],PDO::PARAM_STR);      
-     $sql->bindParam(':message',$data['message'],PDO::PARAM_STR);     
-     $sql->bindParam(':ip',get_client_ip(),PDO::PARAM_STR);
+     $code = (new \App\Helpers\Helpers)->RandomString(32);
+
+     /**
+      * Encrypt sensitive data before entered in the database
+      */
+     $encryptedemail = (new \App\Crypt\Cryptor(getenv('secret')))->encrypt($data['email']);
+     $encryptedname = (new \App\Crypt\Cryptor(getenv('secret')))->encrypt($data['name']);
+     $encryptedcompany = (new \App\Crypt\Cryptor(getenv('secret')))->encrypt($data['company']);
+     $encryptedsubject = (new \App\Crypt\Cryptor(getenv('secret')))->encrypt($data['subject']);     
+     $encryptedmessage = (new \App\Crypt\Cryptor(getenv('secret')))->encrypt($data['message']);     
+      
+     $sql = $this->db->prepare("INSERT INTO contact (code,name,company,email,phone,subject,message,ip,date) values(:code, :name,:company,:email,:phone,:subject,:message,:ip,now())");
+     $sql->bindParam(':code',$code,PDO::PARAM_STR,32);
+     $sql->bindParam(':name',$encryptedname, PDO::PARAM_STR);
+     $sql->bindParam(':company',$encryptedcompany, PDO::PARAM_STR);
+     $sql->bindParam(':email',$encryptedemail, PDO::PARAM_STR);
+     $sql->bindParam(':phone',$data['phone'], PDO::PARAM_STR);
+     $sql->bindParam(':subject',$encryptedsubject, PDO::PARAM_STR);      
+     $sql->bindParam(':message',$encryptedmessage, PDO::PARAM_STR);     
+     $sql->bindParam(':ip',(new \App\Helpers\Helpers)->get_client_ip(), PDO::PARAM_STR);
 
      $sql->execute();
    
-      // mail versturen naar de bezoeker
+     /**
+      * get e-mail data to send to  visitor
+      */
      $mailbody = $this->view->fetch('email/contact-formulier.twig',['naam' => $data['name'],'onderwerp' => $data['subject'], 'bedrijfsnaam' => $data['company'],'email' => $data['email'], 'bericht' => $data['message'],'footer' => $this->settings['footer']]);
 
 
@@ -101,7 +113,7 @@ public function postcontact(Request $request,Response $response) {
      $this->mail->setFrom($this->settings['email'],$this->settings['email_name']);
      $this->mail->addAddress($data['email'], $data['name']);
      $this->mail->addBCC($this->settings['emailto'], $this->settings['emailto_name']);
-     $this->mail->Subject = "[".$this->settings['url']."]: contact formulier verwerkt " . date('H:i d-m-Y');
+     $this->mail->Subject = "[".$this->settings['sitename']."]: contact formulier verwerkt " . date('H:i d-m-Y');
      $this->mail->Body = $mailbody;
      if ($this->settings['html_email'] == "on") { 
      $this->mail->IsHTML(true); 
@@ -118,7 +130,7 @@ public function postcontact(Request $request,Response $response) {
 
 
 public function show(Request $request,Response $response) {
-	    $meta['title'] = "questions or suggestions about the service of seosite, contact us";
+	$meta['title'] = "questions or suggestions about the service of seosite, contact us";
       $meta['description'] = "having suggestions, questions or tips don't hesitate to contact us via the contact form, we will contact you as soon as possible.";   
       $meta['keywords'] = "contact, seosite, email, suggestions, questions, tips, form"; 
    

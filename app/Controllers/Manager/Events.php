@@ -62,13 +62,17 @@ public function post(Request $request,Response $response) {
     /*
 	* INFORMATION events
 	*/
-    $sql = $this->db->prepare("SELECT id,name,company,email,substr(message,0,100) AS message, DATE_FORMAT(date,'%H:%i') AS time,ip FROM contact WHERE date > date_sub(now(), interval 10 minute) LIMIT 5");
+    $sql = $this->db->prepare("SELECT id,name,company,email,message, DATE_FORMAT(date,'%H:%i') AS time,ip FROM contact WHERE date > date_sub(now(), interval 10 minute) LIMIT 5");
     $sql->execute();
     $info = $sql->fetchALL(PDO::FETCH_OBJ);
     
     for ($i = 0; $i < count($info);$i++) {
          if ($this->eventSeen('contact'.$info[$i]->id) == true) {
-                $events[] = array('heading' => "Contact request", 'icon' => "success",'text' => $info[$i]->time . ": " . $info[$i]->message . " from ip-address " . $info[$i]->ip . " with e-mail address " . $info[$i]->email);
+         
+            $decryptedemail = (new \App\Crypt\Cryptor(getenv('secret')))->decrypt($info[$i]->email);
+            $decryptedmessage = (new \App\Crypt\Cryptor(getenv('secret')))->decrypt($info[$i]->message);
+
+                $events[] = array('heading' => "Contact request", 'icon' => "success",'text' => $info[$i]->time . ": " . substr($decryptedmessage, 0, 100) . " from ip-address " . $info[$i]->ip . " with e-mail address " . $decryptedemail);
     			}
     }
     /*

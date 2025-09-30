@@ -32,13 +32,21 @@ require(dirname(__FILE__) .'/Captcha.class.php');
 
 class Forum {
 
+
+protected $view;
+protected $db;
+protected $mail;
+protected $logger;
+protected $settings;
+protected $locale;
+protected $translator;
+
 protected $directory = __DIR__ . '/../../public_html/uploads';
 
 
-	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $locale, $translator) {
+	public function __construct(Twig $view, $db, $mail, $logger, $settings, $locale, $translator) {
     $this->view = $view;
     $this->db = $db;
-    $this->flash = $flash;
     $this->mail = $mail;
     $this->logger = $logger;
     $this->settings = $settings;
@@ -533,7 +541,7 @@ $sql = $this->db->prepare("SELECT b.id AS userid,a.user,a.name,count(*) AS total
 $sql->execute();
 $contributors = $sql->fetchALL(PDO::FETCH_OBJ);
 
-$arr = getMetaData('forum-overview',$this->locale);
+// $arr = getMetaData('forum-overview',$this->locale);
 
 
 $meta['title'] = $this->translator->get('meta.forum-overview.title');

@@ -4,10 +4,13 @@
 {% if huidig in ['contact','manager-chat-bekijken','create-account','manager-add-setting','manager-add-template','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
-{% if current in ['activate-2fa'] %}
+{% if current in ['activate-2fa','my-account','todo-edit'] %}
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
 
+{% if current in ['blog-comment-edit'] %}
+<script defer src="{{url}}/cms/js/edit-blog-comment.js" type="module"></script>
+{% endif %}
 {% if current in ['support-comment-edit'] %}
 <script defer src="{{url}}/cms/js/edit-support-comment.js" type="module"></script>
 {% endif %}
@@ -48,9 +51,33 @@ const cssMain = document.createElement('link');
 <script defer crossorigin="anonymous" src="https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v14.0" nonce="XzqtTNEI"></script>
 {% endif %}
 {% if huidig in ['support-comments-overview','account-info','manager-chat-overview','manager-pagina-overzicht','todo-overview','media-overzicht','manager-blog-overzicht','manager-support-overzicht','manager-gebruikers-overzicht','manager-category-overview','manager-advertenties-overzicht'] %}
+<script>
+(function() {
+const cssMain = document.createElement('link');
+      cssMain.href = '{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.css';
+      cssMain.rel = 'stylesheet';
+      cssMain.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(cssMain);
+})();
+</script>
 <script defer src="{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 <script defer src="{{url}}/cms/js/sweet-alert.js"></script>
 {% endif %}
+
+{% if current in ['contact-overview','blog-comments'] %}
+<script>
+(function() {
+const cssMain = document.createElement('link');
+      cssMain.href = '{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.css';
+      cssMain.rel = 'stylesheet';
+      cssMain.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(cssMain);
+})();
+</script>
+<script defer src="{{url}}/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+<script defer src="{{url}}/cms/js/sweet-alert.js"></script>
+{% endif %}
+
 {% if huidig in ['manager-blog-toevoegen','manager-blog-bewerken','manager-pagina-toevoegen','manager-pagina-bewerken'] %}
 <script defer src="{{url}}/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script defer src="{{url}}/cms/js/blog-toevoegen.js"></script>
@@ -162,6 +189,8 @@ tinymce.init({
 {% if disablechat == "off" %}
 <script defer src="{{url}}/cms/js/website-chat.js"></script>
 {% endif %}
+
+
 
 <script>
 (function() {

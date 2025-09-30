@@ -13,8 +13,14 @@
         <li class="nav-item">
           <a class="nav-link" href="{{url}}/manager/view-logging">{{ trans('manager.menu.view_logging') | capitalize }}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url}}/manager/chat-overview">{{ trans('manager.menu.chat_overview') | capitalize }}</a>
+        <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ trans('manager.menu.customer_overview') | capitalize }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="{{url}}/manager/chat-overview">{{ trans('manager.menu.chat_overview') | capitalize }}</a></li>
+          <li><a class="dropdown-item" href="{{url}}/manager/contact-overview">{{ trans('manager.menu.contact_overview') | capitalize }}</a></li>     
+          </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,6 +58,7 @@
             <div class="dropdown-divider"></div>
             <h6 class="px-3">Weblog</h6>
             <li><a class="dropdown-item" href="{{url}}/manager/blogs-overview">{{ trans('manager.menu.blog') | capitalize }} {{ trans('manager.menu.overview')}}</a></li>
+            <li><a class="dropdown-item" href="{{url}}/manager/blog-comments">{{ trans('manager.menu.blog') | capitalize }} {{ trans('manager.menu.comments')}}</a></li>
             <li><a class="dropdown-item" href="{{url}}/manager/blog-add">{{ trans('manager.menu.add_blog') | capitalize }}</a></li>
 
           </ul>

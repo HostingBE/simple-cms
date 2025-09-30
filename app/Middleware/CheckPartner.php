@@ -51,14 +51,14 @@ $user_data = $sql->fetch(PDO::FETCH_OBJ);
 
 $referer = $_SERVER['HTTP_REFERER'] ?: 'onbekend';
 
-$sql = $this->db->prepare("INSERT INTO partner(id,user,link,referal,ipadres,datum) VALUES('',:user,:link,:referal,:ipadres,now())");
+$sql = $this->db->prepare("INSERT INTO partner(id, user, link, referal,ipadres, datum) VALUES('',:user,:link,:referal,:ipadres,now())");
 $sql->bindparam(":user",$user_data->user_id,PDO::PARAM_INT);
 $sql->bindparam(":link",parse_url($request->getUri())['path'],PDO::PARAM_STR);
 $sql->bindparam(":referal",$referer,PDO::PARAM_STR);
-$sql->bindparam(":ipadres",get_client_ip(),PDO::PARAM_STR);
+$sql->bindparam(":ipadres",(new \App\Helpers\Helpers)->get_client_ip(), PDO::PARAM_STR);
 $sql->execute();
 
-$this->logger->info(get_class() . ": visitor via partner link " . $request->getQueryParams()['utm_source']);
+$this->logger->info(__CLASS__ . ": visitor via partner link " . $request->getQueryParams()['utm_source']);
 
 }
 

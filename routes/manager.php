@@ -21,8 +21,10 @@
 use App\Controllers\Account;
 use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
+use App\Controllers\Manager\BlogComments;
 use App\Controllers\Manager\Category;
 use App\Controllers\Chat;
+use App\Controllers\Manager\Contacts;
 use App\Controllers\Dashboard;
 use App\Controllers\Manager\Events;
 use App\Controllers\Forum;
@@ -68,6 +70,7 @@ $route->get('/manager/delete-media/{id:[0-9]+}/', Media::class . ':delete')->set
 $route->get('/manager/add-support', Support::class . ':add')->setName('support.add');
 $route->get('/manager/support-overview', Support::class . ':manager_overview')->setName('support.manager_overview');
 $route->get('/manager/support-comments', SupportComments::class . ':overview')->setName('supportcomments.overview');
+$route->get('/manager/blog-comments', BlogComments::class . ':overview')->setName('blogcomments.overview');
 $route->get('/manager/support-edit/{id:[0-9]+}/', Support::class . ':edit')->setName('support.edit');
 $route->get('/manager/delete-support/{id:[0-9]+}/', Support::class . ':delete')->setName('support.delete');
 $route->get('/manager/users-overview', Users::class . ':overview')->setName('users.overview');
@@ -80,12 +83,18 @@ $route->get('/manager/add-advertisement', Advertisements::class . ':add');
 $route->get('/manager/edit-advertisement/{id:[0-9]+}/', Advertisements::class . ':edit');
 $route->get('/manager/delete-advertisement/{id:[0-9]+}/', Advertisements::class . ':delete');
 $route->get('/manager/chat-overview', Chat::class . ':overview');
+$route->get('/manager/contact-overview', Contacts::class . ':overview');
 $route->get('/manager/view-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':manager_view');
 $route->get('/manager/delete-chat/{id:[0-9]+}/{session:[0-9a-zA-Z]+}/', Chat::class . ':delete')->setName('chat.delete');
 $route->get('/manager/support-comment-delete/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':delete')->setName('supportcomments.delete');
 $route->get('/manager/support-comment-edit/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':edit')->setName('supportcomments.edit');
+$route->get('/manager/delete-contact/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', Contacts::class . ':delete')->setName('contacts.delete');
+$route->get('/manager/edit-contact/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', Contacts::class . ':edit')->setName('contacts.edit');
+$route->get('/manager/blog-comment-delete/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', BlogComments::class . ':delete')->setName('blogcomments.delete');
+$route->get('/manager/blog-comment-edit/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', BlogComments::class . ':edit')->setName('blogcomments.edit');
 
-$route->post('/manager/edit-support-comment/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':post')->setName('supportcomments.post');
+$route->post('/manager/edit-blog-comment/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', BlogComments::class . ':post');
+$route->post('/manager/edit-support-comment/{id:[0-9]+}/{code:[0-9a-zA-Z]+}/', SupportComments::class . ':post');
 $route->post('/manager/overview-events', Events::class . ':post');
 $route->post('/manager/add-template', Templates::class . ':post_add_template');
 $route->post('/manager/add-setting', ManagerSettings::class . ':post');

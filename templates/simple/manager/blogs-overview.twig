@@ -11,17 +11,17 @@
 </div>
 
 <div class="row">
-
-
+<div class="col-12">    
        {% include "backend/alert.twig" %} 
+</div>
 
 <div class="card mb-3">
       <div class="card-body">
 
-<table class="table dark">
+<table class="table table-dark table-hover">
 <tr>
 <th>#</th>
-<th class="text-center">{{ trans('manager.blog.category') | capitalize }}</th>
+<th>{{ trans('manager.blog.category') | capitalize }}</th>
 <th>{{ trans('manager.blog.title') | capitalize }}</th>
 <th>{{ trans('manager.blog.tags') | capitalize }}</th>
 <th class="text-center">{{ trans('manager.blog.publish') | capitalize }}</th>
@@ -39,11 +39,11 @@
 {% if blogs|length > 0 %}
 {% for blog in blogs %}
 <tr>
-<td>#</td>
-<td >{{blog.categorie_naam}}</td>
+<td>..</td>
+<td >{{blog.categorie_naam | capitalize}}</td>
 <td>{{blog.title|capitalize}}</td>
 <td>{{blog.tags}}</td>
-<td class="text-center">{{blog.publish}}</td>
+<td class="text-center">{% if blog.publish == "y" %}{{ trans('manager.blog.yes')}}{%endif%}{% if blog.publish == "n" %}{{ trans('manager.blog.no')}}{%endif%}</td>
 <td class="text-center">{{blog.reacties}}</td>
 <td>{{blog.date}}</td>
 <td class="text-center"><a href="{{url}}/manager/blog-edit/{{blog.id}}/" class="btn btn-dark btn-sm">{{ trans('manager.blog.edit') }}</a> <a href="{{url}}/manager/delete-blog/{{blog.id}}/" class="btn btn-danger btn-sm" data-url="{{url}}/manager/delete-blog/{{blog.id}}/" data-reload="true">{{ trans('manager.blog.delete') }}</a></td>

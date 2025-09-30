@@ -1,21 +1,22 @@
 {% include "frontend/header.twig" %}
 
-
 <div class="container">
     <h1 class="pt-4 pb-4">{{trans('backend.account.account_info')|capitalize}}</h1>
 
         <div class="row">
-     
-{% include "backend/alert.twig" %}
+     <div class="col-12">
 
-            <div class="col-lg-6 col-md-12">
+
+{% include "backend/alert.twig" %}
+     </div>
+            <div class="col-md-6 col-sm-12">
                 <div class="card mb-3">
                     <div class="card-header">
                         <h4 class="card-title">{{trans('backend.account.account_information')|capitalize}}</h4>
                     </div>
 
                     <div class="card-body">
-                          <form name="account" action="{{url}}/my-account" method="POST" reload="true">
+                          <form name="account" action="{{url}}/my-account" method="POST" reload="true" id="ajax-form">
 
                             {{ csrf() | raw }}
                                 <p>{{trans('backend.account.message')}}</p>
@@ -43,7 +44,7 @@
                                         <input type="text" id="email" class="form-control" name="email" placeholder="{{trans('backend.account.email_address')}}" value="{{user.email}}">
                                     </div>
                             </div>
-                            <button type="submit" class="btn btn-primary p-2">{{trans('backend.account.save')}}</button>
+                            <button type="submit" class="btn btn-primary p-2" id="submit-ajax">{{trans('backend.account.save')}}</button>
                             </form>
                           </div>
                     </div>
