@@ -79,7 +79,7 @@ public function chat_check_login(Request $request,Response $response) {
 
 
     $sql = $this->db->prepare("SELECT count(*) as totaal FROM chat WHERE status='a' AND session=:session AND ipaddress=:ipaddress");
-    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", $this->getIP(), PDO::PARAM_STR);
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
     $sql->execute();
     $aantal = $sql->fetch(PDO::FETCH_OBJ);
@@ -142,7 +142,7 @@ public function post_manager_chat_message(Request $request,Response $response) {
     $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $data['id'],PDO::PARAM_INT);
     $sql->bindparam(":owner", $owner,PDO::PARAM_STR);    	
-    $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", $this->getIP(), PDO::PARAM_STR);
     $sql->bindparam(":message",$this->makeLinks($data['message']),PDO::PARAM_STR);
     $sql->execute();
 
@@ -168,7 +168,7 @@ public function post_add(Request $request,Response $response) {
 
     $sql = $this->db->prepare("SELECT id FROM chat WHERE ipaddress=:ipaddress AND session=:session");
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", $this->getIP(), PDO::PARAM_STR);
     $sql->execute();
     $chat = $sql->fetch(PDO::FETCH_OBJ);
     
@@ -177,7 +177,7 @@ public function post_add(Request $request,Response $response) {
     $sql = $this->db->prepare("INSERT INTO chat_messages (owner,ipaddress,chat,message,date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $chat->id,PDO::PARAM_INT);	
     $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", $this->getIP(),PDO::PARAM_STR);
     $sql->bindparam(":message",$this->makeLinks($data['message']),PDO::PARAM_STR);
     $sql->execute();
 
@@ -240,7 +240,7 @@ public function post_signin(Request $request,Response $response) {
     // bepalen of er al een chat sessie is opgestart voor deze gebruiker
     $sql = $this->db->prepare("SELECT id FROM chat WHERE ipaddress=:ipaddress AND session=:session LIMIT 1");
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress",$this->getIP(), PDO::PARAM_STR);
     $sql->execute();
     $chat = $sql->fetch(PDO::FETCH_OBJ);
     
@@ -252,7 +252,7 @@ public function post_signin(Request $request,Response $response) {
     $sql->bindparam(":session", session_id(),PDO::PARAM_STR);
     $sql->bindparam(":name", $data['name'],PDO::PARAM_STR);
     $sql->bindparam(":email", $data['email'],PDO::PARAM_STR);   
-    $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress",$this->getIP(),PDO::PARAM_STR);
     $sql->bindparam(":status", $status,PDO::PARAM_STR);
     $sql->bindparam(":avatar", $avatar,PDO::PARAM_STR);
     $sql->execute();
@@ -262,7 +262,7 @@ public function post_signin(Request $request,Response $response) {
     $sql = $this->db->prepare("INSERT INTO chat_messages (owner, ipaddress, chat, message, date) VALUES(:owner,:ipaddress,:chat,:message,now())");
     $sql->bindparam(":chat", $chat->id,PDO::PARAM_INT); 
     $sql->bindparam(":owner", $eigenaar, PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(),PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", $this->getIP(),PDO::PARAM_STR);
     $sql->bindparam(":message",$this->makeLinks($data['message']),PDO::PARAM_STR);
     $sql->execute();
 
@@ -284,7 +284,7 @@ public function post_signin(Request $request,Response $response) {
 
     $sql->bindparam(":chat", $chat->id, PDO::PARAM_INT); 
     $sql->bindparam(":owner", $owner, PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress",$this->getIP(), PDO::PARAM_STR);
     $sql->bindparam(":message",$this->makeLinks($buitenkantoortijden), PDO::PARAM_STR);
     $sql->execute();
     }
@@ -298,7 +298,7 @@ public function chat_overview(Request $request,Response $response) {
 
     $sql = $this->db->prepare("SELECT id,name,avatar FROM chat WHERE ipaddress=:ipaddress AND session=:session");
     $sql->bindparam(":session", session_id(), PDO::PARAM_STR);
-    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress",$this->getIP(), PDO::PARAM_STR);
     $sql->execute();
     $chat = $sql->fetch(PDO::FETCH_OBJ); 
 
@@ -309,7 +309,7 @@ public function chat_overview(Request $request,Response $response) {
 
     $sql = $this->db->prepare("SELECT id, owner, message,DATE_FORMAT(date,'%H:%i') AS time FROM chat_messages WHERE chat=:chat AND ipaddress=:ipaddress");
     $sql->bindparam(":chat", $chat->id, PDO::PARAM_INT);
-    $sql->bindparam(":ipaddress", get_client_ip(), PDO::PARAM_STR);
+    $sql->bindparam(":ipaddress", $this->getIP(), PDO::PARAM_STR);
     $sql->execute(); 
     $messages = $sql->fetchALL(PDO::FETCH_OBJ);
     
@@ -336,6 +336,9 @@ public function chat_overview(Request $request,Response $response) {
 	return  $response;	
 }
 
+private function getIP() {
+    return (new \App\Helpers\Helpers)->get_client_ip();
+}
 
 private function makeLinks($str, $target='_blank') {
     if ($target) {

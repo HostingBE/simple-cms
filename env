@@ -14,3 +14,5 @@ smtp_tls=
 smtp_auth=
 version=3.1.0
 theme=simple
+secret=8G4rxUgT9fISB6fjilPnpu26EYkorxR0
+ipinfo_token=

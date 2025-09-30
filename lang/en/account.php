@@ -16,6 +16,7 @@ return [
 'howto_sign_up' => 'How do I sign up',
 'message_one' => 'Fill in your first name, last name and email address, solve the sum which is there (this is an anti-spam measure) and click on the button create account. We will send you a confirmation email and if you have confirmed via the email link that you want to create an account you can login to the HostingBE control panel and start creating a project by entering your website URL',
 'message_two'=> 'If you are registered, please read the manual of the control panel that we have created.',
+'info_updated' => 'your account details are saved',
 ];
 
 ?>

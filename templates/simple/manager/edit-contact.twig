@@ -1,0 +1,74 @@
+{% include "frontend/header.twig" %}
+
+
+
+<div class="container">        
+        <h1 class="py-4">{{ trans('manager.chat.overview') | capitalize }}</h1>
+
+<div class="row mb-4">
+{% include "manager/manager-menu.twig" %}         
+</div>
+
+<div class="col-12">
+{% include "backend/alert.twig" %}
+</div>
+
+
+<div class="row mb-3">
+
+<div class="col-md-6 col-sm-12">
+
+    {% if contact %}
+    <div class="card">
+        <div class="card-body">
+        <h3>{{ contact.subject | capitalize }}</h3>
+      
+        <dl class="row">
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.contact.subject') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12"><h6>{{ contact.subject | capitalize }}</h6></dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.contact.company') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ contact.company | capitalize }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.contact.name') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ contact.name | capitalize }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.contact.ipaddress') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ contact.ip }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.contact.email') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ contact.email }}</dd>   
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.contact.message') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ contact.message }}</dd>                                 
+        </dl>
+   </div>
+</div>
+{%endif%}
+
+    {% if contact == null %}
+    <div class="alert alert-warning"><h4>No such object</h4><p>no contact found with the info you supplied!</p></div>
+    {%endif%}
+
+</div>
+<div class="col-md-6 col-sm-12">
+<div class="callout callout-danger bg-danger bg-opacity-25"><h4>View contact form</h4><p>View the content of an e-mail sent via the website via the contact form. Best practice would be to have these messages sent to a ticket system. The e-mails are saved as precaution when sending e-mails fails.</p></div>
+
+         <h3>{{ trans('manager.support.ipaddress_information') | capitalize }}</h3>
+        <dl class="row">
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.support.ipaddress') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ ipinfo.ip }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.support.hostname') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ ipinfo.hostname }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.support.city') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ ipinfo.city | capitalize  }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.support.region') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ ipinfo.region | capitalize  }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.support.country')| capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ ipinfo.country | upper }}</dd>
+            <dt class="col-md-3 col-sm-12">{{ trans('manager.support.timezone') | capitalize }}</dt>
+            <dd class="col-md-9 col-sm-12">{{ ipinfo.timezone | capitalize }}</dd>   
+        </dl>
+
+
+</div>
+</div>
+
+</div>
+
+{% include "frontend/footer.twig" %}  

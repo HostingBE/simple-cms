@@ -43,16 +43,16 @@ $this->flash = $flash;
 $this->mail = $mail;
 $this->logger = $logger;
 $this->settings = $settings;
+$this->user = Sentinel::getUser();
 }
 
 public function delete(Request $request,Response $response) {
 
          $id = $request->getAttribute('id');
-          $user = Sentinel::getUser();
 
         $sql = $this->db->prepare("DELETE FROM todo WHERE id=:id and user=:user");
         $sql->bindparam(":id",$id,PDO::PARAM_INT);
-        $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
+        $sql->bindparam(":user",$this->user->id,PDO::PARAM_INT);
         $sql->execute();
 
         $this->flash->addMessage('success',"het todo is verwijderd van de lijst!");
@@ -65,28 +65,27 @@ public function post_edit(Request $request,Response $response) {
 	  $data = $request->getParsedBody();
 	 
 	 $v = new Validator($data); 
-   $v->rule('required','ap-categorie');
-    $v->rule('required','ap-todo');
-    $v->rule('required','ap-status');
+       $v->rule('required','ap-categorie');
+      $v->rule('required','ap-todo');
+      $v->rule('required','ap-status');
 
-	 if (!$v->validate()) {
-        $this->flash->addMessage('errors',$v->errors());
-        return $response->withHeader('Location','/manager/todo-edit/'.$id.'/')->withStatus(302);  
-        }	
+        if (!$v->validate()) {
+        $first = key($v->errors());
+        $json = json_encode(array('status' => 'error','message' => $v->errors()[$first][0]));
+        $response->getBody()->write($json);   
+        return $response;
+        }   	
  
-     	 $user = Sentinel::getUser(); 
-     	 
-     	 
-     	  $sql = $this->db->prepare("UPDATE todo set categorie=:categorie,todo=:todo,status=:status where id=:id");
+        $sql = $this->db->prepare("UPDATE todo set categorie=:categorie,todo=:todo,status=:status where id=:id");
         $sql->bindparam(":id",$id,PDO::PARAM_INT);
         $sql->bindparam(":categorie",$data['ap-categorie'],PDO::PARAM_STR);
         $sql->bindparam(":todo",$data['ap-todo'],PDO::PARAM_STR);
         $sql->bindparam(":status",$data['ap-status'],PDO::PARAM_STR,1);
         $sql->execute();    	 
      	 
-     	  $this->flash->addMessage('success',"todo succesvol bijgewerkt in de database!");
-        return $response->withHeader('Location','/manager/todo-edit/'.$id.'/')->withStatus(302);  
-        }	
+$response->getBody()->write(json_encode(array('status' => 'success','message' => 'Status of todo '.$data['ap-todo'].' changed!')));
+return $response;    
+}
 
 public function post_add(Request $request,Response $response) {
 	      
@@ -102,11 +101,9 @@ public function post_add(Request $request,Response $response) {
         $this->flash->addMessage('errors',$v->errors());
         return $response->withHeader('Location','/manager/todo-overview')->withStatus(302);  
         }	
- 
-     	 $user = Sentinel::getUser();    
-       
-     $sql = $this->db->prepare("INSERT INTO todo (user,categorie,todo,status,datum) VALUES(:user,:categorie,:todo,:status,now())");
-     $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
+
+        $sql = $this->db->prepare("INSERT INTO todo (user,categorie,todo,status,datum) VALUES(:user,:categorie,:todo,:status,now())");
+     $sql->bindparam(":user",$this->user->id,PDO::PARAM_INT);
      $sql->bindparam(":categorie",$data['ap-categorie'],PDO::PARAM_STR);
      $sql->bindparam(":todo",$data['ap-todo'],PDO::PARAM_STR);
      $sql->bindparam(":status",$data['ap-status'],PDO::PARAM_STR,1);
@@ -134,7 +131,7 @@ public function edit(Request $request,Response $response) {
 	      $sql->execute();
 	      $todo = $sql->fetch(PDO::FETCH_OBJ);
 	
-	      return $this->view->render($response,'manager/todo-edit.twig',['meta' =>  $meta,'huidig' => 'todo-bewerken','todo' => $todo,'categorie' => $categorie,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
+	      return $this->view->render($response,'manager/todo-edit.twig',['meta' =>  $meta,'current' => explode('/',substr($request->getUri()->getPath(),1))[1],'todo' => $todo,'categorie' => $categorie,'success' => $this->flash->getFirstMessage('success'), 'errors' => $this->flash->getFirstMessage('errors')]);
       }
 
 public function overview(Request $request,Response $response) {

@@ -20,9 +20,11 @@ use App\Views\Extensions\CsrfExtension;
 use App\Controllers\Account;
 use App\Controllers\Manager\Advertisements;
 use App\Controllers\Blog;
+use App\Controllers\Manager\BlogComments;
 use App\Controllers\Manager\Category;
 use App\Controllers\Chat;
 use App\Controllers\Contact;
+use App\Controllers\Manager\Contacts;
 use App\Controllers\Dashboard;
 use App\Controllers\Email;
 use App\Controllers\Manager\Events;
@@ -223,7 +225,7 @@ $container->set('cache', function () {
 * management ip excluding from statistics and chat
 */
 $management_ip = false;
-if (get_client_ip() == $container->get('sitesettings')['management_ip']) { $management_ip = true; }
+if ((new \App\Helpers\Helpers)->get_client_ip() == $container->get('sitesettings')['management_ip']) { $management_ip = true; }
 $container->get("view")->getEnvironment()->addGlobal('management_ip',$management_ip);
 
 /*
@@ -521,11 +523,22 @@ return new Logging(
       );
 
 });
+$container->set(Contacts::class, function($container) {
+return new Contacts(
+      $container->get('view'),
+      $container->get('db'),
+      $container->get('mail'),
+      $container->get('logger'),
+      $container->get('sitesettings'),
+      $container->get('locale'),
+      $container->get('translator'),   
+      );
+
+});
 $container->set(Forum::class, function($container) {
 return new Forum(
       $container->get('view'),
       $container->get('db'),
-      $container->get('flash'),
       $container->get('mail'),
       $container->get('logger'),
       $container->get('sitesettings'),
@@ -547,6 +560,18 @@ return new Support(
       $container->get('settings')['translations']['languages']
       );
 
+});
+$container->set(BlogComments::class, function($container) {
+return new BlogComments(
+      $container->get('view'),
+      $container->get('db'),
+      $container->get('flash'),
+      $container->get('mail'),
+      $container->get('logger'),
+      $container->get('sitesettings'),
+      $container->get('locale'),
+      $container->get('translator'),
+      );
 });
 $container->set(SupportComments::class, function($container) {
 return new SupportComments(

@@ -177,7 +177,7 @@ public function post_upload(Request $request,Response $response) {
           // handle single input with single file upload
           $uploadedFile = $uploadedFiles['file'];
           if ($uploadedFile->getError() === \UPLOAD_ERR_OK) {
-          $fullfilename = moveUploadedFile($this->directory, $uploadedFile);
+          $fullfilename = (new \App\Helpers\Helpers)->moveUploadedFile($this->directory, $uploadedFile);
           $this->logger->warning("manager heeft een media bestand geupload " . $fullfilename);
           }
           

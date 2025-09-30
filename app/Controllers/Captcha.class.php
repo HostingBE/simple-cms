@@ -16,7 +16,6 @@
 * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 *
 */
-
 namespace App\Controllers;
 
 class Captcha {
@@ -104,12 +103,11 @@ public function create_som() {
   }  
 
 public function create_string() {
-  $string = random(6);
+  $string = (new \App\Helpers\Helpers)->RandomString(6);
   return $string;
 }
 
 private function build() {
-  
 
   $layer = imagecreatetruecolor(168, 37);
   $captcha_bg = imagecolorallocate($layer, $this->r, $this->g, $this->b);

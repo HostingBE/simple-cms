@@ -1,0 +1,63 @@
+{% include "frontend/header.twig" %}
+
+      <div class="container">
+<h1 class="py-4">{{ trans('manager.blog.blog_overview') | capitalize }} {{ trans('manager.blog.comments') }} </h1>
+
+
+{% include "manager/manager-menu.twig" %} 
+
+
+       {% include "backend/alert.twig" %} 
+        
+<div class="row">
+<div class="card mb-3">
+<div class="card-body">
+
+<div class="col-sm-12 col-md-6">
+<div class="callout callout-success"><h4>{{ trans('manager.blog.comment_overview') | capitalize }}</h4><p>Een overzicht van alle reacties op blogs geplaatst op de website. Je kan de reacties goedkeuren, afkeuren, rapporteren als spam of verwijderen!</p></div>
+</div>
+
+<table class="table table-hover">
+<tr>
+<th>{{ trans('manager.blog.status') | capitalize }}</th>
+<th>{{ trans('manager.blog.name') | capitalize }}</th>
+<th>{{ trans('manager.blog.email') | capitalize }}</th>
+<th>{{ trans('manager.blog.ipaddress') | capitalize }}</th>
+<th>{{ trans('manager.blog.comment_title') | capitalize }}</th>
+<th>{{ trans('manager.blog.blog_title') | capitalize }}</th>
+<th>{{ trans('manager.blog.date') | capitalize }}</th>
+<th class="text-end">{{ trans('manager.blog.manage') | capitalize }}</th>
+</tr>
+
+{% if comments|length < 1 %}
+<tr>
+		<td colspan="8" class="text-center">{{ trans('manager.blog.no_comments') | capitalize }}</td>
+</tr>
+{% endif %}
+
+{% if comments|length > 0 %}
+{% for comment in comments %}
+<tr>
+<td class="text-center">{% if comment.status == "p" %}<span class="text-danger">{{ trans('manager.blog.pending')}}</span>{%endif%}{% if comment.status == "a" %}<span class="text-success">{{ trans('manager.blog.approved')}}</span>{%endif%}{% if comment.status == "s" %}<span class="text-secondary">{{ trans('manager.blog.spam')}}</span>{%endif%}</td>
+<td>{{ comment.naam }}</td>
+<td>{{ comment.email }}</td>
+<td>{{ comment.ipadres }}</td>
+<td>{{ comment.titel }}</td>
+<td>{{ comment.title }}</td>
+<td>{{ comment.datum }}</td>
+<td class="text-end"><a href="{{url}}/manager/blog-comment-edit/{{comment.id}}/{{comment.code}}/" class="btn btn-dark btn-sm">{{ trans('manager.blog.edit') }}</a> <a href="{{url}}/manager/blog-comment-delete/{{comment.id}}/{{comment.code}}/"" data-url="{{url}}/manager/blog-comment-delete/{{comment.id}}/{{comment.code}}/" class="btn btn-danger btn-sm" data-reload="true">{{ trans('manager.blog.delete') }}</a></td>
+</tr>
+
+{% endfor %}
+{% endif %}
+
+
+</table>
+</div>
+</div>
+</div><!-- /. row -->
+
+      </div>
+
+
+{% include "frontend/footer.twig" %}

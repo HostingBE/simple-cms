@@ -7,7 +7,7 @@ var code = pathname.split('/')[4];
 $("div#action button").click(function(e) {
 
 const data = "&status="+$(this).text();
-ajaxPost('https://'+window.location.hostname+'/manager/edit-support-comment/'+id+'/'+code+'/', data).done(function(data) {
+ajaxPost('https://'+window.location.hostname+'/manager/edit-blog-comment/'+id+'/'+code+'/', data).done(function(data) {
           
 if (data.status == "error") {
 $('.alert.alert-danger').toggleClass('d-none d-block');
