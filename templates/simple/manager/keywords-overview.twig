@@ -1,0 +1,101 @@
+{% include "frontend/header.twig" %}
+
+
+<div class="container">
+
+	<h1 class="py-4">{{ trans('manager.links.manager_overview') | capitalize }}</h1>
+
+<div class="row mb-2">
+{% include "manager/manager-menu.twig" %}
+</div>
+
+{% include "backend/alert.twig" %}
+
+<div class="row mb-2">
+        <div class="col-sm-6">
+
+<div class="card">
+<div class="card-body">
+<h4>{{ trans('manager.keyword.overview_keywords') | capitalize }}</h4>
+<table class="table table-hover">
+<thead>
+  <th>{{ trans('manager.keyword.keyword') }}</th>
+  <th>{{ trans('manager.keyword.language') }}</th>
+  <th>{{ trans('manager.keyword.link') }}</th>
+  <th>{{ trans('manager.keyword.manage') }}</th>
+</thead>
+<tbody>
+  {% for keyword in keywords %}
+<tr>
+  <td>{{keyword.keyword}}</td>
+  <td>{{keyword.language}}</td>
+  <td>{{keyword.url}}</td>
+  <td class="text-end"><a class="btn btn-danger btn-sm" href="{{url}}/manager/delete-keyword/{{keyword.id}}/{{keyword.code}}/" data-url="{{url}}/manager/delete-keyword/{{keyword.id}}/{{keyword.code}}/" data-reload="true" data-bs-toggle="tooltip" title="{{ trans('manager.keyword.delete') }} {{ keyword.keyword }}">{{ trans('manager.keyword.delete') }}</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+
+
+</div>
+
+
+    </div>
+
+
+<div class="col-sm-6">
+
+
+<div class="callout callout-info">
+<h4>{{ trans('manager.keyword.keyword')| capitalize }}</h4>
+<p>Enter keywords and target links, the function internal links will link the keywords to the page you defined when saving a blog, page, support article or document.</p>
+</div>
+
+    <div class="card">
+
+<div class="card-body">
+<h4>{{ trans('manager.keyword.add_keyword')| capitalize }}</h4>
+
+<form name="add-keyword" action="{{url}}/manager/add-keyword" method="POST" id="ajax-form" data-reload="true">
+  {{ csrf() | raw }}
+
+<div class="row mb-3">
+  <label for="text-input" class="form-label col-md-3 col-sm-12">{{ trans('manager.keyword.keyword') | capitalize }}:</label>
+  <div class="col-md-9 col-sm12">
+  <input class="form-control" type="text" name="keyword" value="" placeholder="keyword string ..">
+    </div>
+</div>
+<div class="row mb-3">
+  <label for="text-input" class="form-label col-md-3 col-sm-12">{{ trans('manager.keyword.link') | capitalize }}:</label>
+    <div class="col-md-9 col-sm12">
+  <input class="form-control" type="text" name="link" value="" placeholder="url of link ..">
+</div>
+</div>
+<div class="row mb-3">
+    <label for="text-input" class="form-label col-md-3 col-sm-12">{{ trans('manager.keyword.language') | capitalize }}</label>
+        <div class="col-md-9 col-sm12">
+    <select name="language" class="form-control">
+    {% for language in languages %}
+    <option value="{{language}}">{{language}}</option>
+    {% endfor %}
+    </select>
+      </div>
+    </div>
+
+  <button class="btn btn-primary" type="submit" id="submit-ajax">{{ trans('manager.keyword.add') | capitalize }}</button>
+</form>
+
+</div>
+</div>
+
+        </div>
+</div>
+
+
+</div>
+
+
+
+{% include "frontend/footer.twig" %}

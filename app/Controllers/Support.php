@@ -28,8 +28,7 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Gumlet\ImageResize;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
-require(dirname(__FILE__) .'/Captcha.class.php');
-
+use App\Helpers\Captcha;
 use App\Controllers\DBhelpers;
 
 class Support {
@@ -361,7 +360,7 @@ $_SESSION['captcha'] = $code;
 
 $image = $captcha->base_encode();
 
-return $this->view->render($response,"frontend/support-view.twig",['huidig' => 'view-support','meta' => $meta, 'aantal_berichten' => count($berichten), 'artikel' => $artikel,'categories' => $categories,'berichten' => $berichten, 'latest' => $latest, 'captcha' => $image ]);
+return $this->view->render($response,"frontend/support-view.twig",['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'view-support','meta' => $meta, 'aantal_berichten' => count($berichten), 'artikel' => $artikel,'categories' => $categories,'berichten' => $berichten, 'latest' => $latest, 'captcha' => $image ]);
 }
 
 public function manager_overview(Request $request,Response $response) {
@@ -407,7 +406,7 @@ $meta['title']="SeoSite: overview category " . $currentcategory . " of our SEO s
 $meta['description']="Learn more about " . $currentcategory  . ", by viewing the articles..";
 $meta['keywords']="html, basics, keyword, tool, backlink, terminology,seosite";
 
-  return $this->view->render($response,"frontend/support-category.twig",['huidig' => 'support-category','categories' => $categories,'articles' => $articles,'meta' => $meta,'latest' => $latest,'currentcategory' => $currentcategory]);
+  return $this->view->render($response,"frontend/support-category.twig",['current' =>  substr($request->getUri()->getPath(),1), 'huidig' => 'support-category','categories' => $categories,'articles' => $articles,'meta' => $meta,'latest' => $latest,'currentcategory' => $currentcategory]);
 }      
 
 public function search(Request $request,Response $response) {
@@ -434,7 +433,7 @@ $sql->bindparam(":locale",$this->locale,PDO::PARAM_STR,2);
 $sql->execute();
 $articles =  $sql->fetchALL(PDO::FETCH_OBJ);
 
-  return $this->view->render($response,"frontend/support-search.twig",['huidig' => 'support-search','articles' => $articles, 'categories' => $categories, 'q' => $data['q']]);
+  return $this->view->render($response,"frontend/support-search.twig",['current' =>  substr($request->getUri()->getPath(),1), 'huidig' => 'support-search','articles' => $articles, 'categories' => $categories, 'q' => $data['q']]);
       
 }
 

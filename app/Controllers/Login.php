@@ -115,6 +115,7 @@ class Login {
 /*
 * succesvol login loggen in de database
 */
+if ($_SESSION['info'] != null) {
 $sql = $this->db->prepare("INSERT INTO logins (user,ip,hostname,plaats,land,apparaat,useragent,datum) VALUES(:user,:ip,:hostname,:plaats,:land,:apparaat,:useragent,now())");
 $sql->bindparam(":user",$user->id,PDO::PARAM_INT);
 $sql->bindparam(":ip",$_SESSION['info']->ip,PDO::PARAM_STR);
@@ -124,8 +125,9 @@ $sql->bindparam(":land",$_SESSION['info']->country,PDO::PARAM_STR);
 $sql->bindparam(":apparaat",$_SESSION['info']->apparaat,PDO::PARAM_STR);
 $sql->bindparam(":useragent",$_SESSION['info']->useragent,PDO::PARAM_STR);    
 $sql->execute();
+}
 
-    $this->logger->warning(get_class() . " gebruiker succesvol ingelogd in het systeem ",['IP-address' => $_SESSION['info']->ip,'user' => $user->email]);
+$this->logger->warning(get_class() . " gebruiker succesvol ingelogd in het systeem ",['IP-address' => $_SESSION['info']->ip,'user' => $user->email]);
     
 /**
 * Does the user user 2FA

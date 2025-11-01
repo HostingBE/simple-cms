@@ -88,7 +88,7 @@ class Page  {
     $meta['keywords'] = $pageobj->keywords;
     $meta['url'] = parse_url($request->getUri())['path'];
         
-    return $this->view->render($response,'/frontend/'.$pageobj->template,['page' => $pageobj, 'huidig' => $page, 'meta' => $meta,'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'status' => $this->flash->getFirstMessage('status')]);
+    return $this->view->render($response,'/frontend/'.$pageobj->template,['page' => $pageobj, 'current' =>  substr($request->getUri()->getPath(),1), 'huidig' => $page, 'meta' => $meta,'errors' => $this->flash->getFirstMessage('errors'),'success' => $this->flash->getFirstMessage('success'),'status' => $this->flash->getFirstMessage('status')]);
     
     }
    

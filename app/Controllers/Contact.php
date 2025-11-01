@@ -26,7 +26,7 @@ use Slim\Views\Twig;
 use Valitron\Validator;
 use Mobile_Detect;
 
-require(dirname(__FILE__) .'/Captcha.class.php');
+use App\Helpers\Captcha;
 
 class Contact {
 	
@@ -152,7 +152,7 @@ public function show(Request $request,Response $response) {
       $company[$key] = $val;
             }
       }
-      return $this->view->render($response,'frontend/contact.twig',['meta' =>  $meta,'huidig' => 'contact','captcha' => $image,'company' => $company ]);
+      return $this->view->render($response,'frontend/contact.twig',['meta' =>  $meta,'current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'contact','captcha' => $image,'company' => $company ]);
       }
 }
 ?>

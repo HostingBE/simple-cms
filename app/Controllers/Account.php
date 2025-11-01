@@ -28,7 +28,7 @@ use App\Models\UserModel;
 use App\Models\WWvergetenModel;
 use Cartalyst\Sentinel\Native\Facades\Sentinel as Sentinel;
 
-require(dirname(__FILE__) .'/Captcha.class.php');
+use App\Helpers\Captcha;
 
 class Account {
 	
@@ -232,11 +232,14 @@ public function confirm_password(Request $request,Response $response) {
    $this->mail->Subject = 'Your new password for website ' . $this->settings['url'];
    $this->mail->Body = $mailbody;
    $this->mail->IsHTML($this->settings['html_email']);
-
-  // verwijderen wachtwoord verzoek
+/**
+ * Delete password forgotten request
+ */
   WWvergetenModel::where('code',$code)->delete();
-  // wachtwoord wijzigen van gebruiker
-  Sentinel::getUserRepository()->update($user,array_only(['password' => $password], ['password']));
+/**
+ * Change password of the user
+ */
+  Sentinel::getUserRepository()->update($user,(new \App\Helpers\Helpers)->array_only(['password' => $password], ['password']));
                             
 if(!$this->mail->send()) {
     $this->flash->addMessage('errors',$this->mail->ErrorInfo);

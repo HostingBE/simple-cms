@@ -44,9 +44,9 @@ $xpath = new \DOMXPath($dom);
 
 $lookup = [];
 $regexNeedles = [];
-foreach ($this->getUniqueKeywrds() as $name => $link) {
-    $lookup[strtolower($link['keyword'])] = $link['link'];
-    $regexNeedles[] = preg_quote($link['keyword'], '~');
+foreach ($this->keywords as $name => $link) {
+    $lookup[strtolower($link->keyword)] = $link->link;
+    $regexNeedles[] = preg_quote($link->keyword, '~');
 }
 
 
@@ -62,8 +62,9 @@ foreach($xpath->query('//*[not(self::img or self::a)][(self::p|self::blockquote)
         if (isset($lookup[$fragmentLower])) {
             $hasReplacement = true;
             $a = $dom->createElement('a');
-            $a->setAttribute('href', $lookup[$fragmentLower]);
+            $a->setAttribute('href', 'https://' . $lookup[$fragmentLower]);
             $a->setAttribute('title', $fragment);
+            $a->setAttribute('data-bs-toggle', 'tooltip');
             $a->nodeValue = $fragment;
             $newNodes[] = $a;
         } else {
@@ -94,38 +95,6 @@ protected function sethtml($html) {
 protected function gethtml() {
 	return $this->html;
    }
-
-protected function getUniqueKeywrds() :array {
-$seen = $arr = array();
-
-foreach ($this->adjustKeywords() as $keyword) {
-        if (isset($seen[$keyword['link']])) {
-        continue;    
-        }
-        $seen[$keyword['link']] = 1;
-$arr[] = $keyword;
 }
-
-return array_slice($arr, 0, $this->max);
-}
-
-/**
-* @array keywords = array('keyword' => keyword, 'link'=> link) 
-*
-*/
-protected function adjustKeywords() :array {
-     $keywords = array();
-
-     foreach ($this->keywords as $keyword) {
-     		$a = explode(',',$keyword->tags);
-                 foreach ($a as $b) {
-                     $c = trim($b);
-                      $keywords[] = array('keyword' => $c, 'link' => $keyword->link);
-                 }
-            }
-  
-        return $keywords;
-        }
-  }
 
 ?>

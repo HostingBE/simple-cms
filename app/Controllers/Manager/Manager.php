@@ -33,9 +33,10 @@ class Manager  {
 	protected $logger;
 	protected $settings;
 	protected $languages;
+	protected $locale;
 	protected $translator;
 
-	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $languages, $translator) {
+	public function __construct(Twig $view, $db, $flash, $mail, $logger, $settings, $languages, $locale, $translator) {
 
 	$this->view = $view;
 	$this->db = $db;
@@ -44,6 +45,7 @@ class Manager  {
 	$this->logger = $logger;	
 	$this->settings = $settings;	
 	$this->languages = $languages;
+	$this->locale = $locale;
 	$this->translator = $translator;
 	}
 
@@ -85,7 +87,7 @@ public function post_edit(Request $request,Response $response) {
 	    $publish = $data['ap-page-publish'] ?: "n";
 
 if ($data['ap-page-links'] == "y") {
-$keywords =(new \App\Content\Keywords($this->db))->getKeyWords();
+$keywords = (new \App\Content\Keywords($this->db,$this->locale))->getKeywords();
 $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keywords))->generateLinks();
 }
 
@@ -145,7 +147,7 @@ if ($data['ap-page-markdown'] == "y") {
 }
 
 if ($data['ap-page-links'] == "y") {
-$keywords =(new \App\Content\Keywords($this->db))->getKeyWords();
+$keywords = (new \App\Content\Keywords($this->db,$this->locale))->getKeywords();
 $data['ap-content'] = (new \App\Content\InternalLinks($data['ap-content'], $keywords))->generateLinks();
 }
 

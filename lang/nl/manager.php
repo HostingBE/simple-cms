@@ -162,6 +162,7 @@ return [
         'blog' => 'blogs',
         'add_blog' => 'blog toevoegen',
         'add_template' => 'template toevoegen',
+        'keywords' => 'sleutel woorden',
     ],
     'support' => [
     'save_article' => 'bewaar artikel',
