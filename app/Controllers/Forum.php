@@ -27,8 +27,7 @@ use Valitron\Validator;
 use Cartalyst\Sentinel\Native\Facades\Sentinel as Sentinel;
 use Slim\Exception\HttpNotFoundException;
 
-require(dirname(__FILE__) .'/Captcha.class.php');
-
+use App\Helpers\Captcha;
 
 class Forum {
 
@@ -441,7 +440,7 @@ $_SESSION['captcha'] = $code;
 $image = $captcha->base_encode();
 
 
-    return $this->view->render($response,'frontend/view-topic.twig',[ 'huidig' => 'view-topic', 'meta' => $meta, 'categories' => $categories,'topic' => $topic,'replies' => $replies, 'files' => $files,'display' => $display,'captcha' => $image, 'path' => str_replace(' ','-',$topic->title) . '/topic-'.$topic->id.'/']);
+    return $this->view->render($response,'frontend/view-topic.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'view-topic', 'meta' => $meta, 'categories' => $categories,'topic' => $topic,'replies' => $replies, 'files' => $files,'display' => $display,'captcha' => $image, 'path' => str_replace(' ','-',$topic->title) . '/topic-'.$topic->id.'/']);
 
     }  
 
@@ -473,7 +472,7 @@ $meta['url'] = parse_url($request->getUri())['path'];
     $image = $captcha->base_encode();
 
 
-    return $this->view->render($response,'frontend/ask-question.twig',[ 'huidig' => 'ask', 'meta' => $meta, 'categories' => $categories, 'files' => $files,'captcha' => $image]);
+    return $this->view->render($response,'frontend/ask-question.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'ask', 'meta' => $meta, 'categories' => $categories, 'files' => $files,'captcha' => $image]);
 
     }
 
@@ -509,7 +508,7 @@ $meta['description'] = "Need help about SEO on your website, help about optimizi
 $meta['keywords'] = "seo,forum,control,panel,topic,off-page,on-page";
 $meta['url'] = parse_url($request->getUri())['path'];
 
-    return $this->view->render($response,'frontend/overview-forum.twig',[ 'huidig' => 'overview-forum-category', 'meta' => $meta, 'categories' => $categories, 'category' => $category,'latest' => $latest,'contributors' => $contributors ]);
+    return $this->view->render($response,'frontend/overview-forum.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'overview-forum-category', 'meta' => $meta, 'categories' => $categories, 'category' => $category,'latest' => $latest,'contributors' => $contributors ]);
 
     }
 
@@ -550,7 +549,7 @@ $meta['keywords'] = $this->translator->get('meta.forum-overview.keywords');
 $meta['url'] = parse_url($request->getUri())['path'];
 
 
-    return $this->view->render($response,'frontend/overview-forum.twig',[ 'huidig' => 'forum-overview','meta' => $meta, 'categories' => $categories, 'latest' => $latest,'contributors' => $contributors]);
+    return $this->view->render($response,'frontend/overview-forum.twig',['current' =>  substr($request->getUri()->getPath(),1),'huidig' => 'forum-overview','meta' => $meta, 'categories' => $categories, 'latest' => $latest,'contributors' => $contributors]);
 
     }
     private function setSubject($subject) {

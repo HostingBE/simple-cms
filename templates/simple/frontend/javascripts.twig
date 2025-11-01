@@ -4,7 +4,7 @@
 {% if huidig in ['contact','manager-chat-bekijken','create-account','manager-add-setting','manager-add-template','settings','request-password','manager-pagina-toevoegen','manager-pagina-bewerken','manager-todo-overview','manager-blog-toevoegen','manager-blog-bewerken','bekijk-blog','ask','view-topic','manager-support-toevoegen','manager-support-bewerken','view-support','manager-category-overview','manager-edit-template','manager-links-overview','manager-settings-overview','manager-advertentie-toevoegen','manager-advertentie-bewerken','api-settings'] %}
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
-{% if current in ['activate-2fa','my-account','todo-edit'] %}
+{% if current in ['manager-keywords-overview','activate-2fa','my-account','todo-edit'] %}
 <script defer src="{{url}}/cms/js/ajax-algemeen.min.js"></script>
 {% endif %}
 
@@ -64,7 +64,7 @@ const cssMain = document.createElement('link');
 <script defer src="{{url}}/cms/js/sweet-alert.js"></script>
 {% endif %}
 
-{% if current in ['contact-overview','blog-comments'] %}
+{% if current in ['contact-overview','blog-comments','manager-keywords-overview'] %}
 <script>
 (function() {
 const cssMain = document.createElement('link');

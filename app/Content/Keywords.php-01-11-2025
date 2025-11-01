@@ -24,20 +24,41 @@ use PDO;
 class KeyWords {
 
 protected $db;
-protected $locale;
 
-public function __construct(PDO $db, $locale) {
+public function __construct(PDO $db) {
 	$this->db = $db;
-    $this->locale = $locale;
 	}
 
 
 public function getKeyWords() {
-    $sql = $this->db->prepare("SELECT keyword, link FROM keywords WHERE language=:locale LIMIT 100");
-    $sql->bindparam('locale', $this->locale, PDO::PARAM_STR,2);
-    $sql->execute();
-    $keywords = $sql->fetchALL(PDO::FETCH_OBJ);
-    return $keywords;
+
+$sql = $this->db->prepare("SELECT CONCAT('/blog-',id,'-',lower(replace(title,' ', '-')),'/') as link,tags FROM blog LIMIT 50");
+$sql->execute();
+$blogkeywords = $sql->fetchALL(PDO::FETCH_OBJ);
+
+$sql = $this->db->prepare("SELECT CONCAT('/',name) as link,keywords as tags FROM pages LIMIT 50");
+$sql->execute();
+$pagekeywords = $sql->fetchALL(PDO::FETCH_OBJ);
+
+$sql = $this->db->prepare("SELECT CONCAT('/support-',id,'-',lower(replace(titel,' ', '-')),'/') as link,tags FROM artikelen LIMIT 50");
+$sql->execute();
+$supportkeywords = $sql->fetchALL(PDO::FETCH_OBJ);
+
+    return $this->merge((array) $blogkeywords,(array) $pagekeywords,(array) $supportkeywords);
+    }
+
+private function merge($blogkeywords,$pagekeywords,$supportkeywords) :array {
+    $merged = array();
+    foreach ($blogkeywords as $kwd) {
+       $merged[] = $kwd;
+       }
+    foreach ($pagekeywords as $kwd) {
+       $merged[] = $kwd;
+       }
+      foreach ($supportkeywords as $kwd) {
+       $merged[] = $kwd;
+       }     
+    return (array) $merged;
     }
 }
 

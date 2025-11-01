@@ -30,6 +30,7 @@ use App\Controllers\Email;
 use App\Controllers\Manager\Events;
 use App\Controllers\Forum;
 use App\Controllers\Google2FA;
+use App\Controllers\Manager\Keywords;
 use App\Controllers\Manager\Links;
 use App\Controllers\Manager\Manager;
 use App\Controllers\Manager\Media;
@@ -338,6 +339,19 @@ return new SettingsManager(
 
 });
 
+$container->set(Keywords::class, function($container) {
+return new keywords(
+      $container->get('view'),
+      $container->get('db'),
+      $container->get('flash'),
+      $container->get('mail'),
+      $container->get('logger'),
+      $container->get('sitesettings'),
+      $container->get('locale'),
+      $container->get('settings')['translations']['languages']      
+      );
+});
+
 $container->set(Links::class, function($container) {
 return new Links(
       $container->get('view'),
@@ -497,6 +511,7 @@ return new Manager(
       $container->get('logger'),
       $container->get('sitesettings'),
       $container->get('settings')['translations']['languages'],
+      $container->get('locale'),
       $container->get('translator')
       );
 

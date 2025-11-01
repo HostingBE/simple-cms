@@ -36,3 +36,4 @@ public_html/install/assets/vendor/
 public_html/install/assets/composer.lock
 public_html/install/assets/templates_c/
 bootstrap/database.php-kanweg
+keywords-list.json

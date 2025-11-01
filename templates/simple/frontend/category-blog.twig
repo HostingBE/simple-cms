@@ -7,7 +7,7 @@
 
 
         <!-- Search bar + filters-->
-        <div class="row gy-3 mb-4 pb-2 bg-secondary bg-opacity-50 rounded rounded-3">
+      <div class="row gy-3 mb-4 pb-2 bg-secondary bg-opacity-50 rounded rounded-3">
           <div class="col-md-4 order-md-1 order-2">
               <form name="search" method="POST" action="{{url}}/blog-search">
                 {{ csrf() | raw }}
@@ -59,8 +59,8 @@
                         <img class="img-fluid w-100 rounded" src="{% if blog.media %}/uploads/{{blog.media}}{%else%}/images/default-image.jpg{% endif %}" alt="{{blog.alt|capitalize}}">
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <span>comments {{blog.reacties}}, published {{blog.date}}</span>
-                        <a href="/blog-{{blog.id}}-{{blog.title|lower|replace({' ':'-'})| url_encode(true)}}/" class="btn btn-light-primary" data-bs-toggle="tooltip" title="Read more about {{blog.title}}">Read More</a>
+                           <span>{{trans('blog.comments')}} {{blog.reacties}}, {{trans('blog.published')}} {{blog.date}}</span>
+                        <a href="{{locale_url}}/blog-{{blog.id}}-{{blog.title|replace({' ':'-'})|lower|url_encode(true)}}/" class="btn btn-light-primary" data-bs-toggle="tooltip" title="{{trans('blog.read_more_about')}} {{blog.title}}" alt="{{trans('blog.read_more_about')}} {{blog.title}}">{{blog.tags|replace({',':' '})}} ..</a>
                     </div>
  </div><!-- /. card -->
      </div>

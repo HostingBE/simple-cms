@@ -27,8 +27,8 @@ use Gumlet\ImageResize;
 use Cartalyst\Sentinel\Native\Facades\Sentinel; 
 use Valitron\Validator;
 use Slim\Exception\HttpNotFoundException;
-require(dirname(__FILE__) .'/Captcha.class.php');
 
+use App\Helpers\Captcha;
 
 class Blog {
 protected $view;
@@ -233,9 +233,7 @@ if ($data['blog-markdown'] == "y") {
 }
 
 if ($data['blog-links'] == "y") {
-$sql = $this->db->prepare("SELECT CONCAT('/blog-',id,'-',lower(replace(title,' ', '-')),'/') as link,tags FROM blog LIMIT 100");
-$sql->execute();
-$keywords = $sql->fetchALL(PDO::FETCH_OBJ);
+$keywords = (new \App\Content\Keywords($this->db,$this->locale))->getKeywords();
 
 $data['blog-content'] = (new \App\Content\InternalLinks($data['blog-content'], $keywords))->generateLinks();
 }
